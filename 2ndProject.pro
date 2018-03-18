@@ -1,103 +1,25 @@
-DefineConstant[
-  n = {1, Highlight "Blue",// Numbers of Cables
-    Choices{
-      1="n=1",
-      2="n=2",
-      3="n=3",
-      4="n=4",
-      5="n=5",
-      6="n=6"},
-    Name "Input/1Geometry/0number cables in one bundle" }
-];
-DefineConstant[  switche = {0,Choices{0,1},
-    Name "Input/1Geometry/switch for circle to line config."}
-    ];
-
-
-    DefineConstant[
-      nb = {1, Highlight "Green",// number of bundle of cables
-        Choices{
-          1="nb=1",
-          2="nb=2",
-          3="nb=3",
-          4="nb=4",
-          5="nb=5",
-          6="nb=6"},
-        Name "Input/1Geometry/0number of bundle" }
-    ];
-
-
-DefineConstant[
-      D = { 0.5,// distance between the center of one cables and its barycenter
-        Min 0.01, Max 4, Step 1/100,
-        Name Sprintf 
-        ["Input/1Geometry/{D= "]}
-    ];
-
-DefineConstant[
-      Spacing = { 2,// distance between the center of one cables and its barycenter
-      Min 0.01, Max 4, Step 1/100,
-      Name Sprintf["Input/1Geometry/{spacing= "]}
-    ];
-// parameter of the box
-//l=10;
-//L=10;
-
-
-
-/*For i In {1:nb}
-rotation[i-1]=0;
-  DefineConstant[
-    rotations = {0,
-      Min 0, Max Pi, Step 1e-2,
-      Name Sprintf["Input/1Geometry/{bundles %g/Rotations", i]}
-  ];
-  //rotations[i-1]=rotationss;
-EndFor*/
-
-DefineConstant[
-  rotations = {0,
-    Min 0, Max Pi, Step 1e-2,
-    Name Sprintf["Input/1Geometry/{rotation"]}
-];
-
-
-DefineConstant[
-  l = {10,
-    Min 0, Max 100, Step 0.1,
-    Name Sprintf["Input/1Box/{heigth"]}
-];
-DefineConstant[
-  L = {10,
-    Min 0, Max 100, Step 0.1,
-    Name Sprintf["Input/1Box/{width"]}
-];
-
 
 Group {
   // Physical regions:
-  Air    = Region[ 101 ];   Core   = Region[ 102 ];
-  Ind    = Region[ 103 ];   AirInf = Region[ 111 ];
+  Air    = Region[ 101 ];   Wire   = Region[ 102 ];
+  Box    = Region[ 103 ];   AirInf = Region[ 111 ];
 
   Surface_ht0 = Region[ 1100 ];
   Surface_bn0 = Region[ 1101 ];
   Surface_Inf = Region[ 1102 ];
 
-  Vol_Mag     = Region[ {Air, AirInf, Core, Ind} ];
-  Vol_S_Mag   = Region[ Ind ];
+  Vol_Mag     = Region[ {Air, AirInf, Wire, Box} ];
+  Vol_S_Mag   = Region[ Box ];
   Vol_Inf_Mag = Region[ AirInf ];
   Sur_Dir_Mag = Region[ {Surface_bn0, Surface_Inf} ];
   Sur_Neu_Mag = Region[ {} ]; // empty
 }
 
 Function {
-  mu0 = 4.e-7 * Pi;
+  mu0 = 4.e-7 * Pi ;
 
-  murCore = DefineNumber[100, Name "Model parameters/Mur core",
-			 Help "Magnetic relative permeability of Core"];
-
-  nu [ Region[{Air, Ind, AirInf}] ]  = 1. / mu0;
-  nu [ Core ]  = 1. / (murCore * mu0);
+  nu [ Region[{Air, Box, AirInf}] ]  = 1. / mu0;
+  nu [ Wire ]  = 1. / (Mu_r * mu0);
 
 
   Current = DefineNumber[0.01, Name "Model parameters/Current",
