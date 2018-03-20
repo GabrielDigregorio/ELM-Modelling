@@ -12,8 +12,8 @@ r = d;  // Radius Cables
 //Mesh and Domain Variables
 L = 8;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
-dens_MeshPoint_Ground = 50;  // Density of the mesh : Ground domain
-dens_MeshPoint_cable = 150;  // Density of the mesh : cable domain
+dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
+dens_MeshPoint_cable = 20;  // Density of the mesh : cable domain
 dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 
 

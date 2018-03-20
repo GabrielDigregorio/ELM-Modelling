@@ -1,5 +1,5 @@
 DefineConstant[
-  n = {1, Highlight "Blue",// Numbers of Cables
+  n = {3, Highlight "Blue",// Numbers of Cables
     Choices{
       1="n=1",
       2="n=2",
@@ -9,13 +9,13 @@ DefineConstant[
       6="n=6"},
     Name "Input/1Geometry/0number cables in one bundle" }
 ];
-DefineConstant[  switche = {0,Choices{0,1},
+DefineConstant[  switche = {1,Choices{0,1},
     Name "Input/1Geometry/switch for circle to line config."}
     ];
 
 
 DefineConstant[
-      nb = {1, Highlight "Green",// number of bundle of cables
+      nb = {3, Highlight "Green",// number of bundle of cables
         Choices{
           1="nb=1",
           2="nb=2",
