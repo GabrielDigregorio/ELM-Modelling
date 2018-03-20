@@ -26,8 +26,8 @@ Point(9) = {-0, -4, 0, 1.0};// Center at ground level
 Point(10) = {Shield1_Length/2, -4, 0, 1.0}; Point(11) = {-Shield1_Length/2, -4, 0, 1.0}; // bottom point plate
 Point(12) = {-Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0};// left first plate height
 Point(13) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0};// left second plate height
-Point(14) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0};// right second plate height
-Point(15) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right first plate height
+Point(14) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0};// right first plate height
+Point(15) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
 
 Line(14) = {11, 12}; Line(15) = {12, 13}; Line(16) = {13, 15};
 Line(17) = {15, 14}; Line(18) = {14, 10}; Line(19) = {12, 14};
@@ -44,7 +44,7 @@ Line Loop(9) = {14, 19, 18, 23, 22}; // First shield plate
 Line Loop(11) = {50}; // Infinit Sky Domain
 
 
-// create a bundle of n cable (circle of line) separated by a distance F around a given point
+// create a bundle of n cable (circle or line) separated by a distance F around a given point
 // consider we give the center , the number of cable, the spacing ,the type of configuration and the rotation of the bundle of cable
 For k In {0:(nb-1):1}
 
@@ -53,10 +53,9 @@ For k In {0:(nb-1):1}
     y=Spacing*Sin(theta);
     rotation = 0; //rotation=rotations[k];
 
-
     If(switche==1)
         For p In {0:(n-1):1}
-            Index_Ref = 100+(p+1)+k*nb; // reference the number asociated to the Circle
+            Index_Ref = 100+(p+1)+k*n; // reference the number asociated to the Circle
             phi = p*(2*Pi/n);
             Circle(Index_Ref) = {x+D*Cos(phi-rotation), y+D*Sin(phi-rotation), 0, r, 0, 2*Pi};
             Line Loop(Index_Ref) = {Index_Ref};
@@ -67,7 +66,7 @@ For k In {0:(nb-1):1}
     Else
         If(n%2==0)
             For t In {1:n/2}
-                    Index_Ref = 100+(t+1)+k*nb; // reference the number asociated to the Circle
+                    Index_Ref = 100+(t+1)+k*n; // reference the number asociated to the Circle
                     CenterR=((t-1)+1/2)*D;
                     Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
                     Line Loop(Index_Ref) = {Index_Ref};
@@ -79,7 +78,7 @@ For k In {0:(nb-1):1}
         Else
 
                 For t In {1:(n-1)/2}
-                    Index_Ref = 100+(t+1)+k*nb; // reference the number asociated to the Circle
+                    Index_Ref = 100+(t+1)+k*n; // reference the number asociated to the Circle
                     CenterR=t*D;
                     Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
                     Line Loop(Index_Ref) = {Index_Ref};
@@ -97,7 +96,7 @@ EndFor
 
 
 // Surface creation
-Plane Surface(1) = {8,9, 101 : 100+((n-1)+1)+(nb-1)*nb }; // Surface of the air
+Plane Surface(1) = {8,9, 101 : 100+((n-1)+1)+(nb-1)*n}; // Surface of the air
 Plane Surface(2) = 9; // Surface Shield plate
 Plane Surface(3) = {11,8};
 
@@ -112,15 +111,15 @@ Transfinite Line{14, 19, 18, 23, 22} = dens_MeshPoint_Shield*l + 1;
 Physical Line("Gamma", 100) = {5, -6, 13};
 Physical Line("GammaInf", 101) = 50;
 Physical Line("GammaGround", 102) = {20, 21};
-Physical Line("GammaWires1", 103) = {100+((1-1)+1)+(1-1)*1 : 100+((n-1)+1)+(1-1)*1};
-Physical Line("GammaWires2", 104) = {100+((1-1)+1)+(2-1)*2 : 100+((n-1)+1)+(2-1)*2};
-Physical Line("GammaWires3", 105) = {100+((1-1)+1)+(3-1)*3 : 100+((n-1)+1)+(3-1)*3};
+Physical Line("GammaWires1", 103) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
+Physical Line("GammaWires2", 104) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
+Physical Line("GammaWires3", 105) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
 Physical Line("GammaShield", 106) = {14, 19, 18, 23, 22};
 
 // Physical surface domain
 Physical Surface("Omega", 200) = 1;
 Physical Surface("OmegaInf", 201) = 3;
-Physical Surface("SigmaWires1", 203) = {100+((1-1)+1)+(1-1)*1 : 100+((n-1)+1)+(1-1)*1};
-Physical Surface("SigmaWires2", 204) = {100+((1-1)+1)+(2-1)*2 : 100+((n-1)+1)+(2-1)*2};
-Physical Surface("SigmaWires3", 205) = {100+((1-1)+1)+(3-1)*3 : 100+((n-1)+1)+(3-1)*3};
+Physical Surface("SigmaWires1", 203) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
+Physical Surface("SigmaWires2", 204) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
+Physical Surface("SigmaWires3", 205) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
 Physical Surface("SigmaShield", 206) = {9};
