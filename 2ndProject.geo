@@ -22,11 +22,11 @@ dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 Point(1) = {0, 0, 0, 1.0}; // center of the system
 Point(2) = {0, L, 0, 1.0}; // upper point
 Point(3) = {-Sqrt((L)^2-(l)^2), -l, 0, 1.0}; Point(4) = {Sqrt((L)^2-(l)^2), -l, 0, 1.0};// ground point skyline
-Point(9) = {-0, -4, 0, 1.0};// Center at ground level
+Point(9) = {-0, -4, 0, 1.0}; // Center at ground level
 Point(10) = {Shield1_Length/2, -4, 0, 1.0}; Point(11) = {-Shield1_Length/2, -4, 0, 1.0}; // bottom point plate
-Point(12) = {-Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0};// left first plate height
-Point(13) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0};// left second plate height
-Point(14) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0};// right first plate height
+Point(12) = {-Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // left first plate height
+Point(13) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // left second plate height
+Point(14) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // right first plate height
 Point(15) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
 
 Line(14) = {11, 12}; Line(15) = {12, 13}; Line(16) = {13, 15};
@@ -66,7 +66,7 @@ For k In {0:(nb-1):1}
     Else
         If(n%2==0)
             For t In {1:n/2}
-                    Index_Ref = 100+(t+1)+k*n; // reference the number asociated to the Circle
+                    Index_Ref = 100+(t)+k*n; // reference the number asociated to the Circle
                     CenterR=((t-1)+1/2)*D;
                     Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
                     Line Loop(Index_Ref) = {Index_Ref};
@@ -78,7 +78,7 @@ For k In {0:(nb-1):1}
         Else
 
                 For t In {1:(n-1)/2}
-                    Index_Ref = 100+(t+1)+k*n; // reference the number asociated to the Circle
+                    Index_Ref = 100+(t)+k*n; // reference the number asociated to the Circle
                     CenterR=t*D;
                     Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
                     Line Loop(Index_Ref) = {Index_Ref};
@@ -98,7 +98,7 @@ EndFor
 // Surface creation
 Plane Surface(1) = {8, 9, 101 : 100+((n-1)+1)+(nb-1)*n}; // Surface of the air
 Plane Surface(2) = 9; // Surface Shield plate
-Plane Surface(3) = {11,8};
+Plane Surface(3) = {11,8}; // Surface of the infinit domain
 
 // Mesh
 Transfinite Line{5} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
