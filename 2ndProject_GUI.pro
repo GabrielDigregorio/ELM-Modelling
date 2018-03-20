@@ -40,15 +40,17 @@ DefineConstant[
     ];
 
 
-Shield_Thickness = DefineNumber[0.02, 
-        Name Sprintf[ "Input/1Geometry/{Shield Thickness "]];
+Shield1_Thickness = DefineNumber[0.02, 
+        Name Sprintf[ "Input/1Geometry/{Shield1 Thickness "]];
 
+Shield1_Length = DefineNumber[4, 
+        Name Sprintf[ "Input/1Geometry/{Shield1 Length "]];
 
+Shield2_Thickness = DefineNumber[0.02, 
+        Name Sprintf[ "Input/1Geometry/{Shield2 Thickness "]];
 
-Shield_Length = DefineNumber[2, 
-        Name Sprintf[ "Input/1Geometry/{Shield Length "]];
-
-
+Shield2_Length = DefineNumber[4, 
+        Name Sprintf[ "Input/1Geometry/{Shield2 Length "]];
 
 D=DefineNumber[0.5,
        Min 0.01, Max 4, Step 1/100,
@@ -59,6 +61,6 @@ Spacing=DefineNumber[2,
        Name Sprintf["Input/1Geometry/{spacing "]];
 
 
-For i In {1:nb}
-rotations[i-1]= DefineNumber[ 0, Min 0, Max 2*Pi,Name Sprintf["Input/1Geometry/{bundles %g/Rotations", i]];
-EndFor
+/*For i In {1:nb}
+  rotations[i-1]= DefineNumber[ 0, Min 0, Max 2*Pi,Name Sprintf["Input/1Geometry/{bundles %g/Rotations", i]];
+EndFor*/
