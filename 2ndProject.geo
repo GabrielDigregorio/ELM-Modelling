@@ -13,7 +13,7 @@ r = d;  // Radius Cables
 L = 8;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
 dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
-dens_MeshPoint_cable = 20;  // Density of the mesh : cable domain
+dens_MeshPoint_cable = 150;  // Density of the mesh : cable domain
 dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 
 
@@ -96,7 +96,7 @@ EndFor
 
 
 // Surface creation
-Plane Surface(1) = {8,9, 101 : 100+((n-1)+1)+(nb-1)*n}; // Surface of the air
+Plane Surface(1) = {8, 9, 101 : 100+((n-1)+1)+(nb-1)*n}; // Surface of the air
 Plane Surface(2) = 9; // Surface Shield plate
 Plane Surface(3) = {11,8};
 
@@ -122,4 +122,4 @@ Physical Surface("OmegaInf", 201) = 3;
 Physical Surface("SigmaWires1", 203) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
 Physical Surface("SigmaWires2", 204) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
 Physical Surface("SigmaWires3", 205) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
-Physical Surface("SigmaShield", 206) = {9};
+Physical Surface("SigmaShield", 206) = 2;
