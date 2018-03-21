@@ -66,7 +66,7 @@ For k In {0:(nb-1):1}
     Else
         If(n%2==0)
             For t In {1:n/2}
-                    Index_Ref = 100+(t)+k*n; // reference the number asociated to the Circle
+                    Index_Ref = 100+(2*(t-1)+1)+k*n; // reference the number asociated to the Circle
                     CenterR=((t-1)+1/2)*D;
                     Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
                     Line Loop(Index_Ref) = {Index_Ref};
@@ -78,7 +78,7 @@ For k In {0:(nb-1):1}
         Else
 
                 For t In {1:(n-1)/2}
-                    Index_Ref = 100+(t)+k*n; // reference the number asociated to the Circle
+                    Index_Ref = 100+(2*(t-1)+1)+k*n; // reference the number asociated to the Circle
                     CenterR=t*D;
                     Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
                     Line Loop(Index_Ref) = {Index_Ref};
@@ -87,9 +87,9 @@ For k In {0:(nb-1):1}
                     Line Loop(Index_Ref+1) = {Index_Ref+1};
                     Transfinite Line{Index_Ref+1} = dens_MeshPoint_cable*(Pi*r) + 1;
                 EndFor
-                    Circle(Index_Ref+3) = {x, y, 0, r, 0, 2*Pi};
-                    Line Loop(Index_Ref+3) = {Index_Ref+3};
-                    Transfinite Line{Index_Ref+3} = dens_MeshPoint_cable*(Pi*r) + 1;
+                    Circle(Index_Ref+2) = {x, y, 0, r, 0, 2*Pi};
+                    Line Loop(Index_Ref+2) = {Index_Ref+2};
+                    Transfinite Line{Index_Ref+2} = dens_MeshPoint_cable*(Pi*r) + 1;
         EndIf
     EndIf
 EndFor
