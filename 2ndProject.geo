@@ -1,7 +1,7 @@
 // TITLE
 Include "2ndProject_GUI.pro";
 SetFactory("OpenCASCADE");
- 
+
 // Parameters
 l = 4;    // height of the ground
 SkinDepth = 0.01; // Skin Depth for coper at 50Hz
@@ -21,105 +21,204 @@ dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 // Geometry
 Point(1) = {0, 0, 0, 1.0}; // center of the system
 Point(2) = {0, L, 0, 1.0}; // upper point
-Point(3) = {-Sqrt((L)^2-(l)^2), -l, 0, 1.0}; Point(4) = {Sqrt((L)^2-(l)^2), -l, 0, 1.0};// ground point skyline
-Point(9) = {-0, -4, 0, 1.0}; // Center at ground level
-Point(10) = {Shield1_Length/2, -4, 0, 1.0}; Point(11) = {-Shield1_Length/2, -4, 0, 1.0}; // bottom point plate
-Point(12) = {-Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // left first plate height
-Point(13) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // left second plate height
-Point(14) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // right first plate height
-Point(15) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
-
-Line(14) = {11, 12}; Line(15) = {12, 13}; Line(16) = {13, 15};
-Line(17) = {15, 14}; Line(18) = {14, 10}; Line(19) = {12, 14};
-
-Circle(50) = {-0, -0, 0, L+0.1*L, 0, 2*Pi}; // Infinit sky domain
-Circle(5) = {3, 1, 2}; Circle(6) = {4, 1, 2}; // Sky Domain
-Circle(13) = {3, 1, 4}; // Bottom domain
-Line(20) = {3, 11}; Line(21) = {10, 4}; // Ground
-Line(22) = {11, 9}; Line(23) = {10, 9}; // bottom line shield
-
-Line Loop(8) = {5, -6, -13}; // Sky shell domain
-Line Loop(9) = {14, 19, 18, 23, 22}; // First shield plate
-//Line Loop(10) = {}; // Second shield plate
-Line Loop(11) = {50}; // Infinit Sky Domain
+Point(3) = {-Sqrt((L)^2-(l)^2), -l, 0, 1.0}; Point(5) = {Sqrt((L)^2-(l)^2), -l, 0, 1.0};// ground point skyline
+Point(6) = {-0, -4, 0, 1.0}; // Center at ground level
+Point(7) = {Shield1_Length/2, -4, 0, 1.0}; Point(8) = {-Shield1_Length/2, -4, 0, 1.0}; // bottom point plate
+Point(9) = {-Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // left first plate height
+Point(10) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // left second plate height
+Point(11) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // right first plate height
+Point(12) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
 
 
+leftG=1;// left ground
+rightG=2;// right ground
+lowerLP=3;
+lowerRP=5;
+leftLP=4;
+rightLP=6;
+Line(leftG) = {3, 8}; Line(lowerLP) = {8, 6}; Line(lowerRP) = {6,7};
+Line(rightG) = {7, 5}; Line(leftLP) = {8, 9}; Line(rightLP) = {7, 11};
+leftUP=7;
+rightUP=9;
+middleP=8;
+upperPl=10;
+Line(leftUP) = {9, 10}; Line(rightUP) = {11, 12}; // Ground
+Line(middleP) = {9, 11}; Line(upperPl) = {10, 12}; // bottom line shield
+
+
+outercircle=11;
+Circle(outercircle) = {-0, -0, 0, L+0.1*L, 0, 2*Pi}; // Infinit sky domain
+leftinnercircle=12;
+rightinnercircle=13;
+Circle(leftinnercircle) = {3, 1, 2}; Circle(rightinnercircle) = {2, 1, 5}; // Sky Domain
+lowercircle=14;
+Circle(lowercircle) = {5, 1, 3}; // Bottom domain
+
+lowerD=newreg;
+Line Loop(lowerD) = {1, 3, 5,2,14}; // lower shell domain
+upperD=newreg;
+Line Loop(newreg) = {12,13, -2, 6, 9,-10,-7,-4, -1}; // upper shell domain
+lowerP=newreg;
+Line Loop(lowerP) = {-3, 4, 8, -6,- 5}; //lower shield plate
+upperP=newreg;
+Line Loop(upperP) = {-8, 7, 10, -9}; //upper shield plate
+outershell=newreg;
+Line Loop(outershell) = {11};  // Infinit Sky Domain
+innershell=newreg;
+Line Loop(innershell)={12,13,-14};
 // create a bundle of n cable (circle or line) separated by a distance F around a given point
 // consider we give the center , the number of cable, the spacing ,the type of configuration and the rotation of the bundle of cable
-For k In {0:(nb-1):1}
-
-    theta = k*(2*Pi/nb);
-    x=Spacing*Cos(theta);
-    y=Spacing*Sin(theta);
-    rotation = 0; //rotation=rotations[k];
-
+Macro Bundlecable// create a bundle of n cable (circle of line) separated by a distance F around a given point
+        // consider we give the center , the number of cable, the spacing ,the type of configuration and the rotation of the bundle of cable
     If(switche==1)
         For p In {0:(n-1):1}
-            Index_Ref = 100+(p+1)+k*n; // reference the number asociated to the Circle
             phi = p*(2*Pi/n);
-            Circle(Index_Ref) = {x+D*Cos(phi-rotation), y+D*Sin(phi-rotation), 0, r, 0, 2*Pi};
-            Line Loop(Index_Ref) = {Index_Ref};
-            Transfinite Line{Index_Ref} = dens_MeshPoint_cable*(Pi*r) + 1;
-            Plane Surface(Index_Ref) = Index_Ref;
+            curr_point=newreg;
+            Circle(curr_point) = {x+D*Cos(phi-rotation), y+D*Sin(phi-rotation), 0, r, 0, 2*Pi};
+            Line Loop(curr_point) = {curr_point};
+            Transfinite Line{curr_point} = dens_MeshPoint_cable*(Pi*r) + 1;
+            curr_surf=newreg;
+            Plane Surface(curr_surf)={curr_point};
+            stock_disk_surf[k*n+p]=curr_surf;
+            stock_circle[k*n+p]=curr_point;
         EndFor
-        
     Else
         If(n%2==0)
             For t In {1:n/2}
-                    Index_Ref = 100+(t)+k*n; // reference the number asociated to the Circle
                     CenterR=((t-1)+1/2)*D;
-                    Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
-                    Line Loop(Index_Ref) = {Index_Ref};
-                    Transfinite Line{Index_Ref} = dens_MeshPoint_cable*(Pi*r) + 1;
-                    Circle(Index_Ref+1) = {x-CenterR*Cos(rotation), y-CenterR*Sin(rotation), 0, r, 0, 2*Pi};
-                    Line Loop(Index_Ref+1) = {Index_Ref+1};
-                    Transfinite Line{Index_Ref+1} = dens_MeshPoint_cable*(Pi*r) + 1;
+                    curr_point1=newreg;
+                    Circle(curr_point1) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
+                    Line Loop(curr_point1) = {curr_point1};
+                    Transfinite Line{curr_point1} = dens_MeshPoint_cable*(Pi*r) + 1;
+                    curr_point2=newreg;
+                    Circle(curr_point2) = {x-CenterR*Cos(rotation), y-CenterR*Sin(rotation), 0, r, 0, 2*Pi};
+                    Line Loop(curr_point2) = {curr_point2};
+                    Transfinite Line{curr_point2} = dens_MeshPoint_cable*(Pi*r) + 1;
+
+                    curr_surf1=newreg;
+                    Plane Surface(curr_surf1)={curr_point1};
+                    stock_disk_surf[k*n+2*(t-1)]=curr_surf1;
+                    curr_surf2=newreg;
+                    Plane Surface(curr_surf2)={curr_point2};
+                    stock_disk_surf[k*n+2*(t-1)+1]=curr_surf2;
+
+                    stock_circle[k*n+2*(t-1)]=curr_point1;
+                    stock_circle[k*n+2*(t-1)+1]=curr_point2;
+
             EndFor
         Else
-
+                curr_point=newreg;
+                Circle(curr_point) = {x, y, 0, r, 0, 2*Pi};
+                Line Loop(curr_point) = {curr_point};
+                Transfinite Line{curr_point} = dens_MeshPoint_cable*(Pi*r) + 1;
+                stock_circle[k*n]=curr_point;
+                curr_surf=newreg;
+                Plane Surface(curr_surf)={curr_point};
+                stock_disk_surf[k*n]=curr_surf;
                 For t In {1:(n-1)/2}
-                    Index_Ref = 100+(t)+k*n; // reference the number asociated to the Circle
-                    CenterR=t*D;
-                    Circle(Index_Ref) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
-                    Line Loop(Index_Ref) = {Index_Ref};
-                    Transfinite Line{Index_Ref} = dens_MeshPoint_cable*(Pi*r) + 1;
-                    Circle(Index_Ref+1) = {x-CenterR*Cos(rotation), y-CenterR*Sin(rotation), 0, r, 0, 2*Pi};
-                    Line Loop(Index_Ref+1) = {Index_Ref+1};
-                    Transfinite Line{Index_Ref+1} = dens_MeshPoint_cable*(Pi*r) + 1;
+                        CenterR=t*D;
+
+                        curr_point1=newreg;
+                        Circle(curr_point1) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
+                        Line Loop(curr_point1) = {curr_point1};
+                        Transfinite Line{curr_point1} = dens_MeshPoint_cable*(Pi*r) + 1;
+                        curr_point2=newreg;
+                        Circle(curr_point2) = {x-CenterR*Cos(rotation), y-CenterR*Sin(rotation), 0, r, 0, 2*Pi};
+                        Line Loop(curr_point2) = {curr_point2};
+                        Transfinite Line{curr_point2} = dens_MeshPoint_cable*(Pi*r) + 1;
+
+                        curr_surf1=newreg;
+                        Plane Surface(curr_surf1)={curr_point1};
+                        stock_disk_surf[k*n+2*(t-1)+1]=curr_surf1;
+                        curr_surf2=newreg;
+                        Plane Surface(curr_surf2)={curr_point2};
+                        stock_disk_surf[k*n+2*t]=curr_surf2;
+
+                        stock_circle[k*n+2*(t-1)+1]=curr_point1;
+                        stock_circle[k*n+2*t]=curr_point2;
                 EndFor
-                    Circle(Index_Ref+3) = {x, y, 0, r, 0, 2*Pi};
-                    Line Loop(Index_Ref+3) = {Index_Ref+3};
-                    Transfinite Line{Index_Ref+3} = dens_MeshPoint_cable*(Pi*r) + 1;
         EndIf
     EndIf
-EndFor
+Return
 
+
+/*theta = k*(2*Pi/nb);
+x=Spacing*Cos(theta);
+y=Spacing*Sin(theta);*/
+If(nb%2==0)
+    For k1 In {0:(nb/2):1}
+        k=2*k1;
+        x=((k1-1)+1/2)*Spacing;
+        y=0;
+        rotation = 0; //rotation=rotations[k];
+        Call Bundlecable;
+        k=2*k1+1;
+        x=-((k1-1)+1/2)*Spacing;
+        y=0;
+        rotation = 0; //rotation=rotations[k];
+        Call Bundlecable;
+
+    EndFor
+Else
+    k=0;
+    x=0;
+    y=0;
+    rotation = 0;
+    Call Bundlecable;
+    For k1 In {1:(nb-1)/2:1}
+        k=2*k1;
+        x=k1*Spacing;
+        y=0;
+        rotation = 0; //rotation=rotations[k];
+        Call Bundlecable;
+        k=2*(k1)+1;
+        x=-k1*Spacing;
+        y=0;
+        rotation = 0; //rotation=rotations[k];
+        Call Bundlecable;
+
+    EndFor
+
+
+EndIf
 
 // Surface creation
-Plane Surface(1) = {8, 9, 101 : 100+((n-1)+1)+(nb-1)*n}; // Surface of the air
-Plane Surface(2) = 9; // Surface Shield plate
-Plane Surface(3) = {11,8}; // Surface of the infinit domain
+upperDsurf=newreg;
+Plane Surface(upperDsurf) = {upperD,stock_circle[]}; // Surface upper  of the air domain
+lowerDsurf=newreg;
+Plane Surface(lowerDsurf) = {lowerD}; // Surface upper  of the air domain
+lowerPsurf=newreg;
+Plane Surface(lowerPsurf) = {lowerP}; // Surface lower Shield plate
+upperPsurf=newreg;
+Plane Surface(upperPsurf) = {upperP}; // Surface upper Shield plate
+outershellsurf=newreg;
+Plane Surface(outershellsurf) = {outershell,innershell}; // Surface of the infinit domain
 
 // Mesh
-Transfinite Line{5} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
-Transfinite Line{6} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
-Transfinite Line{13} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
-Transfinite Line{20,21} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2))) + 1;
-Transfinite Line{14, 19, 18, 23, 22} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
+Transfinite Line{outercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
+Transfinite Line{lowercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
+Transfinite Line{leftG,rightG} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1;
+Transfinite Line{lowerLP, lowerRP} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{leftLP, rightLP} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{leftUP, rightUP} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{upperPl} = dens_MeshPoint_Shield*l + 1;
+
 
 // Physical boundaries
-Physical Line("Gamma", 100) = {5, -6, 13};
-Physical Line("GammaInf", 101) = 50;
-Physical Line("GammaGround", 102) = {20, 21};
-Physical Line("GammaWires1", 103) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
-Physical Line("GammaWires2", 104) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
-Physical Line("GammaWires3", 105) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
-Physical Line("GammaShield", 106) = {14, 19, 18, 23, 22};
+Physical Line("Gamma", 100) = {12, 13};
+Physical Line("GammaInf", 101) = 11;
+Physical Line("GammaGround", 102) = {1, 2};// on doit ajouter le dessous de la plaque ?
+//Physical Line("GammaWires1", 103) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
+//Physical Line("GammaWires2", 104) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
+//Physical Line("GammaWires3", 105) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
+//Physical Line("GammaShield", 106) = {14, 19, 18, 23, 22};
 
 // Physical surface domain
-Physical Surface("Omega", 200) = 1;
+/*Physical Surface("Omega", 200) = 1;
 Physical Surface("OmegaInf", 201) = 3;
 Physical Surface("SigmaWires1", 203) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
 Physical Surface("SigmaWires2", 204) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
 Physical Surface("SigmaWires3", 205) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
-Physical Surface("SigmaShield", 206) = 2;
+Physical Surface("SigmaShield", 206) = 2;*/
