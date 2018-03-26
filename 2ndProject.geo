@@ -32,11 +32,13 @@ Point(12) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second 
 
 leftG=1;// left ground
 rightG=2;// right ground
-lowerLP=3;
-lowerRP=5;
+//lowerLP=3;
+//lowerRP=5;
+lowerPl=3;
 leftLP=4;
 rightLP=6;
-Line(leftG) = {3, 8}; Line(lowerLP) = {8, 6}; Line(lowerRP) = {6,7};
+Line(leftG) = {3, 8}; //Line(lowerLP) = {8, 6}; Line(lowerRP) = {6,7};
+Line(lowerPl)={8,7};
 Line(rightG) = {7, 5}; Line(leftLP) = {8, 9}; Line(rightLP) = {7, 11};
 leftUP=7;
 rightUP=9;
@@ -55,11 +57,11 @@ lowercircle=14;
 Circle(lowercircle) = {5, 1, 3}; // Bottom domain
 
 lowerD=newreg;
-Line Loop(lowerD) = {1, 3, 5,2,14}; // lower shell domain
+Line Loop(lowerD) = {1, 3,2,14}; // lower shell domain
 upperD=newreg;
 Line Loop(newreg) = {12,13, -2, 6, 9,-10,-7,-4, -1}; // upper shell domain
 lowerP=newreg;
-Line Loop(lowerP) = {-3, 4, 8, -6,- 5}; //lower shield plate
+Line Loop(lowerP) = { 4, 8, -6, 3}; //lower shield plate
 upperP=newreg;
 Line Loop(upperP) = {-8, 7, 10, -9}; //upper shield plate
 outershell=newreg;
@@ -111,7 +113,7 @@ Macro Bundlecable// create a bundle of n cable (circle of line) separated by a d
                 Circle(curr_point) = {x, y, 0, r, 0, 2*Pi};
                 Line Loop(curr_point) = {curr_point};
                 Transfinite Line{curr_point} = dens_MeshPoint_cable*(Pi*r) + 1;
-                Printf("point '%g' ",k*n);
+                //Printf("point '%g' ",k*n);
                 stock_circle[k*n]=curr_point;
                 curr_surf=newreg;
                 Plane Surface(curr_surf)={curr_point};
@@ -201,13 +203,16 @@ Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L
 Transfinite Line{outercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{lowercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
 Transfinite Line{leftG,rightG} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1;
-Transfinite Line{lowerLP, lowerRP} = dens_MeshPoint_Shield*l + 1;
-Transfinite Line{leftLP, rightLP} = dens_MeshPoint_Shield*l + 1;
-Transfinite Line{leftUP, rightUP} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{lowerPl} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{leftLP, rightLP} = dens_MeshPoint_Shield*l/2 + 1;
+Transfinite Line{leftUP, rightUP} = dens_MeshPoint_Shield*l/2 + 1;
 Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
 Transfinite Line{upperPl} = dens_MeshPoint_Shield*l + 1;
 
-
+Transfinite Surface{lowerPsurf};
+Transfinite Surface{upperPsurf};
+Recombine Surface{lowerPsurf};
+Recombine Surface{upperPsurf};
 // Physical boundaries
 Physical Line("Gamma", 100) = {12, 13};
 Physical Line("GammaInf", 101) = 11;
