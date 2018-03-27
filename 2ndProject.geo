@@ -14,7 +14,7 @@ L = 8;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
 dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
 dens_MeshPoint_cable = 150;  // Density of the mesh : cable domain
-dens_MeshPoint_Shield = 10;  // Density of the mesh : cable domain
+dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 
 
 //*************************************************************************************
@@ -204,8 +204,8 @@ Plane Surface(outershellsurf) = {outershell,innershell}; // Surface of the infin
 Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{outercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{lowercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
-Transfinite Line{leftG,rightG} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1;
-Transfinite Line{lowerPl} = dens_MeshPoint_Shield*l + 1;
+Transfinite Line{-leftG,rightG} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1 Using Progression 1.1;
+Transfinite Line{lowerPl} = dens_MeshPoint_Shield*l + 1 ;
 Transfinite Line{leftLP, rightLP} = dens_MeshPoint_Shield*l/2 + 1;
 Transfinite Line{leftUP, rightUP} = dens_MeshPoint_Shield*l/2 + 1;
 Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;

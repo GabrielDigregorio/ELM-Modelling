@@ -35,6 +35,9 @@ Mu_r_Shield2 = DefineNumber [100, Highlight "Pink",//
         Name Sprintf["Input/1Physics/0Relative Permeability of the shield2"]];
 SigmaShield2 = DefineNumber [2e6, Highlight "Pink",// 
         Name Sprintf["Input/1Physics/0Condictivity of the shield2"]];
+DefineConstant[
+    Current = {10000, Name "Input/1Physics/5Current"}
+  ];
 
 
 Shield1_Thickness = DefineNumber[0.02, 
