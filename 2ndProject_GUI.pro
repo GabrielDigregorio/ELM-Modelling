@@ -27,17 +27,14 @@ DefineConstant[
     ];
 
 
-DefineConstant[
-      Mu_r = {1, Highlight "Pink",// 
-        Choices{
-          1="mu_r=1",
-          2="mu_r=10",
-          3="mu_r=100",
-          4="mu_r=1000",
-          5="mu_r=10000",
-          6="mu_r=100000"},
-        Name "Input/1Physics/0Relative Permeability" }
-    ];
+Mu_r_Shield1 = DefineNumber [100, Highlight "Pink",// 
+        Name Sprintf["Input/1Physics/0Relative Permeability of the shield1"]];
+SigmaShield1 = DefineNumber [2e6, Highlight "Pink",// 
+        Name Sprintf["Input/1Physics/0Condictivity of the shield1"]];
+Mu_r_Shield2 = DefineNumber [100, Highlight "Pink",// 
+        Name Sprintf["Input/1Physics/0Relative Permeability of the shield2"]];
+SigmaShield2 = DefineNumber [2e6, Highlight "Pink",// 
+        Name Sprintf["Input/1Physics/0Condictivity of the shield2"]];
 
 
 Shield1_Thickness = DefineNumber[0.02, 
