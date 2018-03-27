@@ -11,7 +11,7 @@ Group {
 
   // Abstract regions used in the "Lib_MagStaDyn_av_2D_Cir.pro" template file
   // that is included below:
-  Vol_CC_Mag = Region[{Air, Shield1}]; // Non-conducting regions
+  Vol_CC_Mag = Region[{Air/*, Shield1*/}]; // Non-conducting regions
   Vol_C_Mag = Region[{Bundle1, Bundle2, Bundle3, Shield1}]; // Massive conducting regions
 }
 

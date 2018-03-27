@@ -11,10 +11,10 @@ r = d;  // Radius Cables
 
 //Mesh and Domain Variables
 L = 8;                       // Radius Domain
-dens_MeshPoint_ExtDom = 5;   // Density of the mesh : External domain
-dens_MeshPoint_Ground = 30;  // Density of the mesh : Ground domain
+dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
+dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
 dens_MeshPoint_cable = 150;  // Density of the mesh : cable domain
-dens_MeshPoint_Shield = 30;  // Density of the mesh : cable domain
+dens_MeshPoint_Shield = 10;  // Density of the mesh : cable domain
 
 
 //*************************************************************************************
@@ -215,6 +215,7 @@ Transfinite Surface{lowerPsurf};
 Transfinite Surface{upperPsurf};
 Recombine Surface{lowerPsurf};
 Recombine Surface{upperPsurf};
+
 // Physical boundaries
 Physical Line("Gamma", 100) = {12, 13,14};
 Physical Line("GammaInf", 101) = 11;
@@ -225,7 +226,7 @@ Physical Line("GammaWires3", 105) = {stock_circle[2*n] : stock_circle[3*n-1]};
 Physical Line("GammaShield1", 106) = {-3, 4, 8, -6,- 5};
 
 // Physical surface domain
-Physical Surface("Omega", 200) = 1;
+Physical Surface("Omega", 200) = {upperDsurf,lowerDsurf, stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
 Physical Surface("OmegaInf", 201) = 3;
 Physical Surface("SigmaWires1", 203) = {stock_disk_surf[0] : stock_disk_surf[n-1]};
 Physical Surface("SigmaWires2", 204) = {stock_disk_surf[n] : stock_disk_surf[2*n-1]};
