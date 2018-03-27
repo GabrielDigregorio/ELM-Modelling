@@ -64,7 +64,7 @@ Circle(lowercircle) = {5, 1, 3}; // Bottom domain
 lowerD=newreg;
 Line Loop(lowerD) = {1, 3,2,14}; // lower shell domain
 upperD=newreg;
-Line Loop(newreg) = {12,13, -2, 6, 9,-10,-7,-4, -1}; // upper shell domain
+Line Loop(upperD) = {12,13, -2, 6, 9,-10,-7,-4, -1}; // upper shell domain
 lowerP=newreg;
 Line Loop(lowerP) = { 4, 8, -6, 3}; //lower shield plate
 upperP=newreg;
@@ -216,7 +216,7 @@ Transfinite Surface{upperPsurf};
 Recombine Surface{lowerPsurf};
 Recombine Surface{upperPsurf};
 // Physical boundaries
-Physical Line("Gamma", 100) = {12, 13};
+Physical Line("Gamma", 100) = {12, 13,14};
 Physical Line("GammaInf", 101) = 11;
 Physical Line("GammaGround", 102) = {1, 2, 3, 5};
 Physical Line("GammaWires1", 103) = {stock_circle[0] : stock_circle[n-1]};
@@ -230,4 +230,4 @@ Physical Surface("OmegaInf", 201) = 3;
 Physical Surface("SigmaWires1", 203) = {stock_disk_surf[0] : stock_disk_surf[n-1]};
 Physical Surface("SigmaWires2", 204) = {stock_disk_surf[n] : stock_disk_surf[2*n-1]};
 Physical Surface("SigmaWires3", 205) = {stock_disk_surf[2*n]  : stock_disk_surf[3*n-1]};
-Physical Surface("SigmaShield1", 206) = 2;
+Physical Surface("SigmaShield1", 206) = lowerPsurf;
