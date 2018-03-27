@@ -18,6 +18,7 @@ sph
 *.res
 *.pre
 *.db
+*.txt
 Makefile
 test.*
 Test.*
