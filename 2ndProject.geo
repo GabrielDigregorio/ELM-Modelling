@@ -227,7 +227,7 @@ Physical Line("GammaShield1", 106) = {-3, 4, 8, -6,- 5};
 // Physical surface domain
 Physical Surface("Omega", 200) = 1;
 Physical Surface("OmegaInf", 201) = 3;
-Physical Surface("SigmaWires1", 203) = {stock_circle[0] : stock_circle[n-1]};
-Physical Surface("SigmaWires2", 204) = {stock_circle[n] : stock_circle[2*n-1]};
-Physical Surface("SigmaWires3", 205) = {stock_circle[2*n]  : stock_circle[3*n-1]};
+Physical Surface("SigmaWires1", 203) = {stock_disk_surf[0] : stock_disk_surf[n-1]};
+Physical Surface("SigmaWires2", 204) = {stock_disk_surf[n] : stock_disk_surf[2*n-1]};
+Physical Surface("SigmaWires3", 205) = {stock_disk_surf[2*n]  : stock_disk_surf[3*n-1]};
 Physical Surface("SigmaShield1", 206) = 2;
