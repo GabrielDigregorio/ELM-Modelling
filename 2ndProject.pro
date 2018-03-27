@@ -16,6 +16,10 @@ Group {
 }
 
 Function {
+  DefineConstant[
+    Current = {1, Name "Model parameters/Current"}
+  ];
+
   mu0 = 4.e-7 * Pi;
   nu[ Region[{Air,Bundle1,Bundle2,Bundle3}] ]  = 1. / mu0;
   nu[ Shield1 ]  = 1. / (Mu_r_Shield1 * mu0);
@@ -23,7 +27,8 @@ Function {
   sigma[ Region[{Bundle1,Bundle2,Bundle3}] ] = 5e7;
   sigma[ Shield1 ] = SigmaShield1;
 
-  CoefGeos[] = 1;
+  CoefGeos[] = 1; // calculation per meter of structure
+  CoefPower = 0.5; // explain this
   Freq = 50;
 }
 
@@ -54,10 +59,11 @@ PostOperation {
     Operation {
       Print[ az, OnElementsOf Vol_Mag, File "a.pos" ];
       Print[ j, OnElementsOf Shield1, File "j.pos" ];
-      /*Print[ j, OnElementsOf Shield1, File "j_Shield1.pos" ];
-      Print[ j, OnElementsOf Bundle1, File "j_Bundle1.pos" ];
-      Print[ j, OnElementsOf Bundle2, File "j_Bundle1.pos" ];
-      Print[ j, OnElementsOf Bundle3, File "j_Bundle1.pos" ];*/
+      Print[ b, OnLine { {-0.5,-0.1,0} {0,-0.1,0} } {100}, Format Table, File "b_line.txt"];
+      //Print[ U, OnRegion Ind, Format Table ];
+      //Print[ I, OnRegion Ind, Format Table ];
+      Print[ JouleLosses[Region[{Bundle1, Bundle2, Bundle3}]], OnGlobal, Format Table , File "joule_losses_Bundle.txt"];
+      Print[ JouleLosses[Shield1], OnGlobal, Format Table , File "joule_losses_Shield.txt"];
       Print[ b, OnElementsOf Vol_Mag, File "b.pos" ];
     }
   }
