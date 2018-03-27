@@ -53,10 +53,11 @@ PostOperation {
   { Name Map_a; NameOfPostProcessing MagDyn_a_2D;
     Operation {
       Print[ az, OnElementsOf Vol_Mag, File "a.pos" ];
-      Print[ j, OnElementsOf Shield1, File "j_Shield1.pos" ];
+      Print[ j, OnElementsOf Shield1, File "j.pos" ];
+      /*Print[ j, OnElementsOf Shield1, File "j_Shield1.pos" ];
       Print[ j, OnElementsOf Bundle1, File "j_Bundle1.pos" ];
       Print[ j, OnElementsOf Bundle2, File "j_Bundle1.pos" ];
-      Print[ j, OnElementsOf Bundle3, File "j_Bundle1.pos" ];
+      Print[ j, OnElementsOf Bundle3, File "j_Bundle1.pos" ];*/
       Print[ b, OnElementsOf Vol_Mag, File "b.pos" ];
     }
   }
