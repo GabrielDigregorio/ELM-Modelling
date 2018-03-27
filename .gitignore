@@ -1,0 +1,27 @@
+# list of ignored files/folders
+
+build/
+sph
+*~
+*.o
+*.obj
+*.bak
+*.vtk
+*.out
+*.exe
+*.log
+*.asv
+*.eps
+*h.gch
+*.pos
+*.msh
+*.res
+*.pre
+*.db
+Makefile
+test.*
+Test.*
+.DS_Store
+.vscode/
+!CMakeLists.txt
+Results/

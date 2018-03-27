@@ -11,10 +11,10 @@ r = d;  // Radius Cables
 
 //Mesh and Domain Variables
 L = 8;                       // Radius Domain
-dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
-dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
+dens_MeshPoint_ExtDom = 5;   // Density of the mesh : External domain
+dens_MeshPoint_Ground = 30;  // Density of the mesh : Ground domain
 dens_MeshPoint_cable = 150;  // Density of the mesh : cable domain
-dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
+dens_MeshPoint_Shield = 30;  // Density of the mesh : cable domain
 
 
 //*************************************************************************************
@@ -126,7 +126,6 @@ Macro Bundlecable// create a bundle of n cable (circle of line) separated by a d
                 stock_disk_surf[k*n]=curr_surf;
                 For t In {1:(n-1)/2}
                         CenterR=t*D;
-
                         curr_point1=newreg;
                         Circle(curr_point1) = {x+CenterR*Cos(rotation), y+CenterR*Sin(rotation), 0, r, 0, 2*Pi};
                         Line Loop(curr_point1) = {curr_point1};
@@ -169,9 +168,7 @@ If(nb%2==0)
 
     EndFor
 Else
-    k=0;
-    x=0;
-    y=0;
+    k=0; x=0; y=0;
     rotation = 0;
     Call Bundlecable;
     For k1 In {1:(nb-1)/2:1}
@@ -221,16 +218,16 @@ Recombine Surface{upperPsurf};
 // Physical boundaries
 Physical Line("Gamma", 100) = {12, 13};
 Physical Line("GammaInf", 101) = 11;
-Physical Line("GammaGround", 102) = {1, 2};// on doit ajouter le dessous de la plaque ?
-//Physical Line("GammaWires1", 103) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
-//Physical Line("GammaWires2", 104) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
-//Physical Line("GammaWires3", 105) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
-//Physical Line("GammaShield", 106) = {14, 19, 18, 23, 22};
+Physical Line("GammaGround", 102) = {1, 2, 3, 5};
+Physical Line("GammaWires1", 103) = {stock_circle[0] : stock_circle[n-1]};
+Physical Line("GammaWires2", 104) = {stock_circle[n] : stock_circle[2*n-1]};
+Physical Line("GammaWires3", 105) = {stock_circle[2*n] : stock_circle[3*n-1]};
+Physical Line("GammaShield1", 106) = {-3, 4, 8, -6,- 5};
 
 // Physical surface domain
-/*Physical Surface("Omega", 200) = 1;
+Physical Surface("Omega", 200) = 1;
 Physical Surface("OmegaInf", 201) = 3;
-Physical Surface("SigmaWires1", 203) = {100+((1-1)+1)+(1-1)*n : 100+((n-1)+1)+(1-1)*n};
-Physical Surface("SigmaWires2", 204) = {100+((1-1)+1)+(2-1)*n : 100+((n-1)+1)+(2-1)*n};
-Physical Surface("SigmaWires3", 205) = {100+((1-1)+1)+(3-1)*n : 100+((n-1)+1)+(3-1)*n};
-Physical Surface("SigmaShield", 206) = 2;*/
+Physical Surface("SigmaWires1", 203) = {stock_circle[0] : stock_circle[n-1]};
+Physical Surface("SigmaWires2", 204) = {stock_circle[n] : stock_circle[2*n-1]};
+Physical Surface("SigmaWires3", 205) = {stock_circle[2*n]  : stock_circle[3*n-1]};
+Physical Surface("SigmaShield1", 206) = 2;
