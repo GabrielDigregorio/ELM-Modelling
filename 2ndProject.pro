@@ -18,10 +18,10 @@ Group {
 Function {
   mu0 = 4.e-7 * Pi;
   nu[ Region[{Air,Bundle1,Bundle2,Bundle3}] ]  = 1. / mu0;
-  nu[ Shield ]  = 1. / (Mu_r_Shield1 * mu0);
+  nu[ Shield1 ]  = 1. / (Mu_r_Shield1 * mu0);
 
   sigma[ Region[{Bundle1,Bundle2,Bundle3}] ] = 5e7;
-  sigma[ Shield ] = SigmaShield1;
+  sigma[ Shield1 ] = SigmaShield1;
 
   CoefGeos[] = 1;
   Freq = 50;
