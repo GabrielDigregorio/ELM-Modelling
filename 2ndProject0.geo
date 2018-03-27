@@ -13,7 +13,7 @@ r = d;  // Radius Cables
 L = 8;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
 dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
-dens_MeshPoint_cable = 150;  // Density of the mesh : cable domain
+dens_MeshPoint_cable = 15;  // Density of the mesh : cable domain
 dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 
 
@@ -29,12 +29,14 @@ Point(10) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // left second 
 Point(11) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // right first plate height
 Point(12) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
 
-Point(newp)={-Shield2_Length/2+Shield2_Thickness, -l+2*Shield2_Thickness, 0, 1.0};
-Point(newp)={Shield2_Length/2-Shield2_Thickness, -l+2*Shield2_Thickness, 0, 1.0};
-Point(newp)={-Shield1_Length/2+Shield2_Thickness, -4, 0, 1.0};
-Point(newp)={Shield1_Length/2-Shield2_Thickness, -4, 0, 1.0};
-Point(newp) = {-Shield1_Length/2+Shield2_Thickness, -l+Shield1_Thickness, 0, 1.0};
-Point(newp) = {Shield1_Length/2-Shield2_Thickness, -l+Shield1_Thickness, 0, 1.0};
+Point(13)={-Shield2_Length/2+Shield2_Thickness, -l+2*Shield2_Thickness, 0, 1.0};
+Point(14)={Shield2_Length/2-Shield2_Thickness, -l+2*Shield2_Thickness, 0, 1.0};
+Point(15)={-Shield1_Length/2+Shield2_Thickness, -4, 0, 1.0};
+Point(16)={Shield1_Length/2-Shield2_Thickness, -4, 0, 1.0};
+Point(17) = {-Shield1_Length/2+Shield2_Thickness, -l+Shield1_Thickness, 0, 1.0};
+Point(18) = {Shield1_Length/2-Shield2_Thickness, -l+Shield1_Thickness, 0, 1.0};
+
+
 leftG=1;// left ground
 rightG=2;// right ground
 //lowerLP=3;
@@ -42,15 +44,15 @@ rightG=2;// right ground
 lowerPl=3;
 leftLP=4;
 rightLP=6;
-Line(leftG) = {3, 8}; //Line(lowerLP) = {8, 6}; Line(lowerRP) = {6,7};
-Line(lowerPl)={8,7};
-Line(rightG) = {7, 5}; Line(leftLP) = {8, 9}; Line(rightLP) = {7, 11};
+Line(leftG) = {3, 15}; //Line(lowerLP) = {8, 6}; Line(lowerRP) = {6,7};
+Line(lowerPl)={15,16};
+Line(rightG) = {16, 5}; //Line(leftLP) = {8, 9}; Line(rightLP) = {7, 11};
 leftUP=7;
 rightUP=9;
 middleP=8;
 upperPl=10;
-Line(leftUP) = {9, 10}; Line(rightUP) = {11, 12}; // Ground
-Line(middleP) = {9, 11}; Line(upperPl) = {10, 12}; // bottom line shield
+//Line(leftUP) = {9, 10}; Line(rightUP) = {11, 12}; // Ground
+Line(middleP) = {9, 11}; Line(upperPl) = {13, 14}; // bottom line shield
 
 
 outercircle=11;
@@ -61,14 +63,19 @@ Circle(leftinnercircle) = {3, 1, 2}; Circle(rightinnercircle) = {2, 1, 5}; // Sk
 lowercircle=14;
 Circle(lowercircle) = {5, 1, 3}; // Bottom domain
 
+Circle(newreg) = {9, 17, 13};
+Circle(newreg) = {15, 17, 9};
+Circle(newreg) = {14, 18, 11};
+Circle(newreg) = {11, 18, 16};
+
 lowerD=newreg;
 Line Loop(lowerD) = {1, 3,2,14}; // lower shell domain
 upperD=newreg;
-Line Loop(newreg) = {12,13, -2, 6, 9,-10,-7,-4, -1}; // upper shell domain
+Line Loop(newreg) = {12,13, -2, -18, -17,-10,-15,-16, -1}; // upper shell domain
 lowerP=newreg;
-Line Loop(lowerP) = { 4, 8, -6, 3}; //lower shield plate
+Line Loop(lowerP) = { 16, 8, 18, 3}; //lower shield plate
 upperP=newreg;
-Line Loop(upperP) = {-8, 7, 10, -9}; //upper shield plate
+Line Loop(upperP) = {-8, 15, 10, 17}; //upper shield plate
 outershell=newreg;
 Line Loop(outershell) = {11};  // Infinit Sky Domain
 innershell=newreg;
@@ -207,10 +214,10 @@ Plane Surface(outershellsurf) = {outershell,innershell}; // Surface of the infin
 Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{outercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{lowercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
-Transfinite Line{leftG,rightG} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1;
+Transfinite Line{leftG,-rightG} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*20 + 1.1;
 Transfinite Line{lowerPl} = dens_MeshPoint_Shield*l + 1;
-Transfinite Line{leftLP, rightLP} = dens_MeshPoint_Shield*l/2 + 1;
-Transfinite Line{leftUP, rightUP} = dens_MeshPoint_Shield*l/2 + 1;
+Transfinite Line{16, 18} = dens_MeshPoint_Shield*l/2 + 1;
+Transfinite Line{15, 17} = dens_MeshPoint_Shield*l/2 + 1;
 Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
 Transfinite Line{upperPl} = dens_MeshPoint_Shield*l + 1;
 
