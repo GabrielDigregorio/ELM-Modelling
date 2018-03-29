@@ -64,7 +64,7 @@ PostOperation {
       Print[I, OnRegion Shield1, Format Table , File "I_Shield.txt"];
       Print[ JouleLosses[Region[{Bundle1, Bundle2, Bundle3}]], OnGlobal, Format Table , File "joule_losses_Bundle.txt"];
       Print[ JouleLosses[Shield1], OnGlobal, Format Table , File "joule_losses_Shield.txt"];
-      
+
     }
   }
 }
