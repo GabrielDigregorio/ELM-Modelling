@@ -59,7 +59,7 @@ D=DefineNumber[0.5,
        Min 0.01, Max 4, Step 1/100,
       Name Sprintf["Input/1Geometry/{D "]];
 
-Spacing=DefineNumber[2,
+M=DefineNumber[2,
         Min 0.01, Max 4, Step 1/100,
        Name Sprintf["Input/1Geometry/{spacing "]];
 

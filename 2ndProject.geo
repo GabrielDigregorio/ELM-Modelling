@@ -8,7 +8,7 @@ SkinDepth = 0.01; // Skin Depth for coper at 50Hz
 A_Copper = 0.0035; // Total Area of the cables
 d = ( (A_Copper/n) + (Pi*SkinDepth^2) ) / (2*Pi*SkinDepth);   // Radius Cables
 r = d;  // Radius Cables
-
+spacing=M;
 //Mesh and Domain Variables
 L = 8;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
