@@ -119,4 +119,6 @@ Plane Surface(1)={8,stock_circle[]};
 Physical Surface("Omega", 100) = 1;
 Physical Line("GammaInf", 101) = {5, -6};
 Physical Line("GammaGround", 102) = 7;
-Physical Line("GammaWires", 103) = {stock_circle[]};
+Physical Line("GammaWires1", 103) = {stock_circle[0]:stock_circle[n-1]};
+Physical Line("GammaWires2", 104) = {stock_circle[n]:stock_circle[2*n-1]};
+Physical Line("GammaWires3", 105) = {stock_circle[2*n]:stock_circle[3*n-1]};
