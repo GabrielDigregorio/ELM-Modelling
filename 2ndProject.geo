@@ -29,49 +29,42 @@ Point(10) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // left second 
 Point(11) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // right first plate height
 Point(12) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
 
-Point(newp)={-Shield2_Length/2+Shield2_Thickness, -l+2*Shield2_Thickness, 0, 1.0};
-Point(newp)={Shield2_Length/2-Shield2_Thickness, -l+2*Shield2_Thickness, 0, 1.0};
-Point(newp)={-Shield1_Length/2+Shield2_Thickness, -4, 0, 1.0};
-Point(newp)={Shield1_Length/2-Shield2_Thickness, -4, 0, 1.0};
-Point(newp) = {-Shield1_Length/2+Shield2_Thickness, -l+Shield1_Thickness, 0, 1.0};
-Point(newp) = {Shield1_Length/2-Shield2_Thickness, -l+Shield1_Thickness, 0, 1.0};
-leftG=1;// left ground
-rightG=2;// right ground
-//lowerLP=3;
-//lowerRP=5;
-lowerPl=3;
-leftLP=4;
-rightLP=6;
-Line(leftG) = {3, 8}; //Line(lowerLP) = {8, 6}; Line(lowerRP) = {6,7};
+
+leftG=1;// left ground line
+rightG=2;// right ground line
+lowerPl=3; // lower plate line
+leftLP=4; // left lower plate line
+rightLP=6; // right lower plate line
+Line(leftG) = {3, 8};
 Line(lowerPl)={8,7};
 Line(rightG) = {7, 5}; Line(leftLP) = {8, 9}; Line(rightLP) = {7, 11};
-leftUP=7;
-rightUP=9;
-middleP=8;
-upperPl=10;
-Line(leftUP) = {9, 10}; Line(rightUP) = {11, 12}; // Ground
-Line(middleP) = {9, 11}; Line(upperPl) = {10, 12}; // bottom line shield
+leftUP=7; // lept up plate line
+rightUP=9; // right up plate line
+middleP=8; // middel plate line
+upperPl=10; // upper plate line
+Line(leftUP) = {9, 10}; Line(rightUP) = {11, 12};
+Line(middleP) = {9, 11}; Line(upperPl) = {10, 12};
 
 
-outercircle=11;
-Circle(outercircle) = {-0, -0, 0, L+0.1*L, 0, 2*Pi}; // Infinit sky domain
-leftinnercircle=12;
-rightinnercircle=13;
-Circle(leftinnercircle) = {3, 1, 2}; Circle(rightinnercircle) = {2, 1, 5}; // Sky Domain
-lowercircle=14;
-Circle(lowercircle) = {5, 1, 3}; // Bottom domain
+outercircle=11;// Infinit sky domain
+Circle(outercircle) = {-0, -0, 0, L+0.1*L, 0, 2*Pi};
+leftinnercircle=12; // left arc circle of the inner domain
+rightinnercircle=13;// right arc circle of the inner domain
+Circle(leftinnercircle) = {3, 1, 2}; Circle(rightinnercircle) = {2, 1, 5};
+lowercircle=14; // Bottom arc cirlce of the inner domain
+Circle(lowercircle) = {5, 1, 3};
 
-lowerD=newreg;
+lowerD=newreg; // lower domain line loop
 Line Loop(lowerD) = {1, 3,2,14}; // lower shell domain
-upperD=newreg;
+upperD=newreg; // upper domain line loop
 Line Loop(upperD) = {12,13, -2, 6, 9,-10,-7,-4, -1}; // upper shell domain
-lowerP=newreg;
+lowerP=newreg; // lower plate line loop
 Line Loop(lowerP) = { 4, 8, -6, 3}; //lower shield plate
-upperP=newreg;
+upperP=newreg;// upper plate line loop
 Line Loop(upperP) = {-8, 7, 10, -9}; //upper shield plate
-outershell=newreg;
+outershell=newreg; // Infinit sky domain line loop
 Line Loop(outershell) = {11};  // Infinit Sky Domain
-innershell=newreg;
+innershell=newreg;// inner domain line loop
 Line Loop(innershell)={12,13,-14};
 // create a bundle of n cable (circle or line) separated by a distance F around a given point
 // consider we give the center , the number of cable, the spacing ,the type of configuration and the rotation of the bundle of cable
@@ -118,7 +111,6 @@ Macro Bundlecable// create a bundle of n cable (circle of line) separated by a d
                 Circle(curr_point) = {x, y, 0, r, 0, 2*Pi};
                 Line Loop(curr_point) = {curr_point};
                 Transfinite Line{curr_point} = dens_MeshPoint_cable*(Pi*r) + 1;
-                //Printf("point '%g' ",k*n);
                 stock_circle[k*n]=curr_point;
                 curr_surf=newreg;
                 Plane Surface(curr_surf)={curr_point};
@@ -169,7 +161,7 @@ If(nb%2==0)
     EndFor
 Else
     k=0; x=0; y=0;
-    rotation = 0;
+    rotation =0;// rotations[k];
     Call Bundlecable;
     For k1 In {1:(nb-1)/2:1}
         k=2*k1-1;
@@ -205,29 +197,32 @@ Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L
 Transfinite Line{outercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{lowercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
 Transfinite Line{-leftG,rightG} = dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1 Using Progression 1.1;
-Transfinite Line{lowerPl} = dens_MeshPoint_Shield*l + 1 ;
+Transfinite Line{lowerPl,middleP,upperPl} = dens_MeshPoint_Shield*l*3 + 1 ;
 Transfinite Line{leftLP, rightLP} = dens_MeshPoint_Shield*l/2 + 1;
 Transfinite Line{leftUP, rightUP} = dens_MeshPoint_Shield*l/2 + 1;
-Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
-Transfinite Line{upperPl} = dens_MeshPoint_Shield*l + 1;
+//Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
+//Transfinite Line{upperPl} = dens_MeshPoint_Shield*l + 1;
 
+// regulare rectangulare mesh for the 2 plates
 Transfinite Surface{lowerPsurf};
 Transfinite Surface{upperPsurf};
 Recombine Surface{lowerPsurf};
 Recombine Surface{upperPsurf};
 
 // Physical boundaries
-Physical Line("Gamma", 100) = {12, 13,14};
-Physical Line("GammaInf", 101) = 11;
-Physical Line("GammaGround", 102) = {1, 2, 3, 5};
+Physical Line("Gamma", 100) = {leftinnercircle, rightinnercircle,lowercircle};
+Physical Line("GammaInf", 101) = outercircle;
+Physical Line("GammaGround", 102) = {leftG, rightG, lowerPl};
 Physical Line("GammaWires1", 103) = {stock_circle[0] : stock_circle[n-1]};
 Physical Line("GammaWires2", 104) = {stock_circle[n] : stock_circle[2*n-1]};
 Physical Line("GammaWires3", 105) = {stock_circle[2*n] : stock_circle[3*n-1]};
-Physical Line("GammaShield1", 106) = {-3, 4, 8, -6,- 5};
+Physical Line("GammaShield1", 106) = {-lowerPl, leftLP, middleP, -rightLP};
 
 // Physical surface domain
-Physical Surface("Omega", 200) = {upperDsurf,lowerDsurf, stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
-Physical Surface("OmegaInf", 201) = 3;
+//  /!\ air domain, with the upper shield being air /!\
+
+Physical Surface("Omega", 200) = {upperDsurf,lowerDsurf,upperPsurf};// stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
+Physical Surface("OmegaInf", 201) = outershellsurf;
 Physical Surface("SigmaWires1", 203) = {stock_disk_surf[0] : stock_disk_surf[n-1]};
 Physical Surface("SigmaWires2", 204) = {stock_disk_surf[n] : stock_disk_surf[2*n-1]};
 Physical Surface("SigmaWires3", 205) = {stock_disk_surf[2*n]  : stock_disk_surf[3*n-1]};
