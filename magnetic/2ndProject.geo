@@ -10,10 +10,10 @@ d = ( (A_Copper/n) + (Pi*SkinDepth^2) ) / (2*Pi*SkinDepth);   // Radius Cables
 r = d;  // Radius Cables
 Spacing=M;
 //Mesh and Domain Variables
-L = 8;                       // Radius Domain
+L = 20;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
 dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
-dens_MeshPoint_cable = 150;  // Density of the mesh : cable domain
+dens_MeshPoint_cable = 750;  // Density of the mesh : cable domain
 dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 
 
