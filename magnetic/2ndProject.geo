@@ -138,44 +138,33 @@ Macro Bundlecable// create a bundle of n cable (circle of line) separated by a d
     EndIf
 Return
 
-
+rotations[0]=rotation1;
+rotations[1]=rotation2;
+rotations[2]=rotation3;
 /*theta = k*(2*Pi/nb);
 x=Spacing*Cos(theta);
 y=Spacing*Sin(theta);*/
-If(nb%2==0)
-    For k1 In {0:(nb/2)-1:1}
-        k=2*k1;
-        x=((k1)+1/2)*Spacing;
-        y=0;
-        rotation = 0; //rotation=rotations[k];
-        Call Bundlecable;
-        k=2*k1+1;
-        x=-((k1)+1/2)*Spacing;
-        y=0;
-        rotation = 0; //rotation=rotations[k];
-        Call Bundlecable;
-
-    EndFor
-Else
     k=0; x=0; y=0;
-    rotation =0;// rotations[k];
+    //rotation =0;//
+    rotation = rotations[k];
     Call Bundlecable;
     For k1 In {1:(nb-1)/2:1}
         k=2*k1-1;
         x=k1*Spacing;
         y=0;
-        rotation = 0; //rotation=rotations[k];
+        //rotation = 0; //
+        rotation=rotations[k];
         Call Bundlecable;
         k=2*(k1);
         x=-k1*Spacing;
         y=0;
-        rotation = 0; //rotation=rotations[k];
+        //rotation = 0; //
+        rotation=rotations[k];
         Call Bundlecable;
 
     EndFor
 
 
-EndIf
 
 // Surface creation
 upperDsurf=newreg;
@@ -195,13 +184,12 @@ Transfinite Line{-leftG,rightG} = dens_MeshPoint_Shield*l/3 + 1 ;//dens_MeshPoin
 Transfinite Line{lowerPl,middleP} = dens_MeshPoint_Shield*l/3 + 1 ;
 Transfinite Line{leftLP, rightLP} = 2;//dens_MeshPoint_Shield*l/10 + 1;
 
-Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
 
 
 // regulare rectangulare mesh for the 2 plates
-//Transfinite Surface{lowerPsurf};
+Transfinite Surface{lowerPsurf};
 //Transfinite Surface{upperPsurf};
-//Recombine Surface{lowerPsurf};
+Recombine Surface{lowerPsurf};
 //Recombine Surface{upperPsurf};
 
 // Physical boundaries

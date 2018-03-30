@@ -34,10 +34,7 @@ Mu_r_Shield1 = DefineNumber [100, Highlight "Pink",//
         Name Sprintf["Input/1Physics/0Relative Permeability of the shield1"]];
 SigmaShield1 = DefineNumber [2e6, Highlight "Pink",//
         Name Sprintf["Input/1Physics/0Condictivity of the shield1"]];
-Mu_r_Shield2 = DefineNumber [100, Highlight "Pink",//
-        Name Sprintf["Input/1Physics/0Relative Permeability of the shield2"]];
-SigmaShield2 = DefineNumber [2e6, Highlight "Pink",//
-        Name Sprintf["Input/1Physics/0Condictivity of the shield2"]];
+
 DefineConstant[
     Current = {10000, Name "Input/1Physics/5Current"}
   ];
@@ -49,11 +46,6 @@ Shield1_Thickness = DefineNumber[0.02,
 Shield1_Length = DefineNumber[4,
         Name Sprintf[ "Input/1Geometry/{Shield1 Length "]];
 
-Shield2_Thickness = DefineNumber[0.02,
-        Name Sprintf[ "Input/1Geometry/{Shield2 Thickness "]];
-
-Shield2_Length = DefineNumber[4,
-        Name Sprintf[ "Input/1Geometry/{Shield2 Length "]];
 
 D=DefineNumber[0.5,
        Min 0.01, Max 4, Step 1/100,
@@ -64,27 +56,34 @@ M=DefineNumber[2,
        Name Sprintf["Input/1Geometry/{spacing "]];
 
 
-//For i In {1:nb}
-//  rotations[i-1]= DefineNumber[ 0, Min 0, Max 2*Pi,Name Sprintf["Input/1Geometry/bundles %g/Rotations", i]];
-//EndFor
-
-/*For i In {1:nb}
-  rotations1[i-1]= DefineNumber[ //0, Min 0, Max 2*Pi,Name Sprintf["Input/1Geometry/bundles %g/Rotations1", i]];
-  Choices{
-    1="nb=1",
-    2="nb=2",
-    3="nb=3",
-    4="nb=4",
-    5="nb=5",
-    6="nb=6"},
-    Name Sprintf["Input/1Geometry/bundles %g/Rotations1", i]
-EndFor*/
-/*nb = {3, Highlight "Green",// number of bundle of cables
-  Choices{
-    1="nb=1",
-    2="nb=2",
-    3="nb=3",
-    4="nb=4",
-    5="nb=5",
-    6="nb=6"},
-  Name "Input/1Geometry/0number of bundle" }*/
+       rotation1=DefineNumber[Pi/6,Choices{
+           0="0",
+         Pi/6="Pi/6",
+         Pi/4="Pi/4",
+         Pi/3="Pi/3",
+         Pi/2="Pi/2",
+         2*Pi/3="2*Pi/3",
+         3*Pi/4="3*Pi/4",
+         5*Pi/6="5*Pi/6",
+         Pi="Pi"},Name Sprintf["Input/1Geometry/0bundles %g/Rotation", 1]];
+       rotation2=DefineNumber[2*Pi/3,Choices{
+         0="0",
+         Pi/6="Pi/6",
+         Pi/4="Pi/4",
+         Pi/3="Pi/3",
+         Pi/2="Pi/2",
+         2*Pi/3="2*Pi/3",
+         3*Pi/4="3*Pi/4",
+         5*Pi/6="5*Pi/6",
+         Pi="Pi"  },Name Sprintf["Input/1Geometry/0bundles %g/Rotation", 2]];
+       rotation3=DefineNumber[Pi/3,Choices{
+         0="0",
+         Pi/6="Pi/6",
+         Pi/4="Pi/4",
+         Pi/3="Pi/3",
+         Pi/2="Pi/2",
+         2*Pi/3="2*Pi/3",
+         3*Pi/4="3*Pi/4",
+         5*Pi/6="5*Pi/6",
+         Pi="Pi"
+       },Name Sprintf["Input/1Geometry/0bundles %g/Rotation", 3]];
