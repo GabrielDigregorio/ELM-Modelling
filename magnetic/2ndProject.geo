@@ -25,9 +25,9 @@ Point(3) = {-Sqrt((L)^2-(l)^2), -l, 0, 1.0}; Point(5) = {Sqrt((L)^2-(l)^2), -l, 
 Point(6) = {-0, -4, 0, 1.0}; // Center at ground level
 Point(7) = {Shield1_Length/2, -4, 0, 1.0}; Point(8) = {-Shield1_Length/2, -4, 0, 1.0}; // bottom point plate
 Point(9) = {-Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // left first plate height
-Point(10) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // left second plate height
+//Point(10) = {-Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // left second plate height
 Point(11) = {Shield1_Length/2, -l+Shield1_Thickness, 0, 1.0}; // right first plate height
-Point(12) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
+//Point(12) = {Shield2_Length/2, -l+2*Shield2_Thickness, 0, 1.0}; // right second plate height
 
 
 leftG=1;// left ground line
@@ -38,12 +38,10 @@ rightLP=6; // right lower plate line
 Line(leftG) = {3, 8};
 Line(lowerPl)={8,7};
 Line(rightG) = {7, 5}; Line(leftLP) = {8, 9}; Line(rightLP) = {7, 11};
-leftUP=7; // lept up plate line
-rightUP=9; // right up plate line
+
 middleP=8; // middel plate line
-upperPl=10; // upper plate line
-Line(leftUP) = {9, 10}; Line(rightUP) = {11, 12};
-Line(middleP) = {9, 11}; Line(upperPl) = {10, 12};
+
+Line(middleP) = {9, 11};// Line(upperPl) = {10, 12};
 
 
 outercircle=11;// Infinit sky domain
@@ -57,11 +55,10 @@ Circle(lowercircle) = {5, 1, 3};
 lowerD=newreg; // lower domain line loop
 Line Loop(lowerD) = {1, 3,2,14}; // lower shell domain
 upperD=newreg; // upper domain line loop
-Line Loop(upperD) = {12,13, -2, 6, 9,-10,-7,-4, -1}; // upper shell domain
+Line Loop(upperD) = {12,13, -2, 6, -8,-4, -1}; // upper shell domain 1,4,6,8,13,12
 lowerP=newreg; // lower plate line loop
 Line Loop(lowerP) = { 4, 8, -6, 3}; //lower shield plate
-upperP=newreg;// upper plate line loop
-Line Loop(upperP) = {-8, 7, 10, -9}; //upper shield plate
+
 outershell=newreg; // Infinit sky domain line loop
 Line Loop(outershell) = {11};  // Infinit Sky Domain
 innershell=newreg;// inner domain line loop
@@ -187,8 +184,6 @@ lowerDsurf=newreg;
 Plane Surface(lowerDsurf) = {lowerD}; // Surface upper  of the air domain
 lowerPsurf=newreg;
 Plane Surface(lowerPsurf) = {lowerP}; // Surface lower Shield plate
-upperPsurf=newreg;
-Plane Surface(upperPsurf) = {upperP}; // Surface upper Shield plate
 outershellsurf=newreg;
 Plane Surface(outershellsurf) = {outershell,innershell}; // Surface of the infinit domain
 
@@ -197,11 +192,11 @@ Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L
 Transfinite Line{outercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{lowercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
 Transfinite Line{-leftG,rightG} = dens_MeshPoint_Shield*l/3 + 1 ;//dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1 Using Progression 1.1;
-Transfinite Line{lowerPl,middleP,upperPl} = dens_MeshPoint_Shield*l/3 + 1 ;
+Transfinite Line{lowerPl,middleP} = dens_MeshPoint_Shield*l/3 + 1 ;
 Transfinite Line{leftLP, rightLP} = 2;//dens_MeshPoint_Shield*l/10 + 1;
-Transfinite Line{leftUP, rightUP} = 2;//dens_MeshPoint_Shield*l/10 + 1;
-//Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
-//Transfinite Line{upperPl} = dens_MeshPoint_Shield*l + 1;
+
+Transfinite Line{middleP} = dens_MeshPoint_Shield*l + 1;
+
 
 // regulare rectangulare mesh for the 2 plates
 //Transfinite Surface{lowerPsurf};
@@ -221,7 +216,7 @@ Physical Line("GammaShield1", 106) = {-lowerPl, leftLP, middleP, -rightLP};
 // Physical surface domain
 //  /!\ air domain, with the upper shield being air /!\
 
-Physical Surface("Omega", 200) = {upperDsurf,lowerDsurf,upperPsurf};// stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
+Physical Surface("Omega", 200) = {upperDsurf,lowerDsurf};// stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
 Physical Surface("OmegaInf", 201) = outershellsurf;
 Physical Surface("SigmaWires1", 203) = {stock_disk_surf[0] : stock_disk_surf[n-1]};
 Physical Surface("SigmaWires2", 204) = {stock_disk_surf[n] : stock_disk_surf[2*n-1]};
