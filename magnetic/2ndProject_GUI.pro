@@ -36,7 +36,7 @@ SigmaShield1 = DefineNumber [2e6, Highlight "Pink",//
         Name Sprintf["Input/1Physics/0Condictivity of the shield1"]];
 
 DefineConstant[
-    Current = {10000, Name "Input/1Physics/5Current"}
+    Current = {2000, Name "Input/1Physics/5Current"}
   ];
 
 
@@ -47,11 +47,11 @@ Shield1_Length = DefineNumber[4,
         Name Sprintf[ "Input/1Geometry/{Shield1 Length "]];
 
 
-D=DefineNumber[0.5,
+D=DefineNumber[0.1,
        Min 0.01, Max 4, Step 1/100,
       Name Sprintf["Input/1Geometry/{D "]];
 
-M=DefineNumber[2,
+M=DefineNumber[4.1,
         Min 0.01, Max 4, Step 1/100,
        Name Sprintf["Input/1Geometry/{spacing "]];
 
