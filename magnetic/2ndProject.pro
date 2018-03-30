@@ -58,7 +58,7 @@ PostOperation {
       Print[ az, OnElementsOf Vol_Mag, File "a.pos" ];
       Print[ j, OnElementsOf Region[{Shield1,Bundle1,Bundle2,Bundle3}], File "j.pos" ];
       Print[ b, OnElementsOf Vol_Mag, File "b.pos" ];
-      Print[ b, OnLine { {-3,-4.05,0} {3,-4.05,0} } {100}, Format Table, File "b_line.txt"];
+      Print[ b, OnLine { {-Shield1_Length/2,-4.05,0} {Shield1_Length/2,-4.05,0} } {100}, Format Table, File "b_line.txt"];
       //Print[ U, OnRegion Ind, Format Table ];
       //Print[ I, OnRegion Ind, Format Table ];
       Print[I, OnRegion Region[{Bundle1, Bundle2, Bundle3}], Format Table , File "I_Bundle.txt"];
