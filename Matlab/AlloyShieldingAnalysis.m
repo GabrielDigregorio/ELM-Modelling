@@ -2,6 +2,26 @@
 close all
 clear all
 
+% Mu-Metal :
+%               Expensive, high permeability
+%               sigma = 1.61e+04 [1/(ohm.cm)]   
+%               mu_r = 50000 
+%               Price/m^3 = 3e+06 $ 
+
+% AK Steel 400 :
+%               is one of the most economical chromium ferritic stainless steels
+%               sigma = 1.66e+04 [1/(ohm.cm)] 
+%               mu_r = 1800 
+%               Price/m^3 = 
+
+% Medium grade Carbon Steel :
+%               Expensive, high permeability
+%               sigma = 6.02e+04 [1/(ohm.cm)]
+%               mu_r = 100  
+%               Price/m^3 = 7785.63$
+
+
+
 %% Influence of l_shield
 for i=1:5
 DATA.muMetal(:,:,i) = load(strcat('../magnetic/b_line_muMetal_l',num2str(i),'.txt'))
