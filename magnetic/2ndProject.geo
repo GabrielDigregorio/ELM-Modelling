@@ -14,8 +14,8 @@ L = 20;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
 dens_MeshPoint_Ground = 25;  // Density of the mesh : Ground domain
 dens_MeshPoint_cable = 300;  // Density of the mesh : cable domain
-dens_MeshPoint_Shield = 100;  // Density of the mesh : cable domain
-dens_MeshPoint_Shield_height = 1000;
+dens_MeshPoint_Shield = 150;  // Density of the mesh : cable domain
+dens_MeshPoint_Shield_height = 2000;
 
 //*************************************************************************************
 // Geometry
