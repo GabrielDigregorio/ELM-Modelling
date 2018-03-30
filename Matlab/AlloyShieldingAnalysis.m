@@ -91,7 +91,7 @@ plot(reshape(DATA.muMetal(:,3,5),[1,101]), sqrt( DATA.muMetal(:,9,5).^2 +...
               DATA.muMetal(:,11,5).^2), 'linewidth',2)
 xlabel('$x$ [m]','interpreter', 'latex')
 ylabel('$\| \!R \{ \textbf{B}\} \|$[T]', 'interpreter', 'latex')
-legend('mu-metal l=2m', 'mu-metal l=4m', 'mu-metal l=6m', 'mu-metal l=8m', 'mu-metal l=10m')
+legend('No shield', 'mu-metal l=2m', 'mu-metal l=4m', 'mu-metal l=6m', 'mu-metal l=8m', 'mu-metal l=10m')
 legend
 grid on
 
@@ -115,7 +115,7 @@ plot(reshape(DATA.FerriticSteinlessSteel(:,3,5),[1,101]), sqrt( DATA.FerriticSte
               DATA.FerriticSteinlessSteel(:,11,5).^2), 'linewidth',2)
 xlabel('$x$ [m]','interpreter', 'latex')
 ylabel('$\| \!R \{ \textbf{B}\} \|$[T]', 'interpreter', 'latex')
-legend('AK Steel 400 l=2m', 'AK Steel 400 l=4m', 'AK Steel 400 l=6m', 'AK Steel 400 l=8m', 'AK Steel 400 l=10m')
+legend('No shield','AK Steel 400 l=2m', 'AK Steel 400 l=4m', 'AK Steel 400 l=6m', 'AK Steel 400 l=8m', 'AK Steel 400 l=10m')
 legend
 grid on
 
@@ -140,7 +140,7 @@ plot(reshape(DATA.CarbonSteel(:,3,5),[1,101]), sqrt( DATA.CarbonSteel(:,9,5).^2 
               DATA.CarbonSteel(:,11,5).^2), 'linewidth',2)
 xlabel('$x$ [m]','interpreter', 'latex')
 ylabel('$\| \!R \{ \textbf{B}\} \|$[T]', 'interpreter', 'latex')
-legend('Carbon Steel l=2m', 'Carbon Steel l=4m', 'Carbon Steel l=6m', 'Carbon Steel l=8m', 'Carbon Steel l=10m')
+legend('No shield','Carbon Steel l=2m', 'Carbon Steel l=4m', 'Carbon Steel l=6m', 'Carbon Steel l=8m', 'Carbon Steel l=10m')
 legend
 grid on
 
@@ -217,7 +217,7 @@ plot(reshape(DATA.muMetal(:,3,1),[1,101]), sqrt( DATA.muMetal(:,9,5).^2 +...
               DATA.muMetal(:,11,5).^2), 'linewidth',2)
 xlabel('$x$ [m]','interpreter', 'latex')
 ylabel('$\| \!R \{ \textbf{B}\} \|$[T]', 'interpreter', 'latex')
-legend('mu-metal t=1mm', 'mu-metal t=2mm', 'mu-metal t=3mm', 'mu-metal t=4mm', 'mu-metal t=5mm')
+legend('No shield','mu-metal t=1mm', 'mu-metal t=2mm', 'mu-metal t=3mm', 'mu-metal t=4mm', 'mu-metal t=5mm')
 legend
 grid on
 
@@ -241,7 +241,7 @@ plot(reshape(DATA.FerriticSteinlessSteel(:,3,1),[1,101]), sqrt( DATA.FerriticSte
               DATA.FerriticSteinlessSteel(:,11,5).^2), 'linewidth',2)
 xlabel('$x$ [m]','interpreter', 'latex')
 ylabel('$\| \!R \{ \textbf{B}\} \|$[T]', 'interpreter', 'latex')
-legend('AK Steel 400 t=1mm', 'AK Steel 400 t=2mm', 'AK Steel 400 t=3mm', 'AK Steel 400 t=4mm', 'AK Steel 400 t=5mm')
+legend('No shield','AK Steel 400 t=1mm', 'AK Steel 400 t=2mm', 'AK Steel 400 t=3mm', 'AK Steel 400 t=4mm', 'AK Steel 400 t=5mm')
 legend
 grid on
 
@@ -266,6 +266,6 @@ plot(reshape(DATA.CarbonSteel(:,3,1),[1,101]), sqrt( DATA.CarbonSteel(:,9,5).^2 
               DATA.CarbonSteel(:,11,5).^2), 'linewidth',2)
 xlabel('$x$ [m]','interpreter', 'latex')
 ylabel('$\| \!R \{ \textbf{B}\} \|$[T]', 'interpreter', 'latex')
-legend('Carbon Steel t=1mm', 'Carbon Steel t=2mm', 'Carbon Steel t=3mm', 'Carbon Steel t=4mm', 'Carbon Steel t=5mm')
+legend('No shield','Carbon Steel t=1mm', 'Carbon Steel t=2mm', 'Carbon Steel t=3mm', 'Carbon Steel t=4mm', 'Carbon Steel t=5mm')
 legend
 grid on
