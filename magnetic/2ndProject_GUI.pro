@@ -32,7 +32,7 @@ DefineConstant[
 
 Mu_r_Shield1 = DefineNumber [100, Highlight "Pink",//
         Name Sprintf["Input/1Physics/0Relative Permeability of the shield1"]];
-SigmaShield1 = DefineNumber [2e6, Highlight "Pink",//
+SigmaShield1 = DefineNumber [6.02e+06, Highlight "Pink",//
         Name Sprintf["Input/1Physics/0Condictivity of the shield1"]];
 
 DefineConstant[
@@ -40,10 +40,10 @@ DefineConstant[
   ];
 
 
-Shield1_Thickness = DefineNumber[0.02,
+Shield1_Thickness = DefineNumber[0.001,
         Name Sprintf[ "Input/1Geometry/{Shield1 Thickness "]];
 
-Shield1_Length = DefineNumber[4,
+Shield1_Length = DefineNumber[10,
         Name Sprintf[ "Input/1Geometry/{Shield1 Length "]];
 
 

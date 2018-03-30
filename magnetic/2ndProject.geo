@@ -12,10 +12,17 @@ Spacing=M;
 //Mesh and Domain Variables
 L = 20;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
+<<<<<<< HEAD
 dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
 dens_MeshPoint_cable = 750;  // Density of the mesh : cable domain
 dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
 
+=======
+dens_MeshPoint_Ground = 25;  // Density of the mesh : Ground domain
+dens_MeshPoint_cable = 300;  // Density of the mesh : cable domain
+dens_MeshPoint_Shield = 100;  // Density of the mesh : cable domain
+dens_MeshPoint_Shield_height = 1000;
+>>>>>>> c47e1a7d3edbab9d0570e85fb567b296bc31d8d9
 
 //*************************************************************************************
 // Geometry
@@ -177,12 +184,12 @@ outershellsurf=newreg;
 Plane Surface(outershellsurf) = {outershell,innershell}; // Surface of the infinit domain
 
 // Mesh
-Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
+Transfinite Line{leftinnercircle,rightinnercircle} = dens_MeshPoint_ExtDom*(Pi*L);
 Transfinite Line{outercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1 Using Progression 1.01;
 Transfinite Line{lowercircle} = dens_MeshPoint_ExtDom*(Pi*L) + 1;
-Transfinite Line{-leftG,rightG} = dens_MeshPoint_Shield*l/3 + 1 ;//dens_MeshPoint_Ground*(2*(L-Sqrt((L)^2-(l)^2)))*2 + 1 Using Progression 1.1;
+Transfinite Line{-leftG, rightG} =  dens_MeshPoint_Shield*l/3 + 1 Using Progression 1.07 ;//dens_MeshPoint_Shield*l/10 + 1;
 Transfinite Line{lowerPl,middleP} = dens_MeshPoint_Shield*l/3 + 1 ;
-Transfinite Line{leftLP, rightLP} = 2;//dens_MeshPoint_Shield*l/10 + 1;
+Transfinite Line{leftLP, rightLP} = dens_MeshPoint_Shield_height*Shield1_Thickness + 1 ;//dens_MeshPoint_Shield*l/10 + 1;
 
 
 
