@@ -13,24 +13,10 @@ DefineConstant[  switche = {1,Choices{0,1},
     Name "Input/1Geometry/switch for circle to line config."}
     ];
 
-    //DefineConstant[  physicalmodel = {0,Choices{0,1},
-//        Name "Input/1model/switch for elec(0) or mag(1)."}
-//        ];
-
 DefineConstant[
       nb = {3, Highlight "Green",// number of bundle of cables
-        /*Choices{
-          1="nb=1",
-          2="nb=2",
-          3="nb=3",
-          4="nb=4",
-          5="nb=5",
-          6="nb=6"},*/
         Name "Input/1Geometry/0number of bundle" }
     ];
-
-
-
 
 D=DefineNumber[0.5,
        Min 0.01, Max 4, Step 1/100,

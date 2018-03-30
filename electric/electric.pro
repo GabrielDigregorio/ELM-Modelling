@@ -4,17 +4,12 @@ Group {
   /* One starts by giving explicit meaningful names to
      the Physical regions defined in the "microstrip.msh" mesh file.
      There are 2 volume regions and 3 surface regions in this model. */
-
-
-
   Omega = Region[100];
   GammaWire1 = Region[103];
-    GammaWire2 = Region[104];
-      GammaWire3 = Region[105];
+  GammaWire2 = Region[104];
+  GammaWire3 = Region[105];
   GammaGround = Region[102];
   GammaInf = Region[101];
-
-
 }
 
 Function {

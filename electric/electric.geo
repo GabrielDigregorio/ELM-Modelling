@@ -33,11 +33,10 @@ Line(7) = {3, 4}; // Domain
 Line Loop(8) = {5, -6, -7};
 
 
-
-
-
-Macro Bundlecable// create a bundle of n cable (circle of line) separated by a distance F around a given point
-        // consider we give the center , the number of cable, the spacing ,the type of configuration and the rotation of the bundle of cable
+// create a bundle of n cable (circle of line) separated by a distance F around a given point
+// create a bundle of n cable (circle of line) separated by a distance F around a given point
+Macro Bundlecable
+        
     If(switche==1)
         For p In {0:(n-1):1}
             phi = p*(2*Pi/n);
@@ -61,7 +60,6 @@ Macro Bundlecable// create a bundle of n cable (circle of line) separated by a d
                     Line Loop(curr_point2) = {curr_point2};
                     Transfinite Line{curr_point2} = dens_MeshPoint_cable*(Pi*r) + 1;
 
-
                     stock_circle[k*n+2*(t-1)]=curr_point1;
                     stock_circle[k*n+2*(t-1)+1]=curr_point2;
 
@@ -84,36 +82,32 @@ Macro Bundlecable// create a bundle of n cable (circle of line) separated by a d
                         Line Loop(curr_point2) = {curr_point2};
                         Transfinite Line{curr_point2} = dens_MeshPoint_cable*(Pi*r) + 1;
 
-
                         stock_circle[k*n+2*(t-1)+1]=curr_point1;
                         stock_circle[k*n+2*t]=curr_point2;
                 EndFor
         EndIf
     EndIf
 Return
-rotations[0]=rotation1;
-rotations[1]=rotation2;
-rotations[2]=rotation3;
+
+rotations[0]=rotation1; rotations[1]=rotation2; rotations[2]=rotation3;
 
     k=0; x=0; y=0;
-    //rotation =0;//
     rotation =rotations[k];
     Call Bundlecable;
     For k1 In {1:(nb-1)/2:1}
         k=2*k1-1;
         x=k1*Spacing;
         y=0;
-        //rotation = 0; //
         rotation=rotations[k];
         Call Bundlecable;
         k=2*(k1);
         x=-k1*Spacing;
         y=0;
-        //rotation = 0; //
         rotation=rotations[k];
         Call Bundlecable;
-
     EndFor
+
+    
 Plane Surface(1)={8,stock_circle[]};
 
 Physical Surface("Omega", 100) = 1;

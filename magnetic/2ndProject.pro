@@ -10,10 +10,8 @@ Group {
   Surface_Inf = Region[101];
 
   // Abstract regions used in the "Lib_MagStaDyn_av_2D_Cir.pro" template file
-  // that is included below:
   Vol_CC_Mag = Region[{Air}]; // Non-conducting regions
   Vol_C_Mag = Region[{Bundle1, Bundle2, Bundle3, Shield1}]; // Massive conducting regions
-  // all region should be included to ahve a complete domain
 }
 
 Function {
@@ -26,7 +24,7 @@ Function {
   sigma[ Shield1 ] = SigmaShield1;
 
   CoefGeos[] = 1; // calculation per meter of structure
-  CoefPower = 0.5; // explain this--> most probably because the power is calculate with the rms value
+  CoefPower = 0.5; // because the power is calculate with the rms value
   Freq = 50;
 }
 
@@ -59,8 +57,6 @@ PostOperation {
       Print[ j, OnElementsOf Region[{Shield1,Bundle1,Bundle2,Bundle3}], File "j.pos" ];
       Print[ b, OnElementsOf Vol_Mag, File "b.pos" ];
       Print[ b, OnLine { {-Shield1_Length/2,-4.05,0} {Shield1_Length/2,-4.05,0} } {100}, Format Table, File "b_line.txt"];
-      //Print[ U, OnRegion Ind, Format Table ];
-      //Print[ I, OnRegion Ind, Format Table ];
       Print[I, OnRegion Region[{Bundle1, Bundle2, Bundle3}], Format Table , File "I_Bundle.txt"];
       Print[I, OnRegion Shield1, Format Table , File "I_Shield.txt"];
       Print[ JouleLosses[Region[{Bundle1, Bundle2, Bundle3}]], OnGlobal, Format Table , File "joule_losses_Bundle.txt"];
