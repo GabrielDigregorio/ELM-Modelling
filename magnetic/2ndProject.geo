@@ -12,10 +12,17 @@ Spacing=M;
 //Mesh and Domain Variables
 L = 20;                       // Radius Domain
 dens_MeshPoint_ExtDom = 1;   // Density of the mesh : External domain
+<<<<<<< HEAD
+dens_MeshPoint_Ground = 10;  // Density of the mesh : Ground domain
+dens_MeshPoint_cable = 750;  // Density of the mesh : cable domain
+dens_MeshPoint_Shield = 20;  // Density of the mesh : cable domain
+
+=======
 dens_MeshPoint_Ground = 25;  // Density of the mesh : Ground domain
 dens_MeshPoint_cable = 300;  // Density of the mesh : cable domain
 dens_MeshPoint_Shield = 100;  // Density of the mesh : cable domain
 dens_MeshPoint_Shield_height = 1000;
+>>>>>>> c47e1a7d3edbab9d0570e85fb567b296bc31d8d9
 
 //*************************************************************************************
 // Geometry
