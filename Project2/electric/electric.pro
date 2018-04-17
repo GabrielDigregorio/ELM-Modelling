@@ -4,17 +4,12 @@ Group {
   /* One starts by giving explicit meaningful names to
      the Physical regions defined in the "microstrip.msh" mesh file.
      There are 2 volume regions and 3 surface regions in this model. */
-
-
-
   Omega = Region[100];
   GammaWire1 = Region[103];
   GammaWire2 = Region[104];
   GammaWire3 = Region[105];
   GammaGround = Region[102];
   GammaInf = Region[101];
-
-
 }
 
 Function {
@@ -26,8 +21,8 @@ Constraint {
     Case {
       { Region GammaGround; Value 0.; }// v_n = 0 ground
       { Region GammaWire1; Value 500e3; }// v_n = 500e3 wire
-      { Region GammaWire2; Value -250e3; }// v_n = 500e3 wire
-      { Region GammaWire3; Value -250e3; }// v_n = 500e3 wire
+        { Region GammaWire2; Value -250e3; }// v_n = 500e3 wire
+          { Region GammaWire3; Value -250e3; }// v_n = 500e3 wire
     }
   }
 }

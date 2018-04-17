@@ -10,7 +10,6 @@ build/
 *.exe
 *.log
 *.asv
-*.eps
 *h.gch
 *.pos
 *.msh
@@ -24,4 +23,4 @@ Test.*
 .DS_Store
 .vscode/
 !CMakeLists.txt
-Results/
+
