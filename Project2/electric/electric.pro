@@ -5,28 +5,15 @@ Group {
      the Physical regions defined in the "microstrip.msh" mesh file.
      There are 2 volume regions and 3 surface regions in this model. */
 
-  Omega = Region[{200,206}];// include the shield in air, there is no shield
-  GammaWire = Region[{103, 104, 105}];
+
+
+  Omega = Region[100];
+  GammaWire1 = Region[103];
+  GammaWire2 = Region[104];
+  GammaWire3 = Region[105];
   GammaGround = Region[102];
   GammaInf = Region[101];
-  /*// Physical boundaries
-  Physical Line("Gamma", 100) = {leftinnercircle, rightinnercircle,lowercircle};
-  Physical Line("GammaInf", 101) = outercircle;
-  Physical Line("GammaGround", 102) = {leftG, rightG, lowerPl};
-  Physical Line("GammaWires1", 103) = {stock_circle[0] : stock_circle[n-1]};
-  Physical Line("GammaWires2", 104) = {stock_circle[n] : stock_circle[2*n-1]};
-  Physical Line("GammaWires3", 105) = {stock_circle[2*n] : stock_circle[3*n-1]};
-  Physical Line("GammaShield1", 106) = {-lowerPl, leftLP, middleP, -rightLP};
 
-  // Physical surface domain
-  //  /!\ air domain, with the upper shield being air /!\
-
-  Physical Surface("Omega", 200) = {upperDsurf,lowerDsurf,upperPsurf};// stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
-  Physical Surface("OmegaInf", 201) = outershellsurf;
-  Physical Surface("SigmaWires1", 203) = {stock_disk_surf[0] : stock_disk_surf[n-1]};
-  Physical Surface("SigmaWires2", 204) = {stock_disk_surf[n] : stock_disk_surf[2*n-1]};
-  Physical Surface("SigmaWires3", 205) = {stock_disk_surf[2*n]  : stock_disk_surf[3*n-1]};
-  Physical Surface("SigmaShield1", 206) = lowerPsurf;*/
 
 }
 
@@ -38,7 +25,9 @@ Constraint {
   { Name Dirichlet_Ele; Type Assign; // dirichlet condition
     Case {
       { Region GammaGround; Value 0.; }// v_n = 0 ground
-      { Region GammaWire; Value 500e3; }// v_n = 500e3 wire
+      { Region GammaWire1; Value 500e3; }// v_n = 500e3 wire
+      { Region GammaWire2; Value -250e3; }// v_n = 500e3 wire
+      { Region GammaWire3; Value -250e3; }// v_n = 500e3 wire
     }
   }
 }
