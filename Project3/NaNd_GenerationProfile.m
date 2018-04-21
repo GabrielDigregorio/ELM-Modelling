@@ -1,13 +1,14 @@
 % Generat profile Na Nd
 
-% How to launch : 
+% How to launch :
 %                    NaNd_GenerationProfile(1,1e18,1e19,110e-9,60e-9)
 
 
-% profile = 1 ==> constant concentration 
-% profile = 2 ==> 
-% profile = 3 ==> 
-% profile = 4 ==> 
+
+% profile = 1 ==> constant concentration
+% profile = 2 ==>
+% profile = 3 ==>
+% profile = 4 ==>
 
 function [] = NaNd_GenerationProfile(profile, N_a_experiment, N_d_experiment, t_NiO, t_ZnO)
 
@@ -30,4 +31,3 @@ elseif (profile == 5)
 end
 
 end
-    
