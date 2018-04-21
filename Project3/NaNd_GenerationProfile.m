@@ -4,7 +4,6 @@
 %                    NaNd_GenerationProfile(1,1e18,1e19,110e-9,60e-9)
 
 
-
 % profile = 1 ==> constant concentration
 % profile = 2 ==>
 % profile = 3 ==>
