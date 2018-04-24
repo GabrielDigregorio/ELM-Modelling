@@ -18,7 +18,7 @@ Group {
 
 Function {
 
-  // to be change
+  // !!!! to be change !!!!!
   epsr[Pregion]=1;
   epsr[Nregion]=2;
   eps=1;
@@ -55,35 +55,29 @@ Function {
 }
 
 Constraint {
+  // Boundary condition phi
   { Name Voltage ;
     Case {
-
-
       { Region lowvoltage ; Type Assign; Value 0. ; }
       { Region lowvoltage ; Type Assign; Value 10. ; }
-
-
     }
   }
+// Boundary condition for p
   { Name concentration_p ;
     Case {
         { Region leftplate_p ; Type Assign; Value  no; }
     }
   }
+// Boundary condition for n
   { Name concentration_n ;
       Case {
           { Region rightplate_n ; Type Assign; Value  po; }
       }
 }
-
+// the two other missing condition are dirclet condition implicitly consider in the formulation
 }
 
 
-
-
-
-
-//DefineConstant[ Flag_AnalysisType = 0 ];
 
 Jacobian {
   { Name JVol ;
@@ -155,7 +149,7 @@ FunctionSpace {
 
 }
 
-
+// !!!!! à corriger tout les signes et vérifier la formulation !!!!!
 Formulation {
 
   { Name PN_prob ; Type FemEquation;
@@ -171,7 +165,7 @@ Formulation {
 
       Galerkin { [-q*Dof{p} , {phi} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin {[ q*Dof{n} , {phi} ];
+      Galerkin { [ q*Dof{n} , {phi} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [q*(Na-Nd) , {phi} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
@@ -212,8 +206,6 @@ Resolution {
           GenerateJac[PN]; SolveJac[PN];
         }
           SaveSolution[PN];
-
-
         }
 
     }
