@@ -36,7 +36,7 @@ Line Loop(8) = {5, -6, -7};
 // create a bundle of n cable (circle of line) separated by a distance F around a given point
 // create a bundle of n cable (circle of line) separated by a distance F around a given point
 Macro Bundlecable
-        
+
     If(switche==1)
         For p In {0:(n-1):1}
             phi = p*(2*Pi/n);
@@ -107,17 +107,12 @@ rotations[0]=rotation1; rotations[1]=rotation2; rotations[2]=rotation3;
         Call Bundlecable;
     EndFor
 
-    
+
 Plane Surface(1)={8,stock_circle[]};
 
 Physical Surface("Omega", 100) = 1;
 Physical Line("GammaInf", 101) = {5, -6};
 Physical Line("GammaGround", 102) = 7;
-<<<<<<< HEAD:Project2/electric/electric.geo
-Physical Line("GammaWires1", 103) = {stock_circle[0]:stock_circle[(n-1)]};// middle one
-Physical Line("GammaWires2", 104) = {stock_circle[n]:stock_circle[2*n-1]};//
-=======
 Physical Line("GammaWires1", 103) = {stock_circle[0]:stock_circle[n-1]};
 Physical Line("GammaWires2", 104) = {stock_circle[n]:stock_circle[2*n-1]};
->>>>>>> 67fb3d10393d8aea0af795c93874e80378e181da:electric/electric.geo
 Physical Line("GammaWires3", 105) = {stock_circle[2*n]:stock_circle[3*n-1]};
