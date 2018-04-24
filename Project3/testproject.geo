@@ -38,8 +38,3 @@ Physical Surface("N_region", 101) = 2;
 Physical Line("V_minus", 102) = 5;
 Physical Line("V_plus", 103) = 7;
 Physical Line("middle", 104) = 6;
-
-/*Physical Line("GammaGround", 102) = 7;
-Physical Line("GammaWires1", 103) = {stock_circle[0]:stock_circle[n-1]};
-Physical Line("GammaWires2", 104) = {stock_circle[n]:stock_circle[2*n-1]};
-Physical Line("GammaWires3", 105) = {stock_circle[2*n]:stock_circle[3*n-1]};*/
