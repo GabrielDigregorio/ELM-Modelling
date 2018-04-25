@@ -74,7 +74,7 @@ Constraint {
           { Region rightplate_n ; Type Assign; Value  po; }
       }
 }
-// the two other missing condition are dirclet condition implicitly consider in the formulation
+// the two other missing condition are neuman condition implicitly consider in the formulation
 }
 
 
