@@ -177,6 +177,8 @@ Formulation {
                             In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  -1/taun*(Dof{n}-no) , {n} ];
                 In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+      Galerkin { [  -1/taup*(Dof{p}-po) , {n} ];
+                  In Nregion; Integration I1; Jacobian JVol;  }// only on N region
       Galerkin { [  G , { n} ];
                   In PNjunction; Integration I1; Jacobian JVol;  }
 
@@ -187,6 +189,8 @@ Formulation {
                             In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  -1/taup*(Dof{p}-po) , {p} ];
                 In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+      Galerkin { [  -1/taun*(Dof{n}-no) , {p} ];
+                In Pregion; Integration I1; Jacobian JVol;  }// only on P region
       Galerkin { [  G , { p} ];
                   In PNjunction; Integration I1; Jacobian JVol;  }
 
