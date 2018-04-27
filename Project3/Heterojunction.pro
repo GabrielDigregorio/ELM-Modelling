@@ -21,7 +21,7 @@ Function {
   // All in µm
   epsr[Pregion] = epsilon_r_NiO;
   epsr[Nregion] = epsilon_r_ZnO;
-  eps = epsilon_0 * 1e-18;
+  eps = epsilon_0 ;//* 1e-18;
   Na[Pregion] = N_a_NiO * 1e-18;
   Na[Nregion] = 0;
   Nd[Nregion] = N_d_ZnO * 1e-18;
