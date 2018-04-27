@@ -22,8 +22,10 @@ Function {
   epsr[Pregion] = epsilon_r_NiO;
   epsr[Nregion] = epsilon_r_ZnO;
   eps = epsilon_0 * 1e-18;
-  Na = N_a_NiO * 1e-18;
-  Nd = N_d_ZnO * 1e-18;
+  Na[Pregion] = N_a_NiO * 1e-18;
+  Na[Nregion] = 0;
+  Nd[Nregion] = N_d_ZnO * 1e-18;
+  Nd[Pregion] = 0;
   nun = mu_e_ZnO * 1e12;
   nup =  mu_h_NiO * 1e12;
   Dn = D_e_ZnO * 1e12;
@@ -166,7 +168,7 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [q*(Na-Nd) , {phi} ];
+        Galerkin { [q*(Na[]-Nd[]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
         // equation n-static
