@@ -3,12 +3,16 @@
 Include "3ndProject_GUI.pro";
 SetFactory("OpenCASCADE");
 
+// Scaling
+ thickness_NiO =  thickness_NiO * 1e6; // [µm] 
+ thickness_ZnO =  thickness_ZnO * 1e6; // [µm] 
+
 //Mesh and Domain Variables
-L = 100e-6;                   // [m] length of the heterojunction 
-dens_MeshPoint_NiO_Contact = 1e4;   // Density of the mesh : External domain
-dens_MeshPoint_ZnO_Contact = 1e4;  // Density of the mesh : Ground domain
-dens_MeshPoint_Interface = 1e4;  // Density of the mesh : cable domain
-dens_MeshPoint_Lateral = 1e4;  // Density of the mesh : cable domain
+L = 1e-6 * 1e6;                   // [µm] length of the heterojunction 
+dens_MeshPoint_NiO_Contact = 10;   // Density of the mesh : External domain
+dens_MeshPoint_ZnO_Contact = 10;  // Density of the mesh : Ground domain
+dens_MeshPoint_Interface = 10;  // Density of the mesh : cable domain
+dens_MeshPoint_Lateral = 10;  // Density of the mesh : cable domain
 
 
 //*************************************************************************************

@@ -1,13 +1,13 @@
 Include "3ndProject_GUI.pro";
 
 Group {
-  lowvoltage  = Region[102] ;
-  highvoltage  = Region[101] ;
+  lowvoltage  = Region[104] ;
+  highvoltage  = Region[103] ;
 
   leftplate_n  = Region[103] ;
-  rightplate_n  = Region[104] ;
-  leftplate_p  = Region[104] ;
-  rightplate_p  = Region[105] ;
+  rightplate_n  = Region[105] ;
+  leftplate_p  = Region[105] ;
+  rightplate_p  = Region[104] ;
 
   Pregion    = Region[202] ;
   Nregion    = Region[201] ;
@@ -18,20 +18,20 @@ Group {
 
 Function {
 
-  // !!!! to be change !!!!!
+  // All in µm
   epsr[Pregion] = epsilon_r_NiO;
   epsr[Nregion] = epsilon_r_ZnO;
-  eps = epsilon_0;
-  Na = N_a_NiO;
-  Nd = N_d_ZnO;
-  nun = mu_e_ZnO;
-  nup =  mu_h_NiO;
-  Dn = D_e_ZnO ;
-  Dp = D_h_NiO ;
-  no = N_d_ZnO;
-  po = N_a_NiO;
-  taun = (L_e_ZnO^2)/D_e_ZnO;
-  taup = (L_h_NiO^2)/D_h_NiO;
+  eps = epsilon_0 * 1e-18;
+  Na = N_a_NiO * 1e-18;
+  Nd = N_d_ZnO * 1e-18;
+  nun = mu_e_ZnO * 1e12;
+  nup =  mu_h_NiO * 1e12;
+  Dn = D_e_ZnO * 1e12;
+  Dp = D_h_NiO * 1e12;
+  no = N_d_ZnO * 1e-18;
+  po = N_a_NiO * 1e-18;
+  taun = ((L_e_ZnO*1e-6)^2)/D_e_ZnO;
+  taup = ((L_h_NiO*1e-6)^2)/D_h_NiO;
   G=0;
   /*Ce_v=Ce;
   Ch_v=Ch;
@@ -58,7 +58,7 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region lowvoltage ; Type Assign; Value 10. ; }
+      { Region highvoltage ; Type Assign; Value V_a ; }
     }
   }
 // Boundary condition for p
