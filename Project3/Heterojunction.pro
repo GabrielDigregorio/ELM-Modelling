@@ -176,9 +176,13 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taun*(Dof{n}-no) , {n} ];
+        Galerkin { [  +1/taun*Dof{n} , {n} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  +1/taup*(Dof{p}-po) , {n} ];
+        Galerkin { [  -1/taun*no , {n} ];
+                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+        Galerkin { [  +1/taup*Dof{p} , {n} ];
+                    In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+        Galerkin { [  -1/taup*po , {n} ];
                     In Nregion; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -G , {n} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
@@ -188,9 +192,13 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ -Dp* Dof{d n} , {d p} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taup*(Dof{p}-po) , {p} ];
+        Galerkin { [  +1/taup*Dof{p} , {p} ];
                   In Nregion; Integration I1; Jacobian JVol;  }// only on N region
-        Galerkin { [  +1/taun*(Dof{n}-no) , {p} ];
+        Galerkin { [  -1/taup*po , {p} ];
+                  In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+        Galerkin { [  +1/taun*Dof{n} , {p} ];
+                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+        Galerkin { [  -1/taun*no , {p} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -G , {p} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
@@ -230,14 +238,6 @@ Constraint {
     }
 
   }
-
-
-
-
-
-
-
-
 
 
   PostOperation {
