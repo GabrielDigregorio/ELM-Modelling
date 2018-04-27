@@ -11,6 +11,8 @@ Group {
 
   Pregion    = Region[100] ;
   Nregion    = Region[101] ;
+
+	//border= Region[105];
   PNjunction=Region[{Pregion,Nregion}];
 
 }
@@ -59,7 +61,7 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region lowvoltage ; Type Assign; Value 10. ; }
+      { Region highvoltage ; Type Assign; Value 10. ; }
     }
   }
 // Boundary condition for p
@@ -160,12 +162,12 @@ Formulation {
     }
     Equation {
       // equation phi
-      Galerkin { [ epsr[]*eps* Dof{d phi} , {d phi} ];
+      Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
 
-      Galerkin { [-q*Dof{p} , {phi} ];
+      Galerkin { [+q*Dof{p} , {phi} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [ q*Dof{n} , {phi} ];
+      Galerkin { [-q*Dof{n} , {phi} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [q*(Na-Nd) , {phi} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
@@ -173,13 +175,13 @@ Formulation {
       // equation n-static
       Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
                  In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [ -Dn* Dof{d n} , {d n} ];
+      Galerkin { [ +Dn* Dof{d n} , {d n} ];
                             In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [  -1/taun*(Dof{n}-no) , {n} ];
+      Galerkin { [  +1/taun*(Dof{n}-no) , {n} ];
                 In Pregion; Integration I1; Jacobian JVol;  }// only on P region
-      Galerkin { [  -1/taup*(Dof{p}-po) , {n} ];
+      Galerkin { [  +1/taup*(Dof{p}-po) , {n} ];
                   In Nregion; Integration I1; Jacobian JVol;  }// only on N region
-      Galerkin { [  G , { n} ];
+      Galerkin { [  -G , {n} ];
                   In PNjunction; Integration I1; Jacobian JVol;  }
 
       // equation p-static
@@ -187,11 +189,11 @@ Formulation {
                  In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [ -Dp* Dof{d n} , {d p} ];
                             In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [  -1/taup*(Dof{p}-po) , {p} ];
+      Galerkin { [  +1/taup*(Dof{p}-po) , {p} ];
                 In Nregion; Integration I1; Jacobian JVol;  }// only on N region
-      Galerkin { [  -1/taun*(Dof{n}-no) , {p} ];
+      Galerkin { [  +1/taun*(Dof{n}-no) , {p} ];
                 In Pregion; Integration I1; Jacobian JVol;  }// only on P region
-      Galerkin { [  G , { p} ];
+      Galerkin { [  -G , {p} ];
                   In PNjunction; Integration I1; Jacobian JVol;  }
 
     }
