@@ -12,7 +12,7 @@ L = 1e-6 * 1e6;                   // [µm] length of the heterojunction
 dens_MeshPoint_NiO_Contact = 10;   // Density of the mesh : External domain
 dens_MeshPoint_ZnO_Contact = 10;  // Density of the mesh : Ground domain
 dens_MeshPoint_Interface = 10;  // Density of the mesh : cable domain
-dens_MeshPoint_Lateral = 100;  // Density of the mesh : cable domain
+dens_MeshPoint_Lateral = 10;  // Density of the mesh : cable domain
 
 
 //*************************************************************************************
