@@ -10,7 +10,7 @@
     k_b       = 1.3806e-23; 
     h         = 6.62607004e-34;         // [m2 kg / s] Planck
     m0        = 9.109e-31 ;             // [kg] mass electron
-    V_t       =  k_b*T/q;
+   
 
 // NiO
     thickness_NiO = 100e-9;             // [m]
@@ -26,7 +26,7 @@
     L_e_NiO = 161e-6;                   // [m]
     L_h_NiO = 161e-6;                   // [m]
     //D_e_NiO = V_t * mu_e_NiO ;        // []
-    D_h_NiO = V_t * mu_h_NiO ;          // []
+    D_h_NiO = k_b*T/q * mu_h_NiO ;          // []
 
 
 
@@ -43,7 +43,7 @@
     //mu_h_ZnO = NaN;                   // []
     L_e_ZnO = 600e-6;                   // [m]
     L_h_ZnO = 600e-6;                   // [m]
-    D_e_ZnO = V_t * mu_e_ZnO;           // []
+    D_e_ZnO = k_b*T/q * mu_e_ZnO;           // []
     //D_h_ZnO = V_t * mu_h_ZnO;         // []
 
 

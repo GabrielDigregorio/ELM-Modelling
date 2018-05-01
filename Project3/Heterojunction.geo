@@ -83,9 +83,9 @@ Recombine Surface{p_type_materials_right};
 
 
 // Physical boundaries
-Physical Line("Gamma", 100) = {n_type_boundaries_left,p_type_boundaries_left, n_type_boundaries_right, p_type_boundaries_right};
-Physical Line("GammaN", 101) = {n_type_boundaries_left, n_type_boundaries_right};
-Physical Line("GammaP", 102) = {p_type_boundaries_left, p_type_boundaries_right};
+//Physical Line("Gamma", 100) = {n_type_boundaries_left,p_type_boundaries_left, n_type_boundaries_right, p_type_boundaries_right};
+//Physical Line("GammaN", 101) = {n_type_boundaries_left, n_type_boundaries_right};
+//Physical Line("GammaP", 102) = {p_type_boundaries_left, p_type_boundaries_right};
 Physical Line("V_n", 103) = {4,5};
 Physical Line("V_p", 104) = {8,9};
 Physical Line("middle", 105) = {1,2};
