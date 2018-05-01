@@ -215,7 +215,7 @@ Constraint {
       }
       Operation {
 
-      IterativeLoop[15,1e-4,0.5]{
+      IterativeLoop[15,1e-6,0.5]{
             GenerateJac[PN]; SolveJac[PN];
           }
             SaveSolution[PN];
