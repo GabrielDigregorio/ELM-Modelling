@@ -22,8 +22,10 @@ Function {
   epsr[Pregion] = epsilon_r_NiO;
   epsr[Nregion] = epsilon_r_ZnO;
   eps = epsilon_0 * 1e-18;
-  Na = N_a_NiO * 1e-18;
-  Nd = N_d_ZnO * 1e-18;
+  Na[Pregion] = N_a_NiO * 1e-18;
+  Na[Nregion] = 0;
+  Nd[Nregion] = N_d_ZnO * 1e-18;
+  Nd[Pregion] = 0;
   nun = mu_e_ZnO * 1e12;
   nup =  mu_h_NiO * 1e12;
   Dn = D_e_ZnO * 1e12;
@@ -166,7 +168,7 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [q*(Na-Nd) , {phi} ];
+        Galerkin { [q*(Na[]-Nd[]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
         // equation n-static
@@ -174,9 +176,13 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taun*(Dof{n}-no) , {n} ];
+        Galerkin { [  +1/taun*Dof{n} , {n} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  +1/taup*(Dof{p}-po) , {n} ];
+        Galerkin { [  -1/taun*no , {n} ];
+                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+        Galerkin { [  +1/taup*Dof{p} , {n} ];
+                    In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+        Galerkin { [  -1/taup*po , {n} ];
                     In Nregion; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -G , {n} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
@@ -186,9 +192,13 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ -Dp* Dof{d n} , {d p} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taup*(Dof{p}-po) , {p} ];
+        Galerkin { [  +1/taup*Dof{p} , {p} ];
                   In Nregion; Integration I1; Jacobian JVol;  }// only on N region
-        Galerkin { [  +1/taun*(Dof{n}-no) , {p} ];
+        Galerkin { [  -1/taup*po , {p} ];
+                  In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+        Galerkin { [  +1/taun*Dof{n} , {p} ];
+                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+        Galerkin { [  -1/taun*no , {p} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -G , {p} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
@@ -205,7 +215,7 @@ Constraint {
       }
       Operation {
 
-      IterativeLoop[15,1e-4,0.5]{
+      IterativeLoop[15,1e-6,0.5]{
             GenerateJac[PN]; SolveJac[PN];
           }
             SaveSolution[PN];
@@ -228,14 +238,6 @@ Constraint {
     }
 
   }
-
-
-
-
-
-
-
-
 
 
   PostOperation {
