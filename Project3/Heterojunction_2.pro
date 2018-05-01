@@ -19,22 +19,46 @@ Group {
 Function {
 
   // All in µm
-  epsr[Pregion] = epsilon_r_NiO;
-  epsr[Nregion] = epsilon_r_ZnO;
-  eps = epsilon_0 * 1e-18;
-  Na[Pregion] = N_a_NiO * 1e-18;
+  //epsr[Pregion] = epsilon_r_NiO;
+  //epsr[Nregion] = epsilon_r_ZnO;
+  //eps = epsilon_0 * 1e-18;
+  //Na[Pregion] = N_a_NiO * 1e-18;
+  //Na[Nregion] = 0;
+  //Nd[Nregion] = N_d_ZnO * 1e-18;
+  //Nd[Pregion] = 0;
+  //nun = mu_e_ZnO * 1e12;
+  //nup =  mu_h_NiO * 1e12;
+  //Dn = D_e_ZnO * 1e12;
+  //Dp = D_h_NiO * 1e12;
+  //no = N_d_ZnO * 1e-18;
+  //po = N_a_NiO * 1e-18;
+  //taun = ((L_e_ZnO*1e-6)^2)/D_e_ZnO;
+  //taup = ((L_h_NiO*1e-6)^2)/D_h_NiO;
+  //G=0;
+q         = 1; 
+epsilon_0 = 1;
+T         = 1;               
+k_b       = 1; 
+h         = 1;        
+m0        = 1;          
+
+  epsr[Pregion] = 1;
+  epsr[Nregion] = 1;
+  eps = 1;
+  Na[Pregion] = 0;
   Na[Nregion] = 0;
-  Nd[Nregion] = N_d_ZnO * 1e-18;
+  Nd[Nregion] = 0;
   Nd[Pregion] = 0;
-  nun = mu_e_ZnO * 1e12;
-  nup =  mu_h_NiO * 1e12;
-  Dn = D_e_ZnO * 1e12;
-  Dp = D_h_NiO * 1e12;
-  no = N_d_ZnO * 1e-18;
-  po = N_a_NiO * 1e-18;
-  taun = ((L_e_ZnO*1e-6)^2)/D_e_ZnO;
-  taup = ((L_h_NiO*1e-6)^2)/D_h_NiO;
+  nun = 1;
+  nup =  1;
+  Dn = 1;
+  Dp = 1;
+  no = 0;
+  po = 0;
+  taun = 1;
+  taup = 1;
   G=0;
+
   /*Ce_v=Ce;
   Ch_v=Ch;
   C=Ce+Ch;
@@ -66,13 +90,13 @@ Constraint {
   // Boundary condition for p
     { Name concentration_p ;
       Case {
-          { Region leftplate_p ; Type Assign; Value  no; }
+          { Region rightplate_p ; Type Assign; Value  no; }
       }
     }
   // Boundary condition for n
     { Name concentration_n ;
         Case {
-            { Region rightplate_n ; Type Assign; Value  po; }
+            { Region leftplate_n ; Type Assign; Value  po; }
         }
   }
   // the two other missing condition are neuman condition implicitly consider in the formulation
@@ -86,11 +110,11 @@ Constraint {
         { Region All ; Jacobian Vol ; }
       }
     }
-    { Name JSur ;
-      Case {
-        { Region All ; Jacobian Sur ; }
-      }
-    }
+    //{ Name JSur ;
+    //  Case {
+    //    { Region All ; Jacobian Sur ; }
+    //  }
+    //}
   }
 
   Integration {
@@ -99,12 +123,12 @@ Constraint {
         { Type Gauss ;
           Case {
   	  { GeoElement Point       ; NumberOfPoints  1 ; }
-  	  { GeoElement Line        ; NumberOfPoints  3 ; }
-  	  { GeoElement Triangle    ; NumberOfPoints  4 ; }
+  	  { GeoElement Line        ; NumberOfPoints  5 ; }
+  	  { GeoElement Triangle    ; NumberOfPoints  7 ; }
   	  { GeoElement Quadrangle  ; NumberOfPoints  4 ; }
-  	  { GeoElement Tetrahedron ; NumberOfPoints  4 ; }
-  	  { GeoElement Hexahedron  ; NumberOfPoints  6 ; }
-  	  { GeoElement Prism       ; NumberOfPoints  6 ; }
+  	  { GeoElement Tetrahedron ; NumberOfPoints  15 ; }
+  	  { GeoElement Hexahedron  ; NumberOfPoints  14 ; }
+  	  { GeoElement Prism       ; NumberOfPoints  21 ; }
   	}
         }
       }
@@ -168,7 +192,7 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [q*(Na[]-Nd[]) , {phi} ];
+        Galerkin { [+q*(Na[]-Nd[]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
         // equation n-static
