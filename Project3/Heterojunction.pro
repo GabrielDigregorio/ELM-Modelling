@@ -5,8 +5,8 @@ Group {
   highvoltage  = Region[103] ;
 
   leftplate_n  = Region[103] ;
-   rightplate_n  = Region[105] ;
-   leftplate_p  = Region[105] ;
+   //rightplate_n  = Region[105] ;
+   //leftplate_p  = Region[105] ;
    rightplate_p  = Region[104] ;
    Pregion    = Region[202] ;
   Nregion    = Region[201] ;
@@ -52,8 +52,8 @@ m0        = 1;
   nup =  1;
   Dn = 1;
   Dp = 1;
-  no = 0;
-  po = 0;
+  no = 3;
+  po = 4;
   taun = 1;
   taup = 1;
   G=0;
@@ -83,19 +83,19 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region highvoltage ; Type Assign; Value V_a ; }
+      { Region highvoltage ;Type Assign; Value 3 ; }
     }
   }
   // Boundary condition for p
     { Name concentration_p ;
       Case {
-          { Region rightplate_p ; Type Assign; Value  no; }
+          { Region rightplate_p ; Type Assign; Value  po; }
       }
     }
   // Boundary condition for n
     { Name concentration_n ;
         Case {
-            { Region leftplate_n ; Type Assign; Value  po; }
+            { Region leftplate_n ; Type Assign; Value  no; }
         }
   }
   // the two other missing condition are neuman condition implicitly consider in the formulation
@@ -186,13 +186,14 @@ Constraint {
         // equation phi
         Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-
         Galerkin { [+q*Dof{p} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [+q*(Na[]-Nd[]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
+
+
 
         // equation n-static
         Galerkin { [ -nun*Dof{n}*{d phi} , {d n} ];
@@ -210,10 +211,11 @@ Constraint {
         Galerkin { [  -G , {n} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
 
+
         // equation p-static
         Galerkin { [ nup*Dof{p}*{d phi} , {d p} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [ -Dp* Dof{d n} , {d p} ];
+        Galerkin { [ -Dp* Dof{d p} , {d p} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [  +1/taup*Dof{p} , {p} ];
                   In Nregion; Integration I1; Jacobian JVol;  }// only on N region
@@ -238,7 +240,7 @@ Constraint {
       }
       Operation {
 
-      IterativeLoop[15,1e-6,0.5]{
+      IterativeLoop[15,1e-4,0.5]{
             GenerateJac[PN]; SolveJac[PN];
           }
             SaveSolution[PN];

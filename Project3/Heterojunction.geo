@@ -4,11 +4,11 @@ Include "3ndProject_GUI.pro";
 SetFactory("OpenCASCADE");
 
 // Scaling
- thickness_NiO =  thickness_NiO * 1e6; // [µm] 
- thickness_ZnO =  thickness_ZnO * 1e6; // [µm] 
+ thickness_NiO =  thickness_NiO * 1e6; // [µm]
+ thickness_ZnO =  thickness_ZnO * 1e6; // [µm]
 
 //Mesh and Domain Variables
-L = 1e-6 * 1e6;                   // [µm] length of the heterojunction 
+L = 1e-6 * 1e6;                   // [µm] length of the heterojunction
 dens_MeshPoint_NiO_Contact = 10;   // Density of the mesh : External domain
 dens_MeshPoint_ZnO_Contact = 10;  // Density of the mesh : Ground domain
 dens_MeshPoint_Interface = 10;  // Density of the mesh : cable domain
@@ -52,7 +52,7 @@ Line Loop(p_type_boundaries_left) = {1,7,8,12};
 p_type_boundaries_right = newreg;
 Line Loop(p_type_boundaries_right) = {-12,9,10,-2};
 
-    
+
 // Surface creation
 n_type_materials_left = newreg;
 Plane Surface(n_type_materials_left) = {n_type_boundaries_left}; // Surface upper  of the n-type
@@ -95,5 +95,3 @@ Physical Line("middle", 105) = {1,2};
 Physical Surface("Omega", 200) = {n_type_materials_left, p_type_materials_left,p_type_materials_right,n_type_materials_right};// stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
 Physical Surface("OmegaN", 201) = {n_type_materials_left, n_type_materials_right};
 Physical Surface("OmegaP", 202) = {p_type_materials_left, p_type_materials_right};
-
-
