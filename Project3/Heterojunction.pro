@@ -18,45 +18,25 @@ Group {
 Function {
 
   // All in µm
-  //epsr[Pregion] = epsilon_r_NiO;
-  //epsr[Nregion] = epsilon_r_ZnO;
-  //eps = epsilon_0 * 1e-18;
-  //Na[Pregion] = N_a_NiO * 1e-18;
-  //Na[Nregion] = 0;
-  //Nd[Nregion] = N_d_ZnO * 1e-18;
-  //Nd[Pregion] = 0;
-  //nun = mu_e_ZnO * 1e12;
-  //nup =  mu_h_NiO * 1e12;
-  //Dn = D_e_ZnO * 1e12;
-  //Dp = D_h_NiO * 1e12;
-  //no = N_d_ZnO * 1e-18;
-  //po = N_a_NiO * 1e-18;
-  //taun = ((L_e_ZnO*1e-6)^2)/D_e_ZnO;
-  //taup = ((L_h_NiO*1e-6)^2)/D_h_NiO;
-  //G=0;
-q         = 1;
-epsilon_0 = 1;
-T         = 1;
-k_b       = 1;
-h         = 1;
-m0        = 1;
-
-  epsr[Pregion] = 1;
-  epsr[Nregion] = 1;
-  eps = 1;
-  Na[Pregion] = 0;
-  Na[Nregion] = 0;
-  Nd[Nregion] = 0;
-  Nd[Pregion] = 0;
-  nun = 1;
-  nup =  1;
-  Dn = 1;
-  Dp = 1;
-  no = 3;
-  po = 4;
-  taun = 1;
-  taup = 1;
+  epsr[Pregion] = epsilon_r_NiO; // epsr[Pextregion] = 1;
+  epsr[Nregion] = epsilon_r_NiO; // epsr[Nextregion] = 1;
+  eps = epsilon_0 ; //* 1e-18;
+  Na[Pregion] = N_a_NiO ;//* 1e-18;
+  Na[Nregion] = 0; // Na[Pextregion] = 0; Na[Nextregion] = 0;
+  Nd[Nregion] = N_d_ZnO ;//* 1e-18;
+  Nd[Pregion] = 0; // Nd[Pextregion] = 0; Nd[Nextregion] = 0;
+  nun = mu_e_ZnO ;//* 1e12;
+  nup =  mu_h_NiO ;//* 1e12;
+  Dn = D_e_ZnO ;//* 1e12;
+  Dp = D_h_NiO ;//* 1e12;
+  no = 0; //N_d_ZnO * 1e-18;// 2.71828^(q*V_a/(k_b*T));
+  po = 0;//N_a_NiO * 1e-18;
+  taun = ((L_e_ZnO)^2)/D_e_ZnO;
+  taup = ((L_h_NiO)^2)/D_h_NiO;
   G=0;
+
+  phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];  
+  //phi_i =2.18;
 
   /*Ce_v=Ce;
   Ch_v=Ch;
@@ -83,9 +63,16 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region highvoltage ;Type Assign; Value 3 ; }
+      { Region highvoltage ;Type Assign; Value (phi_i-V_a); }
     }
   }
+  // Boundary condition E
+    //{ Name E_FIELD ;
+    // Case {
+        //{ Region lowvoltage ; Type Assign; Value 0. ; }
+    //   { Region highvoltage ;Type Assign; Value 0.; }
+    // }
+    // }
   // Boundary condition for p
     { Name concentration_p ;
       Case {
@@ -276,6 +263,7 @@ Constraint {
           Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
           Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
           Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
+          Print[ phi, OnLine { {0,-1e-7,0} {0,1e-7,0} } {10}, Format Table, File "phi_line.txt"];
         //  Print[ R, OnElementsOf Vol_The ,Format Table, File "R.txt"];
         //  Print[ T, OnPoint {1e-9,0, 0} , File "Tcont.txt" , Format TimeTable];
         //  Print[ T, OnElementsOf Vol_The ,Format TimeTable, File "temperovertime.txt"];
