@@ -14,34 +14,35 @@ Group {
 
 }
 //Include "mat.pro";
+A=Log[2];
 
 Function {
 
   // All in µm
-  //epsr[Pregion] = epsilon_r_NiO;
-  //epsr[Nregion] = epsilon_r_ZnO;
-  //eps = epsilon_0 * 1e-18;
-  //Na[Pregion] = N_a_NiO * 1e-18;
-  //Na[Nregion] = 0;
-  //Nd[Nregion] = N_d_ZnO * 1e-18;
-  //Nd[Pregion] = 0;
-  //nun = mu_e_ZnO * 1e12;
-  //nup =  mu_h_NiO * 1e12;
-  //Dn = D_e_ZnO * 1e12;
-  //Dp = D_h_NiO * 1e12;
-  //no = N_d_ZnO * 1e-18;
-  //po = N_a_NiO * 1e-18;
-  //taun = ((L_e_ZnO*1e-6)^2)/D_e_ZnO;
-  //taup = ((L_h_NiO*1e-6)^2)/D_h_NiO;
-  //G=0;
-q         = 1;
-epsilon_0 = 1;
-T         = 1;
-k_b       = 1;
-h         = 1;
-m0        = 1;
+  epsr[Pregion] = epsilon_r_NiO;
+  epsr[Nregion] = epsilon_r_ZnO;
+  eps = epsilon_0 * 1e-18;
+  Na[Pregion] = N_a_NiO * 1e-18;
+  Na[Nregion] = 0;
+  Nd[Nregion] = N_d_ZnO * 1e-18;
+  Nd[Pregion] = 0;
+  nun = mu_e_ZnO * 1e12;
+  nup =  mu_h_NiO * 1e12;
+  Dn = D_e_ZnO * 1e12;
+  Dp = D_h_NiO * 1e12;
+  no = N_d_ZnO * 1e-18;
+  po = N_a_NiO * 1e-18;
+  taun = ((L_e_ZnO*1e-6)^2)/D_e_ZnO;
+  taup = ((L_h_NiO*1e-6)^2)/D_h_NiO;
+  G=0;
+q         = 1.6*1e-19;
+epsilon_0 = 8*1e-12;
+T         = 300;
+k_b       = 1.3*1e-23;
+h         = 1e-34;
+m0        = 4*3*1e-7;
 
-  epsr[Pregion] = 1;
+  /*epsr[Pregion] = 1;
   epsr[Nregion] = 1;
   eps = 1;
   Na[Pregion] = 0;
@@ -56,7 +57,7 @@ m0        = 1;
   po = 4;
   taun = 1;
   taup = 1;
-  G=0;
+  G=0;*/
 
   /*Ce_v=Ce;
   Ch_v=Ch;
@@ -196,7 +197,7 @@ Constraint {
 
 
         // equation n-static
-        Galerkin { [ -nun*Dof{n}*{d phi} , {d n} ];
+        Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
@@ -213,7 +214,7 @@ Constraint {
 
 
         // equation p-static
-        Galerkin { [ nup*Dof{p}*{d phi} , {d p} ];
+        Galerkin { [ nup*{p}*Dof{d phi} , {d p} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
