@@ -36,7 +36,7 @@
     m_star_e_ZnO =  0.23*m0;            // [kg]
     m_star_h_ZnO =  0.8*m0;             // [kg]
     N_a_ZnO = 0;                        // []
-    N_d_ZnO = 4e18*1e6;                 // [-/m^3]
+    N_d_ZnO = 1e18*1e6;                 // [-/m^3]
     //p_ZnO = NaN;                      // []
     n_ZnO = 4e18*1e6;                   // [-/m^3]
     mu_e_ZnO = 15*1e-4;                 // [m^2/s]
@@ -48,8 +48,8 @@
 
 
 // ZnO/NiO PN heterojunction
-    V_a = 3;                            // [V] Applied Bias voltage across the junction
-    phi_i = 2.18;                       // [V]
+    V_a = 0;                            // [V] Applied Bias voltage across the junction
+                          // [V]
     b = 1.13e-11 ;                      // q *(mu_e_ZnO + mu_h_ZnO)/(epsilon_0*epsilon_r_ZnO);
     //N_ts = ;                          // density of trap
     nu_s = 5e3;                         // [m/s] velocity recombination
