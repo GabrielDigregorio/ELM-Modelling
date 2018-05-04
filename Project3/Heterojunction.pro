@@ -5,16 +5,12 @@ Group {
   highvoltage  = Region[103] ;
 
   leftplate_n  = Region[103] ;
-   //rightplate_n  = Region[105] ;
-   //leftplate_p  = Region[105] ;
-   rightplate_p  = Region[104] ;
-   Pregion    = Region[202] ;
+  rightplate_p  = Region[104] ;
+  Pregion    = Region[202] ;
   Nregion    = Region[201] ;
   PNjunction=Region[{Pregion,Nregion}];
 
 }
-//Include "mat.pro";
-//A=Log[2];
 
 Function {
 
@@ -30,33 +26,14 @@ Function {
   nup =  mu_h_NiO ;//* 1e12;
   Dn = D_e_ZnO ;//* 1e12;
   Dp = D_h_NiO ;//* 1e12;
-  no = 0; //N_d_ZnO * 1e-18;// 2.71828^(q*V_a/(k_b*T));
-  po = 0;//N_a_NiO * 1e-18;
+  no =N_d_ZnO ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
+  po =N_a_NiO ;//* 1e-18;
   taun = ((L_e_ZnO)^2)/D_e_ZnO;
   taup = ((L_h_NiO)^2)/D_h_NiO;
   G=0;
 
   phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
-  //phi_i =2.18;
 
-  /*Ce_v=Ce;
-  Ch_v=Ch;
-  C=Ce+Ch;
-  E_gap=Egap;
-  mes_donnees_n() = ListFromFile["concno.txt"] ;
-  no[] = InterpolationLinear[$1]{mes_donnees_n()} ;
-  mes_donneesrhocp() = ListFromFile["rhocp_T.txt"] ;
-  rhoc [surface1 ]= InterpolationLinear[$1]{mes_donneesrhocp()} ;
-  mes_donneesk() = ListFromFile["k_T.txt"] ;
-  k [surface1 ]= InterpolationLinear[$1]{mes_donneesk()} ;
-
-  SaveFct[] = 0; //!($TimeStep % 20) ;
-
-  mes_donnees() = ListFromFile["test1D.txt"] ;
-  T_init[] = InterpolationLinear[$1]{mes_donnees()} ;
-  mes_donneesR() = ListFromFile["R0.txt"] ;
-  R[]= InterpolationLinear[$1]{mes_donneesR()} ;
-  qVol[]=0;*/
 }
 
 Constraint {
@@ -64,16 +41,9 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region highvoltage ;Type Assign; Value (phi_i-V_a); }
+      { Region highvoltage ;Type Assign; Value V_a; }
     }
   }
-  // Boundary condition E
-    //{ Name E_FIELD ;
-    // Case {
-        //{ Region lowvoltage ; Type Assign; Value 0. ; }
-    //   { Region highvoltage ;Type Assign; Value 0.; }
-    // }
-    // }
   // Boundary condition for p
     { Name concentration_p ;
       Case {
@@ -97,11 +67,11 @@ Constraint {
         { Region All ; Jacobian Vol ; }
       }
     }
-    //{ Name JSur ;
-    //  Case {
-    //    { Region All ; Jacobian Sur ; }
-    //  }
-    //}
+    { Name JSur ;
+      Case {
+        { Region All ; Jacobian Sur ; }
+      }
+    }
   }
 
   Integration {
@@ -228,7 +198,7 @@ Constraint {
       }
       Operation {
 
-      IterativeLoop[15,1e-4,0.5]{
+      IterativeLoop[40,1e-4,0.5]{
             GenerateJac[PN]; SolveJac[PN];
           }
             SaveSolution[PN];
@@ -245,9 +215,7 @@ Constraint {
         { Name n; Value{ Local{ [ {n} ] ; In PNjunction; Jacobian JVol; } } }
         { Name p; Value{ Local{ [ {p} ] ; In PNjunction; Jacobian JVol; } } }
         { Name phi; Value{ Local{ [{phi} ] ; In PNjunction; Jacobian JVol; } } }
-        // to compute E -field
-        //{ Name E_fiel; Value{ Local{ [ R[X[]] ] ; In Vol_The; Jacobian JVol; } } }
-      }
+        }
     }
 
   }
@@ -260,16 +228,12 @@ Constraint {
         Print[ n, OnElementsOf PNjunction , File "map.pos"];
         Print[ p, OnElementsOf PNjunction , File "map.pos"];
         Print[ phi, OnElementsOf PNjunction , File "map.pos"];
-        //  Print[ q, OnElementsOf Vol_The , File "map.pos"];
-          Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
-          Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
-          Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
-          Print[ phi, OnLine { {0,-1e-7,0} {0,1e-7,0} } {10}, Format Table, File "phi_line.txt"];
-        //  Print[ R, OnElementsOf Vol_The ,Format Table, File "R.txt"];
-        //  Print[ T, OnPoint {1e-9,0, 0} , File "Tcont.txt" , Format TimeTable];
-        //  Print[ T, OnElementsOf Vol_The ,Format TimeTable, File "temperovertime.txt"];
-        //  Print[ co_no, OnElementsOf Vol_The ,Format TimeTable, File "concentr.txt"];
-      }
+
+        Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
+        Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
+        Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
+        Print[ phi, OnLine { {0,-1e-7,0} {0,1e-7,0} } {10}, Format Table, File "phi_line.txt"];
+        }
     }
 
 

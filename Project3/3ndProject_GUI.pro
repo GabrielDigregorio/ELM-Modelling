@@ -7,10 +7,10 @@
     q         = 1.6021766208e-19;       // [C] absolute value of the chanrge electrons
     epsilon_0 = 8.85418782e-12;         // [m-3 kg-1 s4 A2] vacuum permitivity
     T         = 300;                    // [K]
-    k_b       = 1.3806e-23; 
+    k_b       = 1.3806e-23;
     h         = 6.62607004e-34;         // [m2 kg / s] Planck
     m0        = 9.109e-31 ;             // [kg] mass electron
-   
+
 
 // NiO
     thickness_NiO = 100e-9;             // [m]
@@ -30,7 +30,7 @@
 
 
 
-// ZnO Type 
+// ZnO Type
     thickness_ZnO = 100e-9;             // [m]
     epsilon_r_ZnO = 8;                  // [-]
     m_star_e_ZnO =  0.23*m0;            // [kg]
@@ -48,7 +48,7 @@
 
 
 // ZnO/NiO PN heterojunction
-    V_a = 0;                            // [V] Applied Bias voltage across the junction
+    V_a = 1;                            // [V] Applied Bias voltage across the junction
                           // [V]
     b = 1.13e-11 ;                      // q *(mu_e_ZnO + mu_h_ZnO)/(epsilon_0*epsilon_r_ZnO);
     //N_ts = ;                          // density of trap
