@@ -22,10 +22,10 @@ Function {
   epsr[Pregion] = epsilon_r_NiO; // epsr[Pextregion] = 1;
   epsr[Nregion] = epsilon_r_NiO; // epsr[Nextregion] = 1;
   eps = epsilon_0 ; //* 1e-18;
-  Na[Pregion] = N_a_NiO ;//* 1e-18;
-  Na[Nregion] = 0; // Na[Pextregion] = 0; Na[Nextregion] = 0;
-  Nd[Nregion] = N_d_ZnO ;//* 1e-18;
-  Nd[Pregion] = 0; // Nd[Pextregion] = 0; Nd[Nextregion] = 0;
+  mes_donnees_na() = ListFromFile["Na.txt"] ;
+  Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
+  mes_donnees_nd() = ListFromFile["Nd.txt"] ;
+  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
   nun = mu_e_ZnO ;//* 1e12;
   nup =  mu_h_NiO ;//* 1e12;
   Dn = D_e_ZnO ;//* 1e12;
