@@ -28,5 +28,6 @@ elseif (profile == 3)
 elseif (profile == 4)
 elseif (profile == 5)
 end
-
+fclose(fileID_Na);
+fclose(fileID_Nd);
 end

@@ -14,7 +14,7 @@ Group {
 
 }
 //Include "mat.pro";
-A=Log[2];
+//A=Log[2];
 
 Function {
 
@@ -22,10 +22,15 @@ Function {
   epsr[Pregion] = epsilon_r_NiO;
   epsr[Nregion] = epsilon_r_ZnO;
   eps = epsilon_0 * 1e-18;
-  Na[Pregion] = N_a_NiO * 1e-18;
+  /*Na[Pregion] = N_a_NiO * 1e-18;
   Na[Nregion] = 0;
   Nd[Nregion] = N_d_ZnO * 1e-18;
-  Nd[Pregion] = 0;
+  Nd[Pregion] = 0;*/
+  // new
+  mes_donnees_na() = ListFromFile["Na.txt"] ;
+  Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
+  mes_donnees_nd() = ListFromFile["Nd.txt"] ;
+  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
   nun = mu_e_ZnO * 1e12;
   nup =  mu_h_NiO * 1e12;
   Dn = D_e_ZnO * 1e12;
@@ -191,7 +196,7 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*(Na[]-Nd[]) , {phi} ];
+        Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
 
