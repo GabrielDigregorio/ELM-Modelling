@@ -8,8 +8,8 @@ Line(2)={2,3};
 
 Point(4)={thickness_ZnO,0,0};
 Point(5)={-thickness_NiO,0,0};
-Line(3)={1,4};
-Line(4)={3,5};
+Line(3)={3,4};
+Line(4)={5,1};
 
 Transfinite Line{1,2,3,4} = 50;
 // Physical boundaries
@@ -18,6 +18,8 @@ Transfinite Line{1,2,3,4} = 50;
 // Physical Line("GammaP", 102) = {p_type_boundaries_left, p_type_boundaries_right};
 Physical Point("V_n", 103) = 1;
 Physical Point("V_p", 104) = 3;
+Physical Point("contactn", 106) = 4;
+Physical Point("contactp", 107) = 5;
 Physical Point("middle", 105) = 2;
 
 

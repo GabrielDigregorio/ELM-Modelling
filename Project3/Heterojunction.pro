@@ -4,24 +4,39 @@ Group {
   lowvoltage  = Region[104] ;
   highvoltage  = Region[103] ;
 
-  leftplate_n  = Region[103] ;
-  rightplate_p  = Region[104] ;
-  Pregion    = Region[202] ;
-  Nregion    = Region[201] ;
-  PNjunction=Region[{Pregion,Nregion}];
+  contact_n  = Region[106] ;
+  contact_p  = Region[107] ;
 
+  Pregion_dpl    = Region[202] ;
+  Nregion_dpl    = Region[201] ;
+  P_region_no_dpl =Region[203] ;
+  N_region_no_dpl =Region[204] ;
+
+
+  P_region=Region[{Pregion_dpl,P_region_no_dpl}];
+  N_region=Region[{Nregion_dpl,N_region_no_dpl}];
+
+  PNjunction=Region[{Pregion_dpl,Nregion_dpl,P_region_no_dpl ,N_region_no_dpl }];
+  Ext =Region[{P_region_no_dpl,N_region_no_dpl}];
+  Deplection=Region[{Pregion_dpl,Nregion_dpl}];
 }
 
 Function {
 
   // All in µm
-  epsr[Pregion] = epsilonr_param_comsol; // epsr[Pextregion] = 1;
-  epsr[Nregion] = epsilonr_param_comsol; // epsr[Nextregion] = 1;
+  epsr[P_region] = epsilonr_param_comsol; // epsr[Pextregion] = 1;
+  epsr[N_region] = epsilonr_param_comsol; // epsr[Nextregion] = 1;
   eps = epsilon_0 ; //* 1e-18;
-  mes_donnees_na() = ListFromFile["Na.txt"] ;
-  Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
-  mes_donnees_nd() = ListFromFile["Nd.txt"] ;
-  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
+  //mes_donnees_na() = ListFromFile["Na.txt"] ;
+  //Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
+  //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
+  //Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
+  Na[Pregion_dpl]=1e21;
+  Na[Nregion_dpl]=0;
+  Na[Ext]=0;
+  Nd[Nregion_dpl]=1e21;
+  Nd[Pregion_dpl]=0;
+  Nd[Ext]=0;
   nun = mu_e_ZnO ;//* 1e12;
   nup =  mu_h_NiO ;//* 1e12;
   Dn = D_e_ZnO ;//* 1e12;
@@ -47,13 +62,13 @@ Constraint {
   // Boundary condition for p
     { Name concentration_p ;
       Case {
-          { Region rightplate_p ; Type Assign; Value  po; }
+          { Region contact_p ; Type Assign; Value  po; }
       }
     }
   // Boundary condition for n
     { Name concentration_n ;
         Case {
-            { Region leftplate_n ; Type Assign; Value  no; }
+            { Region contact_n ; Type Assign; Value  no; }
         }
   }
   // the two other missing condition are neuman condition implicitly consider in the formulation
@@ -148,43 +163,47 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }*/
-        Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
+        Galerkin { [+q*(Na[X[]]-Nd[X[]]), {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
-
+        //Galerkin { [ Dof{ phi} , { phi} ];
+        //          In PNjunction; Integration I1; Jacobian JVol;  }
 
         // equation n-static
       /*  Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
+                   In Ext; Integration I1; Jacobian JVol;  }
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
-                              In PNjunction; Integration I1; Jacobian JVol;  }
+                              In Ext; Integration I1; Jacobian JVol;  }
         Galerkin { [  +1/taun*Dof{n} , {n} ];
-                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -1/taun*no , {n} ];
-                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  +1/taup*Dof{p} , {n} ];
-                    In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+                    In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -1/taup*po , {n} ];
-                    In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+                    In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -G , {n} ];
-                    In PNjunction; Integration I1; Jacobian JVol;  }
-
+                    In Ext; Integration I1; Jacobian JVol;  }
+        //Galerkin { [  0 , {n} ];
+        //                        In Deplection; Integration I1; Jacobian JVol;  }
 
         // equation p-static
         Galerkin { [ nup*{p}*Dof{d phi} , {d p} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
+                   In Ext; Integration I1; Jacobian JVol;  }
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
-                              In PNjunction; Integration I1; Jacobian JVol;  }
+                              In Ext; Integration I1; Jacobian JVol;  }
         Galerkin { [  +1/taup*Dof{p} , {p} ];
-                  In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+                  In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -1/taup*po , {p} ];
-                  In Nregion; Integration I1; Jacobian JVol;  }// only on N region
+                  In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  +1/taun*Dof{n} , {p} ];
-                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -1/taun*no , {p} ];
-                  In Pregion; Integration I1; Jacobian JVol;  }// only on P region
+                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -G , {p} ];
-                    In PNjunction; Integration I1; Jacobian JVol;  }*/
+                    In Ext; Integration I1; Jacobian JVol;  }
+        //Galerkin { [  0 , {p} ];
+        //                        In Deplection; Integration I1; Jacobian JVol;  }*/
 
       }
     }

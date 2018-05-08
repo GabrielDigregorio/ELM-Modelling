@@ -5,7 +5,7 @@
 
 // General
     q         = 1.6021766208e-19;       // [C] absolute value of the chanrge electrons
-    epsilon_0 = 8.85418782e-6;         // [cm-3 kg-1 s4 A2] vacuum permitivity
+    epsilon_0 = 8.85418782e-12;         // [cm-3 kg-1 s4 A2] vacuum permitivity
     T         = 300;                    // [K]
     k_b       = 1.3806e-23;
     m0        = 9.109e-31 ;             // [kg] mass electron
@@ -31,7 +31,7 @@ Ain = 4.61e17; //[1/(V*s*cm)] Kramer mobility model, Ai parameter, Electrons
 Bin = 1.52e15; //[1/(K^2*cm^3)] Kramer mobility model, Bi parameter, Electrons
 MUin = (Ain*(T/1)^(1.5)/Ntot)/(Log[1+Bin*T^2/Ntot]-Bin*T^2/(Ntot+Bin*T^2)); // Kramer mobility model, MUi parameter, Electrons
 Xn = Sqrt[6*MUln/MUin]; //Kramer mobility model, X parameter, Electrons
-x_n = Xn *1e-4;
+x_n = 0.7*1e-6;//Xn *1e-4;
 mu_n = MUln*(1.025/(1+(Xn/1.68)^1.43)-0.025); // Kramer mobility model, Electron mobility
 A1p = 495; //[cm^2/(V*s)] Kramer mobility model, A1 parameter, Holes
 B1p = -2.2; //[1] Kramer mobility model, B1 parameter, Holes
@@ -40,14 +40,14 @@ Aip = 1e17; //[1/(V*s*cm)] Kramer mobility model, Ai parameter, Holes
 Bip = 6.25e14; //[1/(K^2*cm^3)] Kramer mobility model, Bi parameter, Holes
 MUip = (Aip*(T/1)^(1.5)/Ntot)/(Log[1+Bip*T^2/Ntot]-Bip*T^2/(Ntot+Bip*T^2)); // Kramer mobility model, MUi parameter, Holes
 Xp = Sqrt[6*MUlp/MUip]; // Kramer mobility model, X parameter, Holes
-x_p = Xp*1e-4;
+x_p =0.7*1e-6;//Xp*1e-4;
 mu_p = MUlp*(1.025/(1+(Xp/1.68)^1.43)-0.025); // Kramer mobility model, Hole mobility
 
 
 
 
 // NiO
-    thickness_NiO = 2.5e-4;             // [cm]
+    thickness_NiO = 2.5e-4/100;             // [cm]
     epsilon_r_NiO = 11;                 // [-]
     m_star_e_NiO = 0.2*m0;              // [kg]
     m_star_h_NiO = 0.9*m0;              // [kg]
@@ -65,7 +65,7 @@ mu_p = MUlp*(1.025/(1+(Xp/1.68)^1.43)-0.025); // Kramer mobility model, Hole mob
 
 
 // ZnO Type
-    thickness_ZnO = 2.5e-4;             // [cm]
+    thickness_ZnO = 2.5e-4/100;             // [cm]
     epsilon_r_ZnO = 8;                  // [-]
     m_star_e_ZnO =  0.23*m0;            // [kg]
     m_star_h_ZnO =  0.8*m0;             // [kg]

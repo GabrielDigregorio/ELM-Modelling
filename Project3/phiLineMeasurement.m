@@ -23,9 +23,9 @@ figure(1)
 plot(DATA(:,3),DATA(:,end-1), '*')
 
 figure(2)
-plot(DATA(:,3),diff([DATA(1,end-1) ;DATA(:,end-1)]), '*')
+%plot(DATA(find(DATA(2,end-1)>0),3),diff(DATA(find(DATA(:,end-1)>0),end-1)))
 
 
-DATA = dlmread('E.txt');
-figure(3)
-plot(DATA(:,3),DATA(:,end-1), '*')
+%DATA = dlmread('E.txt');
+%figure(3)
+%plot(DATA(:,3),DATA(:,end-1), '*')
