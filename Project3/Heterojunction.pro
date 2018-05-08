@@ -41,7 +41,7 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region highvoltage ;Type Assign; Value V_a; }
+      //{ Region highvoltage ;Type Assign; Value V_a; }
     }
   }
   // Boundary condition for p
@@ -144,17 +144,17 @@ Constraint {
         // equation phi
         Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*Dof{p} , {phi} ];
+        /*Galerkin { [+q*Dof{p} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
+                   In PNjunction; Integration I1; Jacobian JVol;  }*/
         Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
 
 
         // equation n-static
-        Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
+      /*  Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
@@ -184,7 +184,7 @@ Constraint {
         Galerkin { [  -1/taun*no , {p} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -G , {p} ];
-                    In PNjunction; Integration I1; Jacobian JVol;  }
+                    In PNjunction; Integration I1; Jacobian JVol;  }*/
 
       }
     }
@@ -225,13 +225,13 @@ Constraint {
 
     { Name map ; NameOfPostProcessing PN_post ;
       Operation {
-        Print[ n, OnElementsOf PNjunction , File "map.pos"];
-        Print[ p, OnElementsOf PNjunction , File "map.pos"];
+        //Print[ n, OnElementsOf PNjunction , File "map.pos"];
+        //Print[ p, OnElementsOf PNjunction , File "map.pos"];
         Print[ phi, OnElementsOf PNjunction , File "map.pos"];
 
-        Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
+        //Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
         Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
-        Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
+        //Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
         Print[ phi, OnLine { {0,-1e-7,0} {0,1e-7,0} } {10}, Format Table, File "phi_line.txt"];
         }
     }

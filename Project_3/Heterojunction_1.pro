@@ -34,10 +34,6 @@ Function {
 
   phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
 
-  NL_tol_abs = 1e-6;
-  NL_tol_rel = 1e-6;
-  NL_iter_max = 40;
-  relax = 1e-3;
 }
 
 Constraint {
@@ -51,15 +47,13 @@ Constraint {
   // Boundary condition for p
     { Name concentration_p ;
       Case {
-        { Region rightplate_p ; Type Assign; Value  po; }
-        //{ Region leftplate_n ; Type Assign; Value  0; }
+          { Region rightplate_p ; Type Assign; Value  po; }
       }
     }
   // Boundary condition for n
     { Name concentration_n ;
         Case {
-          { Region leftplate_n ; Type Assign; Value  no; }
-          //{ Region rightplate_p ; Type Assign; Value  0; }
+            { Region leftplate_n ; Type Assign; Value  no; }
         }
   }
   // the two other missing condition are neuman condition implicitly consider in the formulation
@@ -150,17 +144,17 @@ Constraint {
         // equation phi
         Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-
         Galerkin { [+q*Dof{p} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-
-        Galerkin { [+q*(Na[X[]]-Nd[X[]])  , {phi} ];
+        Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
+
+
         // equation n-static
-        Galerkin { [ -nun*Dof{n}*$relax*{d phi} , {d n} ];
+        Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
@@ -177,7 +171,7 @@ Constraint {
 
 
         // equation p-static
-        Galerkin { [ nup*Dof{p}*$relax*{d phi} , {d p} ];
+        Galerkin { [ nup*{p}*Dof{d phi} , {d p} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
@@ -203,31 +197,16 @@ Constraint {
         { Name PN; NameOfFormulation PN_prob; }
       }
       Operation {
-        Evaluate[$relax = 1e-3];
-        While[$relax <= 1]{
 
-          Print[{$relax}, Format "************** RELAX = %03g ************** "];
-
-          Generate[PN]; GetResidual[PN, $res0];
-          Evaluate[ $res = $res0, $iter = 0 ];
-          Print[{$iter, $res, $res / $res0},
-            Format "Residual %03g: abs %14.12e rel %14.12e"];
-          While[$res > NL_tol_abs && $res / $res0 > NL_tol_rel &&
-            $res / $res0 <= 1 && $iter < NL_iter_max]{
-            Solve[PN]; Generate[PN]; GetResidual[PN, $res];
-            Evaluate[ $iter = $iter + 1 ];
-            Print[{$iter, $res, $res / $res0},
-              Format "Residual %03g: abs %14.12e rel %14.12e"];
+      IterativeLoop[40,1e-4,0.5]{
+            GenerateJac[PN]; SolveJac[PN];
           }
-
-          Evaluate[ $relax = $relax * 1.5 ];
-        }
-
-        SaveSolution[PN];
+            SaveSolution[PN];
+          }
 
       }
     }
-  }
+
 
 
   PostProcessing {
@@ -246,16 +225,17 @@ Constraint {
 
     { Name map ; NameOfPostProcessing PN_post ;
       Operation {
-        Print[ phi, OnElementsOf PNjunction , File "map_phi.pos"];
-        Print[ n, OnElementsOf PNjunction , File "map_n.pos"];
-        Print[ p, OnElementsOf PNjunction , File "map_p.pos"];
+        Print[ n, OnElementsOf PNjunction , File "map.pos"];
+        Print[ p, OnElementsOf PNjunction , File "map.pos"];
+        Print[ phi, OnElementsOf PNjunction , File "map.pos"];
 
-        Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
         Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
+        Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
         Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
-        Print[ phi, OnLine { {-1e-7,0,0} {1e-7,0,0} } {200}, Format Table, File "phi_line.txt"];
+        Print[ phi, OnLine { {0,-1e-7,0} {0,1e-7,0} } {10}, Format Table, File "phi_line.txt"];
         }
     }
+
 
 
   }
