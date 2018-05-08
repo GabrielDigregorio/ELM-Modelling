@@ -8,7 +8,7 @@ SetFactory("OpenCASCADE");
  thickness_ZnO =  thickness_ZnO ; // [µm]
 
 //Mesh and Domain Variables
-L = 1e-6;                   // [µm] length of the heterojunction
+L = 250e-9;                   // [cm] length of the heterojunction
 dens_MeshPoint_NiO_Contact = 10;   // Density of the mesh : External domain
 dens_MeshPoint_ZnO_Contact = 10;  // Density of the mesh : Ground domain
 dens_MeshPoint_Interface = 10;  // Density of the mesh : cable domain

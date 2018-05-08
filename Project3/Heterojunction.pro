@@ -15,8 +15,8 @@ Group {
 Function {
 
   // All in µm
-  epsr[Pregion] = epsilon_r_NiO; // epsr[Pextregion] = 1;
-  epsr[Nregion] = epsilon_r_NiO; // epsr[Nextregion] = 1;
+  epsr[Pregion] = epsilonr_param_comsol; // epsr[Pextregion] = 1;
+  epsr[Nregion] = epsilonr_param_comsol; // epsr[Nextregion] = 1;
   eps = epsilon_0 ; //* 1e-18;
   mes_donnees_na() = ListFromFile["Na.txt"] ;
   Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
@@ -28,8 +28,8 @@ Function {
   Dp = D_h_NiO ;//* 1e12;
   no =N_d_ZnO ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
   po =N_a_NiO ;//* 1e-18;
-  taun = ((L_e_ZnO)^2)/D_e_ZnO;
-  taup = ((L_h_NiO)^2)/D_h_NiO;
+  taun = taun_param_comsol;
+  taup = taup_param_comsol;
   G=0;
 
   phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];

@@ -1,13 +1,13 @@
 Include "3ndProject_GUI.pro";
 L = thickness_ZnO + thickness_NiO;
-Point(1)={-thickness_ZnO,0,0};
+Point(1)={-x_p,0,0};
 Point(2)={0,0,0};
-Point(3)={thickness_NiO,0,0};
+Point(3)={x_n,0,0};
 Line(1)={1,2};
 Line(2)={2,3};
 
-Point(4)={-2*thickness_ZnO,0,0};
-Point(5)={2*thickness_NiO,0,0};
+Point(4)={thickness_ZnO,0,0};
+Point(5)={-thickness_NiO,0,0};
 Line(3)={1,4};
 Line(4)={3,5};
 
