@@ -63,6 +63,7 @@ Constraint {
   // Boundary condition for p
     { Name concentration_p ;
       Case {
+
           { Region lowvoltage ; Type Assign; Value  po; }
       }
     }
@@ -175,15 +176,15 @@ Constraint {
                   In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
 
 
+
         // equation p-static
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
                               In N_region_no_dpl; Integration I1; Jacobian JVol;  }
+
         Galerkin { [  +1/taup*Dof{p} , {p} ];
                   In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -1/taup*po , {p} ];
                   In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
-        
-      }
     }
 
   }
@@ -223,8 +224,8 @@ Constraint {
   PostOperation {
     { Name map ; NameOfPostProcessing PN_post ;
       Operation {
-        Print[ n, OnElementsOf PNjunction , File "map.pos"];
-        Print[ p, OnElementsOf PNjunction , File "map.pos"];
+        //Print[ n, OnElementsOf PNjunction , File "map.pos"];
+        //Print[ p, OnElementsOf PNjunction , File "map.pos"];
         Print[ phi, OnElementsOf PNjunction , File "map.pos"];
         Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Format Table, File "phi_line.txt"];
 
@@ -233,6 +234,7 @@ Constraint {
         //Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
         
         //Print[ phi, OnLine { {-0.00025,0,0} {0.00025,0,0} } {10}, Format Table, File "phi_line.txt"];
+
         }
     }
 

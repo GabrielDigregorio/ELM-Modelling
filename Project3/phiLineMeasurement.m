@@ -18,3 +18,4 @@ plot(DATA_phi(:,3),diff([DATA_phi(1,end-1) ;DATA_phi(:,end-1)]), '*')
 DATA_phi = dlmread('E.txt');
 figure(3)
 plot(DATA_phi(:,3),DATA_phi(:,end-1), '*')
+

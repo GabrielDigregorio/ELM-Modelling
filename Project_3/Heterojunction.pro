@@ -34,6 +34,11 @@ Function {
 
   phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
 
+  NL_tol_abs = 1e-6;
+  NL_tol_rel = 1e-6;
+  NL_iter_max = 40;
+  relax = 1e-3;
+  Factor=1;
 }
 
 Constraint {
@@ -41,19 +46,21 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region highvoltage ;Type Assign; Value V_a; }
+      //{ Region highvoltage ;Type Assign; Value V_a; }
     }
   }
   // Boundary condition for p
     { Name concentration_p ;
       Case {
-          { Region rightplate_p ; Type Assign; Value  po; }
+        //{ Region rightplate_p ; Type Assign; Value  po; }
+        //{ Region leftplate_n ; Type Assign; Value  0; }
       }
     }
   // Boundary condition for n
     { Name concentration_n ;
         Case {
-            { Region leftplate_n ; Type Assign; Value  no; }
+        //  { Region leftplate_n ; Type Assign; Value  no; }
+          //{ Region rightplate_p ; Type Assign; Value  0; }
         }
   }
   // the two other missing condition are neuman condition implicitly consider in the formulation
@@ -144,42 +151,42 @@ Constraint {
         // equation phi
         Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*Dof{p} , {phi} ];
+
+        Galerkin { [+q*Factor*Dof{p} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [-q*Dof{n} , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
+        Galerkin { [-q*Factor*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
-
+        Galerkin { [+q*(Na[X[]]-Nd[X[]])  , {phi} ];
+                   In PNjunction; Integration I1; Jacobian JVol;  }
 
         // equation n-static
-        Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
+        Galerkin { [ -nun*Factor*Dof{n}*$relax*{d phi} , {d n} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [ +Dn* Dof{d n} , {d n} ];
+        Galerkin { [ +Dn* Factor*Dof{d n} , {d n} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taun*Dof{n} , {n} ];
+        Galerkin { [  +1/taun*Factor*Dof{n} , {n} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -1/taun*no , {n} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  +1/taup*Dof{p} , {n} ];
+        Galerkin { [  +1/taup*Factor*Dof{p} , {n} ];
                     In Nregion; Integration I1; Jacobian JVol;  }// only on N region
-        Galerkin { [  -1/taup*po , {n} ];
+        Galerkin { [  -1/taup*Factor*po , {n} ];
                     In Nregion; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -G , {n} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
 
 
         // equation p-static
-        Galerkin { [ nup*{p}*Dof{d phi} , {d p} ];
+        Galerkin { [ nup*Factor*Dof{p}*$relax*{d phi} , {d p} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [ -Dp* Dof{d p} , {d p} ];
+        Galerkin { [ -Dp* Factor*Dof{d p} , {d p} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taup*Dof{p} , {p} ];
+        Galerkin { [  +1/taup*Factor*Dof{p} , {p} ];
                   In Nregion; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -1/taup*po , {p} ];
                   In Nregion; Integration I1; Jacobian JVol;  }// only on N region
-        Galerkin { [  +1/taun*Dof{n} , {p} ];
+        Galerkin { [  +1/taun*Factor*Dof{n} , {p} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -1/taun*no , {p} ];
                   In Pregion; Integration I1; Jacobian JVol;  }// only on P region
@@ -197,16 +204,31 @@ Constraint {
         { Name PN; NameOfFormulation PN_prob; }
       }
       Operation {
+        Evaluate[$relax = 1e-3];
+        While[$relax <= 1]{
 
-      IterativeLoop[40,1e-4,0.5]{
-            GenerateJac[PN]; SolveJac[PN];
+          Print[{$relax}, Format "************** RELAX = %03g ************** "];
+
+          Generate[PN]; GetResidual[PN, $res0];
+          Evaluate[ $res = $res0, $iter = 0 ];
+          Print[{$iter, $res, $res / $res0},
+            Format "Residual %03g: abs %14.12e rel %14.12e"];
+          While[$res > NL_tol_abs && $res / $res0 > NL_tol_rel &&
+            $res / $res0 <= 1 && $iter < NL_iter_max]{
+            Solve[PN]; Generate[PN]; GetResidual[PN, $res];
+            Evaluate[ $iter = $iter + 1 ];
+            Print[{$iter, $res, $res / $res0},
+              Format "Residual %03g: abs %14.12e rel %14.12e"];
           }
-            SaveSolution[PN];
-          }
+
+          Evaluate[ $relax = $relax * 1.5 ];
+        }
+
+        SaveSolution[PN];
 
       }
     }
-
+  }
 
 
   PostProcessing {
@@ -225,17 +247,16 @@ Constraint {
 
     { Name map ; NameOfPostProcessing PN_post ;
       Operation {
-        Print[ n, OnElementsOf PNjunction , File "map.pos"];
-        Print[ p, OnElementsOf PNjunction , File "map.pos"];
-        Print[ phi, OnElementsOf PNjunction , File "map.pos"];
+        Print[ phi, OnElementsOf PNjunction , File "map_phi.pos"];
+        Print[ n, OnElementsOf PNjunction , File "map_n.pos"];
+        Print[ p, OnElementsOf PNjunction , File "map_p.pos"];
 
-        Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
         Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
+        Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
         Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
-        Print[ phi, OnLine { {0,-1e-7,0} {0,1e-7,0} } {10}, Format Table, File "phi_line.txt"];
+        Print[ phi, OnLine { {-1e-7,0,0} {1e-7,0,0} } {200}, Format Table, File "phi_line.txt"];
         }
     }
-
 
 
   }
