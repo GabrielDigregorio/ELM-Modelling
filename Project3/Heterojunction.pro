@@ -21,6 +21,7 @@ Group {
   Deplection=Region[{Pregion_dpl,Nregion_dpl}];
 }
 
+
 Function {
 
   // All in µm
@@ -31,18 +32,18 @@ Function {
   //Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
   //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
   //Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
-  Na[Pregion_dpl]=1e21;
+  Na[Pregion_dpl]=3e21;
   Na[Nregion_dpl]=0;
   Na[Ext]=0;
-  Nd[Nregion_dpl]=1e21;
+  Nd[Nregion_dpl]=3e21;
   Nd[Pregion_dpl]=0;
   Nd[Ext]=0;
   nun = mu_e_ZnO ;//* 1e12;
   nup =  mu_h_NiO ;//* 1e12;
   Dn = D_e_ZnO ;//* 1e12;
   Dp = D_h_NiO ;//* 1e12;
-  no =N_d_ZnO ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
-  po =N_a_NiO ;//* 1e-18;
+  no = 1e21 ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
+  po = 1e21 ;//* 1e-18;
   taun = taun_param_comsol;
   taup = taup_param_comsol;
   G=0;
@@ -62,18 +63,18 @@ Constraint {
   // Boundary condition for p
     { Name concentration_p ;
       Case {
-          { Region contact_p ; Type Assign; Value  po; }
+
+          { Region lowvoltage ; Type Assign; Value  po; }
       }
     }
   // Boundary condition for n
     { Name concentration_n ;
         Case {
-            { Region contact_n ; Type Assign; Value  no; }
+            { Region highvoltage ; Type Assign; Value  no; }
         }
   }
   // the two other missing condition are neuman condition implicitly consider in the formulation
   }
-
 
 
   Jacobian {
@@ -143,7 +144,6 @@ Constraint {
 
     }
 
-
   }
 
   // !!!!! à corriger tout les signes et vérifier la formulation !!!!!
@@ -163,49 +163,28 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }*/
-        Galerkin { [+q*(Na[X[]]-Nd[X[]]), {phi} ];
+        Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
-        //Galerkin { [ Dof{ phi} , { phi} ];
-        //          In PNjunction; Integration I1; Jacobian JVol;  }
 
         // equation n-static
-      /*  Galerkin { [ -nun*{n}*Dof{d phi} , {d n} ];
-                   In Ext; Integration I1; Jacobian JVol;  }
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
-                              In Ext; Integration I1; Jacobian JVol;  }
+                              In P_region_no_dpl; Integration I1; Jacobian JVol;  }
         Galerkin { [  +1/taun*Dof{n} , {n} ];
                   In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -1/taun*no , {n} ];
                   In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  +1/taup*Dof{p} , {n} ];
-                    In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
-        Galerkin { [  -1/taup*po , {n} ];
-                    In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
-        Galerkin { [  -G , {n} ];
-                    In Ext; Integration I1; Jacobian JVol;  }
-        //Galerkin { [  0 , {n} ];
-        //                        In Deplection; Integration I1; Jacobian JVol;  }
+
+
 
         // equation p-static
-        Galerkin { [ nup*{p}*Dof{d phi} , {d p} ];
-                   In Ext; Integration I1; Jacobian JVol;  }
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
-                              In Ext; Integration I1; Jacobian JVol;  }
+                              In N_region_no_dpl; Integration I1; Jacobian JVol;  }
+
         Galerkin { [  +1/taup*Dof{p} , {p} ];
                   In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -1/taup*po , {p} ];
                   In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
-        Galerkin { [  +1/taun*Dof{n} , {p} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  -1/taun*no , {p} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  -G , {p} ];
-                    In Ext; Integration I1; Jacobian JVol;  }
-        //Galerkin { [  0 , {p} ];
-        //                        In Deplection; Integration I1; Jacobian JVol;  }*/
-
-      }
     }
 
   }
@@ -234,24 +213,28 @@ Constraint {
         { Name n; Value{ Local{ [ {n} ] ; In PNjunction; Jacobian JVol; } } }
         { Name p; Value{ Local{ [ {p} ] ; In PNjunction; Jacobian JVol; } } }
         { Name phi; Value{ Local{ [{phi} ] ; In PNjunction; Jacobian JVol; } } }
+        //{ Name phi; Value { Term { [ {phi} ]; In PNjunction; Jacobian JVol; } }
         }
     }
-
   }
+
+  
 
 
   PostOperation {
-
     { Name map ; NameOfPostProcessing PN_post ;
       Operation {
         //Print[ n, OnElementsOf PNjunction , File "map.pos"];
         //Print[ p, OnElementsOf PNjunction , File "map.pos"];
         Print[ phi, OnElementsOf PNjunction , File "map.pos"];
+        Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Format Table, File "phi_line.txt"];
 
         //Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
-        Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
+        //Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
         //Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
-        Print[ phi, OnLine { {0,-1e-7,0} {0,1e-7,0} } {10}, Format Table, File "phi_line.txt"];
+        
+        //Print[ phi, OnLine { {-0.00025,0,0} {0.00025,0,0} } {10}, Format Table, File "phi_line.txt"];
+
         }
     }
 
