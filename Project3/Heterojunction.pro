@@ -50,7 +50,7 @@ Function {
   taun = taun_param_comsol;
   taup = taup_param_comsol;
   G=0;
-
+  Factor=1;
   //phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
 
 
@@ -137,6 +137,7 @@ FunctionSpace {
 
   }
 
+
   // n  Ã©lectron
   { Name n_elec; Type Form0;
     BasisFunction {
@@ -146,6 +147,7 @@ FunctionSpace {
     Constraint {
       { NameOfCoef n_coeff; EntityType NodesOf ; NameOfConstraint concentration_n; }
     }
+
 
   }
 
@@ -173,7 +175,7 @@ Formulation {
       // attention !! cette Ã©quation fait tout diverger mÃªme avec zÃ©ro comme facteur !!
       Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
-      
+
 
       Galerkin { [ +Dn* Dof{d n} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
@@ -196,6 +198,7 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }// only on N region
     }
   }
+
 
   { Name phi ; Type FemEquation;
     Quantity {
