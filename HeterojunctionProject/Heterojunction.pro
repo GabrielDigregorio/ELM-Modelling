@@ -25,18 +25,18 @@ Group {
 
 Function {
 
-  // All in Âµm
-  epsr[P_region] = epsilonr_param_comsol; // epsr[Pextregion] = 1;
-  epsr[N_region] = epsilonr_param_comsol; // epsr[Nextregion] = 1;
-  eps = epsilon_0 ; //* 1e-18;
+  // All in m
+  epsr[P_region] = 1;
+  epsr[N_region] = 1;
+  eps = epsilon_0 ;
   //mes_donnees_na() = ListFromFile["Na.txt"] ;
   //Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
   //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
   //Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
-  Na[Pregion_dpl]=3e21;
+  Na[Pregion_dpl]=0.5e21;
   Na[Nregion_dpl]=0;
   Na[Ext]=0;
-  Nd[Nregion_dpl]=3e21;
+  Nd[Nregion_dpl]=0.5e21;
   Nd[Pregion_dpl]=0;
   Nd[Ext]=0;
   nun = mu_e_ZnO ;//* 1e12;
@@ -47,8 +47,8 @@ Function {
   po = 1e21 ;//* 1e-18;
   p_no = 1e15;
   n_po = 1e15;
-  taun = taun_param_comsol;
-  taup = taup_param_comsol;
+  taun = 1e-6; //[s] Electrons lifetime
+  taup = 1e-6; //[s] Holes lifetime
   G=0;
 
   //phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
@@ -171,7 +171,7 @@ Formulation {
 
       // equation n-static
       // attention !! cette Ã©quation fait tout diverger mÃªme avec zÃ©ro comme facteur !!
-      Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
+      Galerkin { [ -nun*Dof{n}*{d phi} , {d n} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
       
 
@@ -183,9 +183,8 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }// only on P region
 
       // equation p-static
-
       // attention !! cette Ã©quation fait tout diverger , mÃªme avec zÃ©ro comme facteur !!
-      Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
+      Galerkin { [ nup*Dof{p}*{d phi} , {d p} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
 
       Galerkin { [ -Dp* Dof{d p} , {d p} ];
@@ -216,9 +215,9 @@ Formulation {
       { Name phi;  Type Local; NameOfSpace volt_phi; }
     }
     Equation {
-      Galerkin { [ /* - ??????? */nun*Dof{n}*{d phi} , {d n} ];
+      Galerkin { [ /* - ??????? */-nun*Dof{n}*{d phi} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [ +Dn* Dof{d n} , {d n} ];
+      Galerkin { [ -Dn* Dof{d n} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  +1/taun*Dof{n} , {n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
@@ -280,9 +279,9 @@ PostOperation {
       Print[ n, OnElementsOf PNjunction , File "map.pos"];
       Print[ p, OnElementsOf PNjunction , File "map.pos"];
       Print[ phi, OnElementsOf PNjunction , File "map.pos"];
-      Print[ n, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "n_line.txt"];
-      Print[ p, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "p_line.txt"];
-      Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
+      //Print[ n, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "n_line.txt"];
+      //Print[ p, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "p_line.txt"];
+      //Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
       //Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
       //Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
       //Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
