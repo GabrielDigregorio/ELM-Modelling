@@ -53,7 +53,7 @@
 
 
 // ZnO/NiO PN heterojunction
-    V_a = -4;                            // [V] Applied Bias voltage across the junction
+    V_a = 0;                            // [V] Applied Bias voltage across the junction
                           // [V]
     b = 1.13e-11 ;                      // q *(mu_e_ZnO + mu_h_ZnO)/(epsilon_0*epsilon_r_ZnO);
     //N_ts = ;                          // density of trap

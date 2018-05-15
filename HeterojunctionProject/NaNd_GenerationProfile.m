@@ -38,12 +38,7 @@ Ain = 4.61e17; %[1/(V*s*cm)] Kramer mobility model, Ai parameter, Electrons
 Bin = 1.52e15; %[1/(K^2*cm^3)] Kramer mobility model, Bi parameter, Electrons
 MUin = (Ain*(T/1)^(1.5)/Ntot)/(log(1+Bin*T^2/Ntot)-Bin*T^2/(Ntot+Bin*T^2)) % Kramer mobility model, MUi parameter, Electrons
 Xn = sqrt(6*MUln/MUin); %Kramer mobility model, X parameter, Electrons
-<<<<<<< HEAD
 x_n = 0.65e-6*1e2
-=======
-%x_n = Xn*1e-4
-x_n = 8/100*2.5*1e-6;
->>>>>>> e9476466417f57e8f5c0481492f898372cb46550
 mu_n = MUln*(1.025/(1+(Xn/1.68)^1.43)-0.025); % Kramer mobility model, Electron mobility
 A1p = 495; %[cm^2/(V*s)] Kramer mobility model, A1 parameter, Holes
 B1p = -2.2; %[1] Kramer mobility model, B1 parameter, Holes
@@ -52,12 +47,7 @@ Aip = 1e17; %[1/(V*s*cm)] Kramer mobility model, Ai parameter, Holes
 Bip = 6.25e14; %[1/(K^2*cm^3)] Kramer mobility model, Bi parameter, Holes
 MUip = (Aip*(T/1)^(1.5)/Ntot)/(log(1+Bip*T^2/Ntot)-Bip*T^2/(Ntot+Bip*T^2)) % Kramer mobility model, MUi parameter, Holes
 Xp = sqrt(6*MUlp/MUip); % Kramer mobility model, X parameter, Holes
-<<<<<<< HEAD
 x_p = 0.65e-6*1e2
-=======
-%x_p = Xp*1e-4
-x_p = 8/100*2.5*1e-6;
->>>>>>> e9476466417f57e8f5c0481492f898372cb46550
 mu_p = MUlp*(1.025/(1+(Xp/1.68)^1.43)-0.025); % Kramer mobility model, Hole mobility
 
 

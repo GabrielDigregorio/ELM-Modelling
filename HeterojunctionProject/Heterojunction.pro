@@ -29,16 +29,16 @@ Function {
   epsr[P_region] = 1;
   epsr[N_region] = 1;
   eps = epsilon_0 ;
-  //mes_donnees_na() = ListFromFile["Na.txt"] ;
-  //Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
-  //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
-  //Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
-  Na[Pregion_dpl]=1e21;
+  mes_donnees_na() = ListFromFile["Na.txt"] ;
+  Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
+  mes_donnees_nd() = ListFromFile["Nd.txt"] ;
+  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
+  /*Na[Pregion_dpl]=1e21;
   Na[Nregion_dpl]=0;
   Na[Ext]=0;
   Nd[Nregion_dpl]=1e21;
   Nd[Pregion_dpl]=0;
-  Nd[Ext]=0;
+  Nd[Ext]=0;*/
   nun = mu_e_ZnO ;//* 1e12;
   nup =  mu_h_NiO ;//* 1e12;
   Dn = D_e_ZnO ;//* 1e12;
@@ -123,8 +123,8 @@ FunctionSpace {
     Constraint {
       { NameOfCoef phi_coeff; EntityType NodesOf ; NameOfConstraint Voltage; }
     }
-
   }
+
   // p  hole
   { Name p_hole; Type Form0;
     BasisFunction {
@@ -134,7 +134,6 @@ FunctionSpace {
     Constraint {
       { NameOfCoef p_coeff; EntityType NodesOf ; NameOfConstraint concentration_p; }
     }
-
   }
 
   // n  Ã©lectron
@@ -148,7 +147,6 @@ FunctionSpace {
     }
 
   }
-
 }
 
 Formulation {
