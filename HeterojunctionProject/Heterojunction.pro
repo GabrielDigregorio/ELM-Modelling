@@ -25,33 +25,33 @@ Group {
 
 Function {
 
-  // All in Âµm
-  epsr[P_region] = epsilonr_param_comsol; // epsr[Pextregion] = 1;
-  epsr[N_region] = epsilonr_param_comsol; // epsr[Nextregion] = 1;
-  eps = epsilon_0 ; //* 1e-18;
-  //mes_donnees_na() = ListFromFile["Na.txt"] ;
-  //Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
-  //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
-  //Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
-  Na[Pregion_dpl]=3e21;
+  // All in m
+  epsr[P_region] = 1;
+  epsr[N_region] = 1;
+  eps = epsilon_0 ;
+  mes_donnees_na() = ListFromFile["Na.txt"] ;
+  Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
+  mes_donnees_nd() = ListFromFile["Nd.txt"] ;
+  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
+  /*Na[Pregion_dpl]=1e21;
   Na[Nregion_dpl]=0;
   Na[Ext]=0;
-  Nd[Nregion_dpl]=3e21;
+  Nd[Nregion_dpl]=1e21;
   Nd[Pregion_dpl]=0;
-  Nd[Ext]=0;
+  Nd[Ext]=0;*/
   nun = mu_e_ZnO ;//* 1e12;
   nup =  mu_h_NiO ;//* 1e12;
   Dn = D_e_ZnO ;//* 1e12;
   Dp = D_h_NiO ;//* 1e12;
   no = 1e21 ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
   po = 1e21 ;//* 1e-18;
-  p_no = 1e15;
-  n_po = 1e15;
-  taun = taun_param_comsol;
-  taup = taup_param_comsol;
+  p_no = 1e11;
+  n_po = 1e11;
+  taun = 1e-6; //[s] Electrons lifetime
+  taup = 1e-6; //[s] Holes lifetime
   G=0;
 
-  //phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
+  phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
 
 
 }
@@ -61,7 +61,7 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      //{ Region highvoltage ;Type Assign; Value V_a; }
+      { Region highvoltage ;Type Assign; Value phi_i - V_a; }
     }
   }
   // Boundary condition for p
@@ -123,8 +123,8 @@ FunctionSpace {
     Constraint {
       { NameOfCoef phi_coeff; EntityType NodesOf ; NameOfConstraint Voltage; }
     }
-
   }
+
   // p  hole
   { Name p_hole; Type Form0;
     BasisFunction {
@@ -134,49 +134,8 @@ FunctionSpace {
     Constraint {
       { NameOfCoef p_coeff; EntityType NodesOf ; NameOfConstraint concentration_p; }
     }
-
   }
 
-<<<<<<< HEAD
-  // !!!!! à corriger tout les signes et vérifier la formulation !!!!!
-  Formulation {
-
-    { Name PN_prob ; Type FemEquation;
-      Quantity {
-        { Name n;  Type Local; NameOfSpace n_elec; }
-        { Name p;  Type Local; NameOfSpace p_hole; }
-        { Name phi;  Type Local; NameOfSpace volt_phi; }
-      }
-      Equation {
-        // equation phi
-        Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*Dof{p} , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [-q*Dof{n} , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*(Na[]-Nd[]) , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-
-
-
-         // equation n-static
-         // attention !! cette équation fait tout diverger même avec zéro comme facteur !!
-        //Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
-        //              In PNjunction; Integration I1; Jacobian JVol;  }
-        // but this work (change the region where it is calculated)
-        Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
-                      In P_region_no_dpl; Integration I1; Jacobian JVol;  }
-        //
-        Galerkin { [ +Dn* Dof{d n} , {d n} ];
-                              In P_region_no_dpl; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taun*Dof{n} , {n} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  -1/taun*no , {n} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
-
-
-=======
   // n  Ã©lectron
   { Name n_elec; Type Form0;
     BasisFunction {
@@ -186,18 +145,8 @@ FunctionSpace {
     Constraint {
       { NameOfCoef n_coeff; EntityType NodesOf ; NameOfConstraint concentration_n; }
     }
->>>>>>> 1f73220a72882ec5a6f1d9dd7c44f14a5d69e34a
 
   }
-
-<<<<<<< HEAD
-        // attention !! cette équation fait tout diverger , même avec zéro comme facteur !!
-        //Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
-        //            In PNjunction; Integration I1; Jacobian JVol;  }
-        //
-        Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
-                    In N_region_no_dpl; Integration I1; Jacobian JVol;  }
-=======
 }
 
 Formulation {
@@ -211,20 +160,18 @@ Formulation {
       // equation phi
       Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [+q*Dof{p} , {phi} ];
+      /*Galerkin { [+q*Dof{p} , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [-q*Dof{n} , {phi} ];
-        In PNjunction; Integration I1; Jacobian JVol;  }
+        In PNjunction; Integration I1; Jacobian JVol;  }*/
       Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
 
       // equation n-static
       // attention !! cette Ã©quation fait tout diverger mÃªme avec zÃ©ro comme facteur !!
-      Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
-                    In PNjunction; Integration I1; Jacobian JVol;  }
-      
-
-      Galerkin { [ +Dn* Dof{d n} , {d n} ];
+      Galerkin { [ -nun*Dof{n}*{d phi} , {d n} ];
+        In PNjunction; Integration I1; Jacobian JVol;  }
+      Galerkin { [ -Dn* Dof{d n} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  +1/taun*Dof{n} , {n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }// only on P region
@@ -232,11 +179,8 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }// only on P region
 
       // equation p-static
-
-      // attention !! cette Ã©quation fait tout diverger , mÃªme avec zÃ©ro comme facteur !!
-      Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
-                    In PNjunction; Integration I1; Jacobian JVol;  }
-
+      Galerkin { [ nup*Dof{p}*{d phi} , {d p} ];
+        In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [ -Dp* Dof{d p} , {d p} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  +1/taup*Dof{p} , {p} ];
@@ -245,7 +189,6 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }// only on N region
     }
   }
->>>>>>> 1f73220a72882ec5a6f1d9dd7c44f14a5d69e34a
 
   { Name phi ; Type FemEquation;
     Quantity {
@@ -266,9 +209,9 @@ Formulation {
       { Name phi;  Type Local; NameOfSpace volt_phi; }
     }
     Equation {
-      Galerkin { [ /* - ??????? */nun*Dof{n}*{d phi} , {d n} ];
+      Galerkin { [ -nun*Dof{n}*{d phi} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [ +Dn* Dof{d n} , {d n} ];
+      Galerkin { [ -Dn* Dof{d n} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  +1/taun*Dof{n} , {n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
@@ -292,23 +235,23 @@ Formulation {
 Resolution {
   { Name analysis;
     System {
-      { Name phi; NameOfFormulation phi; }
-      { Name pn; NameOfFormulation pn; }
-      //{ Name coupled; NameOfFormulation coupled; }
+      /*{ Name phi; NameOfFormulation phi; }
+      { Name pn; NameOfFormulation pn; }*/
+      { Name coupled; NameOfFormulation coupled; }
     }
     Operation {
 
-      Generate[phi]; Solve[phi];
+      /*Generate[phi]; Solve[phi];
       Generate[pn]; Solve[pn];
       SaveSolution[phi];
-      SaveSolution[pn];
+      SaveSolution[pn];*/
 
-      /*
-      IterativeLoop[40,1e-4,0.5]{
+      
+      IterativeLoop[20,1e-4,0.5]{
         GenerateJac[coupled]; SolveJac[coupled];
       }
       SaveSolution[coupled];
-      */
+      
     }
   }
 }
@@ -330,9 +273,9 @@ PostOperation {
       Print[ n, OnElementsOf PNjunction , File "map.pos"];
       Print[ p, OnElementsOf PNjunction , File "map.pos"];
       Print[ phi, OnElementsOf PNjunction , File "map.pos"];
-      Print[ n, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "n_line.txt"];
-      Print[ p, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "p_line.txt"];
-      Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
+      //Print[ n, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "n_line.txt"];
+      //Print[ p, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "p_line.txt"];
+      //Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
       //Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
       //Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
       //Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];

@@ -1,0 +1,41 @@
+Plugin(CutParametric).X= "0";
+Plugin(CutParametric).Y= "u";
+Plugin(CutParametric).Z= "0";
+Plugin(CutParametric).MinU=-2.5e-06;
+Plugin(CutParametric).MaxU=2.5e-06;
+Plugin(CutParametric).NumPointsU=1000;
+Plugin(CutParametric).MinV=0;
+Plugin(CutParametric).MaxV=0;
+Plugin(CutParametric).NumPointsV=1;
+Plugin(CutParametric).ConnectPoints=0;
+Plugin(CutParametric).View=0;
+Plugin(CutParametric).Run;
+
+
+
+Plugin(CutParametric).X= "0";
+Plugin(CutParametric).Y= "u";
+Plugin(CutParametric).Z= "0";
+Plugin(CutParametric).MinU=-2.5e-06;
+Plugin(CutParametric).MaxU=2.5e-06;
+Plugin(CutParametric).NumPointsU=1000;
+Plugin(CutParametric).MinV=0;
+Plugin(CutParametric).MaxV=0;
+Plugin(CutParametric).NumPointsV=2;
+Plugin(CutParametric).ConnectPoints=0;
+Plugin(CutParametric).View=1;
+Plugin(CutParametric).Run;
+
+
+Plugin(CutParametric).X= "0";
+Plugin(CutParametric).Y= "u";
+Plugin(CutParametric).Z= "0";
+Plugin(CutParametric).MinU=-2.5e-06;
+Plugin(CutParametric).MaxU=2.5e-06;
+Plugin(CutParametric).NumPointsU=1000;
+Plugin(CutParametric).MinV=0;
+Plugin(CutParametric).MaxV=0;
+Plugin(CutParametric).NumPointsV=3;
+Plugin(CutParametric).ConnectPoints=0;
+Plugin(CutParametric).View=2;
+Plugin(CutParametric).Run;

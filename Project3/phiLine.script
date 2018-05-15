@@ -1,0 +1,12 @@
+Plugin(CutParametric).X= "0";
+Plugin(CutParametric).Y= "u";
+Plugin(CutParametric).Z= "0";
+Plugin(CutParametric).MinU=-2.5e-06;
+Plugin(CutParametric).MaxU=2.5e-06;
+Plugin(CutParametric).NumPointsU=100;
+Plugin(CutParametric).MinV=0;
+Plugin(CutParametric).MaxV=0;
+Plugin(CutParametric).NumPointsV=1;
+Plugin(CutParametric).ConnectPoints=0;
+Plugin(CutParametric).View=11;
+Plugin(CutParametric).Run;
