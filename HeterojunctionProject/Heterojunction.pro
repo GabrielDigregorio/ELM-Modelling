@@ -33,10 +33,10 @@ Function {
   //Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
   //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
   //Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
-  Na[Pregion_dpl]=0.5e21;
+  Na[Pregion_dpl]=1e21;
   Na[Nregion_dpl]=0;
   Na[Ext]=0;
-  Nd[Nregion_dpl]=0.5e21;
+  Nd[Nregion_dpl]=1e21;
   Nd[Pregion_dpl]=0;
   Nd[Ext]=0;
   nun = mu_e_ZnO ;//* 1e12;
@@ -45,8 +45,8 @@ Function {
   Dp = D_h_NiO ;//* 1e12;
   no = 1e21 ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
   po = 1e21 ;//* 1e-18;
-  p_no = 1e15;
-  n_po = 1e15;
+  p_no = 1e11;
+  n_po = 1e11;
   taun = 1e-6; //[s] Electrons lifetime
   taup = 1e-6; //[s] Holes lifetime
   G=0;
@@ -162,20 +162,18 @@ Formulation {
       // equation phi
       Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [+q*Dof{p} , {phi} ];
+      /*Galerkin { [+q*Dof{p} , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [-q*Dof{n} , {phi} ];
-        In PNjunction; Integration I1; Jacobian JVol;  }
+        In PNjunction; Integration I1; Jacobian JVol;  }*/
       Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
 
       // equation n-static
       // attention !! cette Ã©quation fait tout diverger mÃªme avec zÃ©ro comme facteur !!
       Galerkin { [ -nun*Dof{n}*{d phi} , {d n} ];
-                    In PNjunction; Integration I1; Jacobian JVol;  }
-      
-
-      Galerkin { [ +Dn* Dof{d n} , {d n} ];
+        In PNjunction; Integration I1; Jacobian JVol;  }
+      Galerkin { [ -Dn* Dof{d n} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  +1/taun*Dof{n} , {n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }// only on P region
@@ -183,10 +181,8 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }// only on P region
 
       // equation p-static
-      // attention !! cette Ã©quation fait tout diverger , mÃªme avec zÃ©ro comme facteur !!
       Galerkin { [ nup*Dof{p}*{d phi} , {d p} ];
-                    In PNjunction; Integration I1; Jacobian JVol;  }
-
+        In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [ -Dp* Dof{d p} , {d p} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [  +1/taup*Dof{p} , {p} ];
@@ -215,7 +211,7 @@ Formulation {
       { Name phi;  Type Local; NameOfSpace volt_phi; }
     }
     Equation {
-      Galerkin { [ /* - ??????? */-nun*Dof{n}*{d phi} , {d n} ];
+      Galerkin { [ -nun*Dof{n}*{d phi} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [ -Dn* Dof{d n} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
@@ -241,23 +237,23 @@ Formulation {
 Resolution {
   { Name analysis;
     System {
-      { Name phi; NameOfFormulation phi; }
-      { Name pn; NameOfFormulation pn; }
-      //{ Name coupled; NameOfFormulation coupled; }
+      /*{ Name phi; NameOfFormulation phi; }
+      { Name pn; NameOfFormulation pn; }*/
+      { Name coupled; NameOfFormulation coupled; }
     }
     Operation {
 
-      Generate[phi]; Solve[phi];
+      /*Generate[phi]; Solve[phi];
       Generate[pn]; Solve[pn];
       SaveSolution[phi];
-      SaveSolution[pn];
+      SaveSolution[pn];*/
 
-      /*
-      IterativeLoop[40,1e-4,0.5]{
+      
+      IterativeLoop[20,1e-4,0.5]{
         GenerateJac[coupled]; SolveJac[coupled];
       }
       SaveSolution[coupled];
-      */
+      
     }
   }
 }
