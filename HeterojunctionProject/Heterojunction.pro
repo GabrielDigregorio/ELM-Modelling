@@ -27,10 +27,14 @@ Function {
   epsr[P_region] = epsilon_r_NiO;
   epsr[N_region] = epsilon_r_ZnO;
   eps = epsilon_0 ;
-  mes_donnees_na() = ListFromFile["Na.txt"] ;
-  Na[] = InterpolationBilinear[$1,$2]{mes_donnees_na()} ;
-  mes_donnees_nd() = ListFromFile["Nd.txt"] ;
-  Nd[] = InterpolationBilinear[$1,$2]{mes_donnees_nd()} ;
+  //mes_donnees_na() = ListFromFile["Na.txt"] ;
+  Na[P_region]=1e21;
+  Nd[N_region]=1e21;
+  Na[N_region]=0;
+  Nd[P_region]=0;
+  //Na[] = InterpolationBilinear[$1,$2]{mes_donnees_na()} ;
+  //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
+  //Nd[] = InterpolationBilinear[$1,$2]{mes_donnees_nd()} ;
 }
 
 Constraint {
@@ -38,7 +42,6 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      { Region highvoltage ;Type Assign; Value phi_i - V_a; }
     }
   }
   // Boundary condition for p
@@ -52,6 +55,12 @@ Constraint {
   { Name concentration_n ;
     Case {
       { Region highvoltage ; Type Assign; Value  no; }
+      { Region lowvoltage ; Type Assign; Value  p_no; }
+    }
+  }
+  { Name E_field ;
+    Case {
+      //{ Region highvoltage ; Type Assign; Value  no; }
       { Region lowvoltage ; Type Assign; Value  p_no; }
     }
   }
@@ -137,10 +146,10 @@ Formulation {
       // equation phi
       Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      /*Galerkin { [+q*Dof{p} , {phi} ];
-        In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [-q*Dof{n} , {phi} ];
-        In PNjunction; Integration I1; Jacobian JVol;  }*/
+      //Galerkin { [+q*Dof{p} , {phi} ];
+      //  In PNjunction; Integration I1; Jacobian JVol;  }
+      //Galerkin { [-q*Dof{n} , {phi} ];
+      // In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [+q*(Na[X[],Y[]]-Nd[X[],Y[]]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
 
@@ -239,7 +248,7 @@ PostProcessing {
       { Name n; Value{ Local{ [ {n} ] ; In PNjunction; Jacobian JVol; } } }
       { Name p; Value{ Local{ [ {p} ] ; In PNjunction; Jacobian JVol; } } }
       { Name phi; Value{ Local{ [{phi} ] ; In PNjunction; Jacobian JVol; } } }
-      { Name Na; Value{ Local{ [Na[X[],Y[]] ] ; In PNjunction; Jacobian JVol; } } }
+      //{ Name Na; Value{ Local{ [Na[X[],Y[]] ] ; In PNjunction; Jacobian JVol; } } }
       //{ Name phi; Value { Term { [ {phi} ]; In PNjunction; Jacobian JVol; } }
     }
   }
@@ -251,7 +260,7 @@ PostOperation {
       Print[ n, OnElementsOf PNjunction , File "map.pos"];
       Print[ p, OnElementsOf PNjunction , File "map.pos"];
       Print[ phi, OnElementsOf PNjunction , File "map.pos"];
-      Print[Na, OnElementsOf PNjunction , File "map.pos"];
+      //Print[Na, OnElementsOf PNjunction , File "map.pos"];
       //Print[ n, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "n_line.txt"];
       //Print[ p, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "p_line.txt"];
       //Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
