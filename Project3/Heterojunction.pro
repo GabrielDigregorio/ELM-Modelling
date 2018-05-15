@@ -50,7 +50,7 @@ Function {
   taun = taun_param_comsol;
   taup = taup_param_comsol;
   G=0;
-
+  Factor=1;
   //phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
 
 
@@ -137,46 +137,7 @@ FunctionSpace {
 
   }
 
-<<<<<<< HEAD
-  // !!!!! à corriger tout les signes et vérifier la formulation !!!!!
-  Formulation {
 
-    { Name PN_prob ; Type FemEquation;
-      Quantity {
-        { Name n;  Type Local; NameOfSpace n_elec; }
-        { Name p;  Type Local; NameOfSpace p_hole; }
-        { Name phi;  Type Local; NameOfSpace volt_phi; }
-      }
-      Equation {
-        // equation phi
-        Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*Dof{p} , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [-q*Dof{n} , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*(Na[]-Nd[]) , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }
-
-
-
-         // equation n-static
-         // attention !! cette équation fait tout diverger même avec zéro comme facteur !!
-        //Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
-        //              In PNjunction; Integration I1; Jacobian JVol;  }
-        // but this work (change the region where it is calculated)
-        Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
-                      In P_region_no_dpl; Integration I1; Jacobian JVol;  }
-        //
-        Galerkin { [ +Dn* Dof{d n} , {d n} ];
-                              In P_region_no_dpl; Integration I1; Jacobian JVol;  }
-        Galerkin { [  +1/taun*Dof{n} , {n} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
-        Galerkin { [  -1/taun*no , {n} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
-
-
-=======
   // n  Ã©lectron
   { Name n_elec; Type Form0;
     BasisFunction {
@@ -186,18 +147,10 @@ FunctionSpace {
     Constraint {
       { NameOfCoef n_coeff; EntityType NodesOf ; NameOfConstraint concentration_n; }
     }
->>>>>>> 1f73220a72882ec5a6f1d9dd7c44f14a5d69e34a
+
 
   }
 
-<<<<<<< HEAD
-        // attention !! cette équation fait tout diverger , même avec zéro comme facteur !!
-        //Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
-        //            In PNjunction; Integration I1; Jacobian JVol;  }
-        //
-        Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
-                    In N_region_no_dpl; Integration I1; Jacobian JVol;  }
-=======
 }
 
 Formulation {
@@ -222,7 +175,7 @@ Formulation {
       // attention !! cette Ã©quation fait tout diverger mÃªme avec zÃ©ro comme facteur !!
       Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
                     In PNjunction; Integration I1; Jacobian JVol;  }
-      
+
 
       Galerkin { [ +Dn* Dof{d n} , {d n} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
@@ -245,7 +198,7 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }// only on N region
     }
   }
->>>>>>> 1f73220a72882ec5a6f1d9dd7c44f14a5d69e34a
+
 
   { Name phi ; Type FemEquation;
     Quantity {
