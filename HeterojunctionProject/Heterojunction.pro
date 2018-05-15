@@ -51,7 +51,7 @@ Function {
   taup = 1e-6; //[s] Holes lifetime
   G=0;
 
-  //phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
+  phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
 
 
 }
@@ -61,7 +61,7 @@ Constraint {
   { Name Voltage ;
     Case {
       { Region lowvoltage ; Type Assign; Value 0. ; }
-      //{ Region highvoltage ;Type Assign; Value V_a; }
+      { Region highvoltage ;Type Assign; Value phi_i - V_a; }
     }
   }
   // Boundary condition for p

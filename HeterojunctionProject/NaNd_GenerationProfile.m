@@ -30,32 +30,13 @@ taun_param_comsol = 1e-6; %[s] Electron lifetime
 taup_param_comsol = taun_param_comsol; % Hole lifetime
 bias_comsol = -4; %[V] Device bias
 
-Ntot = Na_comsol + Nd_comsol; % Total number of ionized impurities
-A1n = 1430; %[cm^2/(V*s)] Kramer mobility model, A1 parameter, Electrons
-B1n = -2.2; %[1] Kramer mobility model, B1 parameter, Electrons
-MUln = A1n*(T/300)^B1n; % Kramer mobility model, MU1 parameter, Electrons
-Ain = 4.61e17; %[1/(V*s*cm)] Kramer mobility model, Ai parameter, Electrons
-Bin = 1.52e15; %[1/(K^2*cm^3)] Kramer mobility model, Bi parameter, Electrons
-MUin = (Ain*(T/1)^(1.5)/Ntot)/(log(1+Bin*T^2/Ntot)-Bin*T^2/(Ntot+Bin*T^2)) % Kramer mobility model, MUi parameter, Electrons
-Xn = sqrt(6*MUln/MUin); %Kramer mobility model, X parameter, Electrons
-x_n = 0.65e-6*1e2
-mu_n = MUln*(1.025/(1+(Xn/1.68)^1.43)-0.025); % Kramer mobility model, Electron mobility
-A1p = 495; %[cm^2/(V*s)] Kramer mobility model, A1 parameter, Holes
-B1p = -2.2; %[1] Kramer mobility model, B1 parameter, Holes
-MUlp = A1p*(T/300)^B1p; % Kramer mobility model, MU1 parameter, Holes
-Aip = 1e17; %[1/(V*s*cm)] Kramer mobility model, Ai parameter, Holes
-Bip = 6.25e14; %[1/(K^2*cm^3)] Kramer mobility model, Bi parameter, Holes
-MUip = (Aip*(T/1)^(1.5)/Ntot)/(log(1+Bip*T^2/Ntot)-Bip*T^2/(Ntot+Bip*T^2)) % Kramer mobility model, MUi parameter, Holes
-Xp = sqrt(6*MUlp/MUip); % Kramer mobility model, X parameter, Holes
-x_p = 0.65e-6*1e2
-mu_p = MUlp*(1.025/(1+(Xp/1.68)^1.43)-0.025); % Kramer mobility model, Hole mobility
-
-
+x_p = 0.65e-6
+x_n = 0.65e-6
 
 
 fileID_Na = fopen( 'Na.txt', 'wt' );
 fileID_Nd = fopen( 'Nd.txt', 'wt' );
-PourcentCoeff = 0.01;
+PourcentCoeff = 0.08;
 
 if (profile == 1)
     fprintf(fileID_Na , '%i %i\n', -t_NiO, 0);
@@ -79,4 +60,17 @@ elseif (profile == 5)
 end
 fclose(fileID_Na);
 fclose(fileID_Nd);
+
+
+DATA_Na = dlmread('Nd.txt');
+DATA_Nd = dlmread('Na.txt');
+
+figure(1)
+hold on
+plot(DATA_Na(:,1), DATA_Na(:,2))
+plot(DATA_Nd(:,1), DATA_Nd(:,2))
+grid on
+box on
+hold off
 end
+
