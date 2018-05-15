@@ -24,36 +24,13 @@ Group {
 
 
 Function {
-
-  // All in m
-  epsr[P_region] = 1;
-  epsr[N_region] = 1;
+  epsr[P_region] = epsilon_r_NiO;
+  epsr[N_region] = epsilon_r_ZnO;
   eps = epsilon_0 ;
   mes_donnees_na() = ListFromFile["Na.txt"] ;
   Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
   mes_donnees_nd() = ListFromFile["Nd.txt"] ;
-  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
-  /*Na[Pregion_dpl]=1e21;
-  Na[Nregion_dpl]=0;
-  Na[Ext]=0;
-  Nd[Nregion_dpl]=1e21;
-  Nd[Pregion_dpl]=0;
-  Nd[Ext]=0;*/
-  nun = mu_e_ZnO ;//* 1e12;
-  nup =  mu_h_NiO ;//* 1e12;
-  Dn = D_e_ZnO ;//* 1e12;
-  Dp = D_h_NiO ;//* 1e12;
-  no = 1e21 ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
-  po = 1e21 ;//* 1e-18;
-  p_no = 1e11;
-  n_po = 1e11;
-  taun = 1e-6; //[s] Electrons lifetime
-  taup = 1e-6; //[s] Holes lifetime
-  G=0;
-
-  phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
-
-
+  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ; 
 }
 
 Constraint {

@@ -14,7 +14,7 @@ dens_MeshPoint_ZnO_Contact = 1e6;  // Density of the mesh : Ground domain
 dens_MeshPoint_Interface = 1e6;  // Density of the mesh : cable domain
 dens_MeshPoint_Lateral = 20e6;  // Density of the mesh : cable domain
 
-
+Printf("x_n %g", x_n) ;
 
 //*************************************************************************************
 // Geometry
