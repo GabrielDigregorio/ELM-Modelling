@@ -239,6 +239,7 @@ PostProcessing {
       { Name n; Value{ Local{ [ {n} ] ; In PNjunction; Jacobian JVol; } } }
       { Name p; Value{ Local{ [ {p} ] ; In PNjunction; Jacobian JVol; } } }
       { Name phi; Value{ Local{ [{phi} ] ; In PNjunction; Jacobian JVol; } } }
+      { Name Na; Value{ Local{ [Na[X[],Y[]] ] ; In PNjunction; Jacobian JVol; } } }
       //{ Name phi; Value { Term { [ {phi} ]; In PNjunction; Jacobian JVol; } }
     }
   }
@@ -250,6 +251,7 @@ PostOperation {
       Print[ n, OnElementsOf PNjunction , File "map.pos"];
       Print[ p, OnElementsOf PNjunction , File "map.pos"];
       Print[ phi, OnElementsOf PNjunction , File "map.pos"];
+      Print[Na, OnElementsOf PNjunction , File "map.pos"];
       //Print[ n, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "n_line.txt"];
       //Print[ p, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "p_line.txt"];
       //Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
