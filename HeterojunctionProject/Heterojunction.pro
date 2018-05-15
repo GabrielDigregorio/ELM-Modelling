@@ -30,9 +30,9 @@ Function {
   epsr[N_region] = 1;
   eps = epsilon_0 ;
   mes_donnees_na() = ListFromFile["Na.txt"] ;
-  Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
+  Na[] = InterpolationBilinear[$1,$2]{mes_donnees_na()} ;
   mes_donnees_nd() = ListFromFile["Nd.txt"] ;
-  Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
+  Nd[] = InterpolationBilinear[$1,$2]{mes_donnees_nd()} ;
   /*Na[Pregion_dpl]=1e21;
   Na[Nregion_dpl]=0;
   Na[Ext]=0;
@@ -164,7 +164,7 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [-q*Dof{n} , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }*/
-      Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
+      Galerkin { [+q*(Na[X[],Y[]]-Nd[X[],Y[]]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
 
       // equation n-static
@@ -197,7 +197,7 @@ Formulation {
     Equation {
       Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
+      Galerkin { [+q*(Na[X[],Y[]]-Nd[X[],Y[]]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
     }
   }
@@ -246,12 +246,12 @@ Resolution {
       SaveSolution[phi];
       SaveSolution[pn];*/
 
-      
+
       IterativeLoop[20,1e-4,0.5]{
         GenerateJac[coupled]; SolveJac[coupled];
       }
       SaveSolution[coupled];
-      
+
     }
   }
 }
