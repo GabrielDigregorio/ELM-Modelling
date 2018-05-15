@@ -41,7 +41,8 @@ Constraint {
   // Boundary condition phi
   { Name Voltage ;
     Case {
-      { Region lowvoltage ; Type Assign; Value 0. ; }
+      //{ Region lowvoltage ; Type Assign; Value 0. ; }
+      { Region highvoltage ;Type Assign; Value phi_i - V_a; }
     }
   }
   // Boundary condition for p
