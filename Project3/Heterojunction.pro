@@ -206,6 +206,7 @@ Constraint {
     }
 
   }
+  }
 
   Resolution {
     { Name analysis;
