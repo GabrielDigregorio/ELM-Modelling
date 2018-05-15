@@ -164,7 +164,7 @@ Constraint {
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
+        Galerkin { [+q*(Na[]-Nd[]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
 
@@ -173,8 +173,10 @@ Constraint {
          // attention !! cette équation fait tout diverger même avec zéro comme facteur !!
         //Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
         //              In PNjunction; Integration I1; Jacobian JVol;  }
+        // but this work (change the region where it is calculated)
+        Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
+                      In P_region_no_dpl; Integration I1; Jacobian JVol;  }
         //
-
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
                               In P_region_no_dpl; Integration I1; Jacobian JVol;  }
         Galerkin { [  +1/taun*Dof{n} , {n} ];
@@ -188,9 +190,10 @@ Constraint {
 
         // attention !! cette équation fait tout diverger , même avec zéro comme facteur !!
         //Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
-        //              In PNjunction; Integration I1; Jacobian JVol;  }
+        //            In PNjunction; Integration I1; Jacobian JVol;  }
         //
-
+        Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
+                    In N_region_no_dpl; Integration I1; Jacobian JVol;  }
 
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
                               In N_region_no_dpl; Integration I1; Jacobian JVol;  }
