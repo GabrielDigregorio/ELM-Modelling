@@ -26,6 +26,7 @@ figure(3)
 hold on
 plot(DATA_n(:,6),DATA_n(:,8))
 plot(DATA_p(:,6),DATA_p(:,8))
+set(gca,'yscale','log');
 legend('n','p')
 hold off
 grid on

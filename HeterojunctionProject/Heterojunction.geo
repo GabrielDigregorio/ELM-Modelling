@@ -1,6 +1,6 @@
 
 // TITLE
-Include "3ndProject_GUI.pro";
+Include "Heterojunction_GUI.pro";
 SetFactory("OpenCASCADE");
 
 // Scaling
@@ -12,7 +12,7 @@ L = 5e-6;                   // [cm] length of the heterojunction
 dens_MeshPoint_NiO_Contact = 1e6;   // Density of the mesh : External domain
 dens_MeshPoint_ZnO_Contact = 1e6;  // Density of the mesh : Ground domain
 dens_MeshPoint_Interface = 1e6;  // Density of the mesh : cable domain
-dens_MeshPoint_Lateral = 20e6;  // Density of the mesh : cable domain
+dens_MeshPoint_Lateral = 100e6;  // Density of the mesh : cable domain
 
 Printf("x_n %g", x_n) ;
 
@@ -134,8 +134,8 @@ Recombine Surface{p_type_materialsDepl_right};
 //Physical Line("Gamma", 100) = {n_type_boundaries_left,p_type_boundaries_left, n_type_boundaries_right, p_type_boundaries_right};
 //Physical Line("GammaN", 101) = {n_type_boundaries_left, n_type_boundaries_right};
 //Physical Line("GammaP", 102) = {p_type_boundaries_left, p_type_boundaries_right};
-Physical Line("V_n", 103) = {5,6};
-Physical Line("V_p", 104) = {11,12};
+Physical Line("V_n", 104) = {5,6};
+Physical Line("V_p", 103) = {11,12};
 Physical Line("middle", 105) = {-1,2};
 Physical Line("X_n", 106) = {19,20};
 Physical Line("X_p", 107) = {21,22};

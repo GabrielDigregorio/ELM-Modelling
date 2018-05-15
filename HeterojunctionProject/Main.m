@@ -60,8 +60,8 @@
 % Limit conditions
     no = 1e21 ;
     po = 1e21 ;
-    p_no = 1e11;
-    n_po = 1e11;
+    p_no = 1e15;
+    n_po = 1e15;
 
 % build in potential
     n_i = 1.25e16; %[1/cm^3] Intrinsic carrier concentration;
@@ -155,9 +155,6 @@ fprintf(fid,'%s%i%s\n','no=',no,';');
 fprintf(fid,'%s%i%s\n','po=',po,';');
 fprintf(fid,'%s%i%s\n','p_no=',p_no,';');
 fprintf(fid,'%s%i%s\n','n_po=',n_po,';');
-fprintf(fid,'%s%i%s\n','no=',no,';');
-fprintf(fid,'%s%i%s\n','no=',no,';');
-fprintf(fid,'%s%i%s\n','no=',no,';');
 fprintf(fid,'\n\n\n');
 
 
