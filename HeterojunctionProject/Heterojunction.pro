@@ -31,13 +31,14 @@ Function {
   Na[] = InterpolationBilinear[$1,$2]{mes_donnees_na()} ;
   mes_donnees_nd() = ListFromFile["Nd.txt"] ;
   Nd[] = InterpolationBilinear[$1,$2]{mes_donnees_nd()} ;
+
 }
 
 Constraint {
   // Boundary condition phi
   { Name Voltage ;
     Case {
-      { Region lowvoltage ; Type Assign; Value 0. ; }
+      //{ Region lowvoltage ; Type Assign; Value 0. ; }
       { Region highvoltage ;Type Assign; Value phi_i - V_a; }
     }
   }
