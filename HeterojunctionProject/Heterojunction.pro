@@ -24,10 +24,8 @@ Group {
 
 
 Function {
-
-  // All in m
-  epsr[P_region] = 1;
-  epsr[N_region] = 1;
+  epsr[P_region] = epsilon_r_NiO;
+  epsr[N_region] = epsilon_r_ZnO;
   eps = epsilon_0 ;
   mes_donnees_na() = ListFromFile["Na.txt"] ;
   Na[] = InterpolationBilinear[$1,$2]{mes_donnees_na()} ;
