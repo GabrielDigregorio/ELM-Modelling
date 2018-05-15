@@ -15,6 +15,7 @@ dens_MeshPoint_Interface = 10e6;  // Density of the mesh : cable domain
 dens_MeshPoint_Lateral = 100e6;  // Density of the mesh : cable domain
 
 
+
 //*************************************************************************************
 // Geometry
 Point(1) = {0, 0, 0}; // center interface
@@ -100,14 +101,14 @@ Plane Surface(n_type_materialsNoDepl_right) = {n_type_nodepl_right}; // Surface 
 p_type_materialsNoDepl_left = newreg;
 Plane Surface(p_type_materialsNoDepl_left) = {p_type_nodepl_left}; // Surface upper  of the n-type
 p_type_materialsNoDepl_right = newreg;
-Plane Surface(p_type_materialsNoDepl_right) = {p_type_nodepl_right}; // Surface upper 
+Plane Surface(p_type_materialsNoDepl_right) = {p_type_nodepl_right}; // Surface upper
 
 // Mesh
 Transfinite Line{1,2,5,6,11,12,19,20,21,22} = dens_MeshPoint_Interface * L;
-Transfinite Line{4,16,7} = dens_MeshPoint_Lateral * (thickness_ZnO - x_n);
-Transfinite Line{3,15,8} = dens_MeshPoint_Lateral * x_n;
-Transfinite Line{10,17,13} = dens_MeshPoint_Lateral * (thickness_NiO - x_p);
-Transfinite Line{9,23,14} = dens_MeshPoint_Lateral * x_p;
+Transfinite Line{4,16,7} = 4*dens_MeshPoint_Lateral * (thickness_ZnO - x_n);
+Transfinite Line{3,15,8} = 4*dens_MeshPoint_Lateral * x_n;
+Transfinite Line{10,17,13} = 4*dens_MeshPoint_Lateral * (thickness_NiO - x_p);
+Transfinite Line{9,23,14} = 4*dens_MeshPoint_Lateral * x_p;
 
 
 Transfinite Surface{n_type_materialsNoDepl_left};

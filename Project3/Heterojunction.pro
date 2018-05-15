@@ -6,6 +6,7 @@ Group {
 
   contact_n  = Region[106] ;
   contact_p  = Region[107] ;
+//  middel_LINE= Region[105] ;
 
   Pregion_dpl    = Region[202] ;
   Nregion_dpl    = Region[201] ;
@@ -51,6 +52,7 @@ Function {
   G=0;
 
   //phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
+
 
 }
 
@@ -162,15 +164,21 @@ Constraint {
         // equation phi
         Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
-        /*Galerkin { [+q*Dof{p} , {phi} ];
+        Galerkin { [+q*Dof{p} , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [-q*Dof{n} , {phi} ];
-                   In PNjunction; Integration I1; Jacobian JVol;  }*/
+                   In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
                    In PNjunction; Integration I1; Jacobian JVol;  }
 
 
-        // equation n-static
+
+         // equation n-static
+         // attention !! cette équation fait tout diverger même avec zéro comme facteur !!
+        //Galerkin { [ -nun*Factor*Dof{n}*{d phi} , {d n} ];
+        //              In PNjunction; Integration I1; Jacobian JVol;  }
+        //
+
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [  +1/taun*Dof{n} , {n} ];
@@ -181,6 +189,13 @@ Constraint {
 
 
         // equation p-static
+
+        // attention !! cette équation fait tout diverger , même avec zéro comme facteur !!
+        //Galerkin { [ nup*Factor*Dof{p}*{d phi} , {d p} ];
+        //              In PNjunction; Integration I1; Jacobian JVol;  }
+        //
+
+
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
                               In PNjunction; Integration I1; Jacobian JVol;  }
 
@@ -190,7 +205,6 @@ Constraint {
                   In PNjunction; Integration I1; Jacobian JVol;  }// only on N region
     }
 
-  }
   }
 
   Resolution {
@@ -211,6 +225,9 @@ Constraint {
 
 
 
+
+
+
   PostProcessing {
     { Name PN_post; NameOfFormulation PN_prob;
       Quantity {
@@ -222,7 +239,7 @@ Constraint {
     }
   }
 
-  
+
 
 
   PostOperation {
@@ -232,11 +249,10 @@ Constraint {
         Print[ p, OnElementsOf PNjunction , File "map.pos"];
         Print[ phi, OnElementsOf PNjunction , File "map.pos"];
         //Print[ phi, OnLine { {-1e-6,-2.5e-6,0} {-1e-6,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
-
         //Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
         //Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
         //Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
-        
+
         //Print[ phi, OnLine { {-0.00025,0,0} {0.00025,0,0} } {10}, Format Table, File "phi_line.txt"];
 
         }
