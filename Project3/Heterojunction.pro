@@ -44,11 +44,13 @@ Function {
   Dp = D_h_NiO ;//* 1e12;
   no = 1e21 ;//* 1e-18;// 2.71828^(q*V_a/(k_b*T));
   po = 1e21 ;//* 1e-18;
+  p_no = 1e15;
+  n_po = 1e15;
   taun = taun_param_comsol;
   taup = taup_param_comsol;
   G=0;
 
-  phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
+  //phi_i = ((k_b*T)/q) * Log[(N_d_ZnO*N_a_NiO)/(n_ZnO*p_NiO)];
 
 }
 
@@ -63,14 +65,15 @@ Constraint {
   // Boundary condition for p
     { Name concentration_p ;
       Case {
-
           { Region lowvoltage ; Type Assign; Value  po; }
+          { Region highvoltage ; Type Assign; Value  n_po; }
       }
     }
   // Boundary condition for n
     { Name concentration_n ;
         Case {
             { Region highvoltage ; Type Assign; Value  no; }
+            { Region lowvoltage ; Type Assign; Value  p_no; }
         }
   }
   // the two other missing condition are neuman condition implicitly consider in the formulation
@@ -169,24 +172,25 @@ Constraint {
 
         // equation n-static
         Galerkin { [ +Dn* Dof{d n} , {d n} ];
-                              In P_region_no_dpl; Integration I1; Jacobian JVol;  }
+                              In PNjunction; Integration I1; Jacobian JVol;  }
         Galerkin { [  +1/taun*Dof{n} , {n} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
+                  In PNjunction; Integration I1; Jacobian JVol;  }// only on P region
         Galerkin { [  -1/taun*no , {n} ];
-                  In P_region_no_dpl; Integration I1; Jacobian JVol;  }// only on P region
+                  In PNjunction; Integration I1; Jacobian JVol;  }// only on P region
 
 
 
         // equation p-static
         Galerkin { [ -Dp* Dof{d p} , {d p} ];
-                              In N_region_no_dpl; Integration I1; Jacobian JVol;  }
+                              In PNjunction; Integration I1; Jacobian JVol;  }
 
         Galerkin { [  +1/taup*Dof{p} , {p} ];
-                  In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
+                  In PNjunction; Integration I1; Jacobian JVol;  }// only on N region
         Galerkin { [  -1/taup*po , {p} ];
-                  In N_region_no_dpl; Integration I1; Jacobian JVol;  }// only on N region
+                  In PNjunction; Integration I1; Jacobian JVol;  }// only on N region
     }
 
+  }
   }
 
   Resolution {
@@ -195,10 +199,10 @@ Constraint {
         { Name PN; NameOfFormulation PN_prob; }
       }
       Operation {
-
-      IterativeLoop[40,1e-4,0.5]{
+            Generate[PN]; Solve[PN];
+     /*IterativeLoop[40,1e-4,0.5]{
             GenerateJac[PN]; SolveJac[PN];
-          }
+          }*/
             SaveSolution[PN];
           }
 
@@ -224,10 +228,10 @@ Constraint {
   PostOperation {
     { Name map ; NameOfPostProcessing PN_post ;
       Operation {
-        //Print[ n, OnElementsOf PNjunction , File "map.pos"];
-        //Print[ p, OnElementsOf PNjunction , File "map.pos"];
+        Print[ n, OnElementsOf PNjunction , File "map.pos"];
+        Print[ p, OnElementsOf PNjunction , File "map.pos"];
         Print[ phi, OnElementsOf PNjunction , File "map.pos"];
-        Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Format Table, File "phi_line.txt"];
+        //Print[ phi, OnLine { {-1e-6,-2.5e-6,0} {-1e-6,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
 
         //Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
         //Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
