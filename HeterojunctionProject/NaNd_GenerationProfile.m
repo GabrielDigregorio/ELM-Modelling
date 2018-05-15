@@ -1,14 +1,4 @@
-% Generat profile Na Nd
-
-% How to launch :
-%                    NaNd_GenerationProfile(1,1e15,1e15,2.5e-4,2.5e-4) In cm !!!
-
-
-% profile = 1 ==> constant concentration
-% profile = 2 ==>
-% profile = 3 ==>
-% profile = 4 ==>
-
+%% 
 function [] = NaNd_GenerationProfile(profile, N_a_experiment, N_d_experiment, t_NiO, t_ZnO)
 % General
     q         = 1.6021766208e-19;       % [C] absolute value of the chanrge electrons

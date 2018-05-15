@@ -46,6 +46,7 @@ Function {
   Na[N_region] = 0;
   Nd[P_region] = 0 ;
   Nd[N_region] = 1e21;*/
+
 }
 
 Constraint {
@@ -67,6 +68,12 @@ Constraint {
   { Name concentration_n ;
     Case {
       { Region highvoltage ; Type Assign; Value  no; }
+      { Region lowvoltage ; Type Assign; Value  p_no; }
+    }
+  }
+  { Name E_field ;
+    Case {
+      //{ Region highvoltage ; Type Assign; Value  no; }
       { Region lowvoltage ; Type Assign; Value  p_no; }
     }
   }
