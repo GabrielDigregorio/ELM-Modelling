@@ -29,16 +29,16 @@ Function {
   epsr[P_region] = epsilonr_param_comsol; // epsr[Pextregion] = 1;
   epsr[N_region] = epsilonr_param_comsol; // epsr[Nextregion] = 1;
   eps = epsilon_0 ; //* 1e-18;
-  //mes_donnees_na() = ListFromFile["Na.txt"] ;
-  //Na[] = InterpolationLinear[$1]{mes_donnees_na()} ;
-  //mes_donnees_nd() = ListFromFile["Nd.txt"] ;
-  //Nd[] = InterpolationLinear[$1]{mes_donnees_nd()} ;
-  Na[Pregion_dpl]=3e21;
-  Na[Nregion_dpl]=0;
-  Na[Ext]=0;
-  Nd[Nregion_dpl]=3e21;
-  Nd[Pregion_dpl]=0;
-  Nd[Ext]=0;
+  mes_donnees_na() = ListFromFile["Na.txt"] ;
+  Na[] = InterpolationBilinear[$1,$2]{mes_donnees_na()} ;
+  mes_donnees_nd() = ListFromFile["Nd.txt"] ;
+  Nd[] = InterpolationBilinear[$1,$2]{mes_donnees_nd()} ;
+  //Na[Pregion_dpl]=3e21;
+  //Na[Nregion_dpl]=0;
+  //Na[Ext]=0;
+  //Nd[Nregion_dpl]=3e21;
+  //Nd[Pregion_dpl]=0;
+  //Nd[Ext]=0;
   nun = mu_e_ZnO ;//* 1e12;
   nup =  mu_h_NiO ;//* 1e12;
   Dn = D_e_ZnO ;//* 1e12;
@@ -168,7 +168,7 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [-q*Dof{n} , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
+      Galerkin { [+q*(Na[X[],Y[]]-Nd[X[],Y[]]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
 
       // equation n-static
@@ -207,7 +207,7 @@ Formulation {
     Equation {
       Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [+q*(Na[X[]]-Nd[X[]]) , {phi} ];
+      Galerkin { [+q*(Na[X[],Y[]]-Nd[X[],Y[]]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
     }
   }
