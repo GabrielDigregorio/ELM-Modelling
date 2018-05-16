@@ -8,8 +8,11 @@ Group {
   contact_p  = Region[107] ;
 //  middel_LINE= Region[105] ;
 
+
+  // n et p region sont inversé par rapport au point .geo, ce n'est pas clair!!!
   Pregion_dpl    = Region[201] ;
   Nregion_dpl    = Region[202] ;
+
   P_region_no_dpl =Region[203] ;
   N_region_no_dpl =Region[204] ;
 
@@ -71,13 +74,13 @@ Constraint {
       { Region lowvoltage ; Type Assign; Value  p_no; }
     }
   }
-  { Name E_field ;
+  /*{ Name E_field ;
     Case {
       //{ Region highvoltage ; Type Assign; Value  no; }
       { Region lowvoltage ; Type Assign; Value  p_no; }
     }
-  }
-  // the two other missing condition are neuman condition implicitly consider in the formulation
+  }*/
+
 }
 
 
@@ -135,7 +138,7 @@ FunctionSpace {
     }
   }
 
-  // n  Ã©lectron
+  // n  électron
   { Name n_elec; Type Form0;
     BasisFunction {
       { Name n_e; NameOfCoef n_coeff; Function BF_Node; Support PNjunction;
@@ -241,7 +244,10 @@ Resolution {
     Operation {
 
       Generate[phi]; Solve[phi];
-      Generate[pn]; Solve[pn];
+
+      IterativeLoop[50,1e-4,0.5]{
+      GenerateJac[pn]; SolveJac[pn];
+      }
       SaveSolution[phi];
       SaveSolution[pn];
 
