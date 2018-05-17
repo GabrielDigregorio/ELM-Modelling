@@ -8,14 +8,13 @@ SetFactory("OpenCASCADE");
  thickness_ZnO =  thickness_ZnO ; // [µm]
 
 //Mesh and Domain Variables
-L = 5e-6;                   // [cm] length of the heterojunction
-dens_MeshPoint_NiO_Contact = 1e6;   // Density of the mesh : External domain
-dens_MeshPoint_ZnO_Contact = 1e6;  // Density of the mesh : Ground domain
-dens_MeshPoint_Interface = 1e6;  // Density of the mesh : cable domain
-dens_MeshPoint_Lateral = 100e6;  // Density of the mesh : cable domain
+dens_MeshPoint_NiO_Contact = 1e6*1.e-7;   // Density of the mesh : External domain
+dens_MeshPoint_ZnO_Contact = 1e6*1.e-7;  // Density of the mesh : Ground domain
+dens_MeshPoint_Interface = 1e6*1.e-7;  // Density of the mesh : cable domain
+dens_MeshPoint_Lateral = 100e6*1.e-7;  // Density of the mesh : cable domain
 
-Printf("x_n %g", x_n) ;
 
+Printf("L %g", L) ;
 //*************************************************************************************
 // Geometry
 Point(1) = {0, 0, 0}; // center interface

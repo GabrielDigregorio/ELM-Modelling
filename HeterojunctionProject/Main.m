@@ -1,6 +1,6 @@
 % Parameters
 %************************************************************************
-
+adim = 1; %adim or not adim
 % ALL IN S.I. (MKS)
 
 % General
@@ -50,6 +50,7 @@
     V_a = 0                            % [V] Applied Bias voltage across the junction
 
 % For numerical model
+    L = 5e-6;                   % [m] length of the heterojunction
     nun = mu_e_ZnO ;
     nup =  mu_h_NiO ;
     Dn = D_e_ZnO ;
@@ -87,7 +88,54 @@
 % Approximation
     G = 0; % Generation
 
+
+% Adim 
+
+    Lc = sqrt(((epsilon_0*k_b*T))/(q^2*no/2))
+    phi_prime = (k_b*T)/q
+    n_prime = 1e21
+    Tauc = 1.000000e-06;
+    A = Tauc * nun * phi_prime / (Lc)^2;
+    B = Tauc * Dn * phi_prime / (Lc)^2;
+    C = Tauc * nup * phi_prime / (Lc)^2;
+    D = Tauc * Dp * phi_prime / (Lc)^2;
     
+   if (adim == 1)
+        thickness_NiO = thickness_NiO/Lc;   
+        N_a_NiO = N_a_NiO/n_prime;                 
+        N_d_NiO = N_d_NiO/n_prime;              
+        p_NiO = p_NiO/n_prime;             
+        mu_h_NiO = mu_h_NiO*phi_prime/Lc^2;             
+        L_e_NiO =  L_e_NiO/Lc ;             
+        L_h_NiO = L_h_NiO/Lc ;            
+        D_h_NiO = D_h_NiO/Lc^2 ;
+        thickness_ZnO = thickness_ZnO/Lc ; 
+        N_a_ZnO = N_a_ZnO/n_prime;                      
+        N_d_ZnO = N_d_ZnO/n_prime;                 
+        n_ZnO = n_ZnO/n_prime;                  
+        mu_e_ZnO = mu_e_ZnO*phi_prime/Lc^2;                 
+        L_e_ZnO = L_e_ZnO/Lc;                   
+        L_h_ZnO = L_h_ZnO/Lc;                
+        D_e_ZnO = D_e_ZnO/Lc^2; 
+        V_a = V_a*phi_prime;
+        L = 5e-6/Lc;                 
+            nun = mu_e_ZnO ;
+            nup =  mu_h_NiO ;
+            Dn = D_e_ZnO ;
+            Dp = D_h_NiO ;
+        taun = 1e-6; 
+        taup = 1e-6;
+        no = 1e21/n_prime;
+        po = 1e21/n_prime;
+        p_no = 1e15/n_prime;
+        n_po = 1e15/n_prime;
+        n_i = 1.25e16/n_prime;
+        phi_i = phi_i / phi_prime;
+        x_n = x_n/Lc;
+        x_p = x_p/Lc;
+   end
+    
+
     
 %% Generation profile
 %NaNd_GenerationProfile_2D(1,1e15,1e15,2.5e-4,2.5e-4)
@@ -141,6 +189,7 @@ fprintf(fid,'%s%i%s\n','V_a=',V_a,';');
 fprintf(fid,'\n\n\n');
 
 fprintf(fid,'// For numerical model\n\n');
+fprintf(fid,'%s%i%s\n','L=',L,';');
 fprintf(fid,'%s%i%s\n','nun=',nun,';');
 fprintf(fid,'%s%i%s\n','nup=',nup,';');
 fprintf(fid,'%s%i%s\n','Dn=',Dn,';');
@@ -172,6 +221,12 @@ fprintf(fid,'// Depletion approx\n\n');
 fprintf(fid,'%s%i%s\n','G=',G,';');
 fprintf(fid,'\n\n\n');
 
+fprintf(fid,'// Adimentionnalisation\n\n');
+fprintf(fid,'%s%i%s\n','A=',A,';');
+fprintf(fid,'%s%i%s\n','B=',B,';');
+fprintf(fid,'%s%i%s\n','C=',C,';');
+fprintf(fid,'%s%i%s\n','D=',D,';');
+fprintf(fid,'\n\n\n');
 
 fclose(fid);
 
