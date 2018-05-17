@@ -1,28 +1,29 @@
 Include "Heterojunction_GUI.pro";
 
 Group {
-  lowvoltage  = Region[103] ;
-  highvoltage  = Region[104] ;
+  lowvoltage  = Region[101] ;
+  highvoltage  = Region[102] ;
 
-  contact_n  = Region[106] ;
-  contact_p  = Region[107] ;
-//  middel_LINE= Region[105] ;
+  contact_n  = Region[101] ;
+  contact_p  = Region[102] ;
+
 
 
   // n et p region sont inversé par rapport au point .geo, ce n'est pas clair!!!
-  Pregion_dpl    = Region[201] ;
-  Nregion_dpl    = Region[202] ;
+  Pregion    = Region[104] ;
+  Nregion    = Region[103] ;
+  Nregion_dpl=Region[108];
+  Pregion_dpl=Region[107];
+  N_region_no_dpl=Region[106];
+  P_region_no_dpl=Region[105];
 
-  P_region_no_dpl =Region[203] ;
-  N_region_no_dpl =Region[204] ;
+  P_region=Region[{  Nregion_dpl,N_region_no_dpl}];
+  N_region=Region[{  Pregion_dpl,P_region_no_dpl}];
 
 
-  P_region=Region[{Pregion_dpl,P_region_no_dpl}];
-  N_region=Region[{Nregion_dpl,N_region_no_dpl}];
+  PNjunction=Region[{P_region,N_region}];
 
-  PNjunction=Region[{Pregion_dpl,Nregion_dpl,P_region_no_dpl ,N_region_no_dpl }];
-  Ext =Region[{P_region_no_dpl,N_region_no_dpl}];
-  Deplection=Region[{Pregion_dpl,Nregion_dpl}];
+
 }
 
 Function {
@@ -166,7 +167,7 @@ Formulation {
         In PNjunction; Integration I1; Jacobian JVol;  }
       Galerkin { [-q*{n} , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [+q*(Naa[X[],Y[]]-Ndd[X[],Y[]]) , {phi} ];
+      Galerkin { [+q*(Naa[]-Ndd[]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
 
       // equation n-static
@@ -199,7 +200,7 @@ Formulation {
     Equation {
       Galerkin { [ -epsr[]*eps* Dof{d phi} , {d phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
-      Galerkin { [+q*(Na[X[],Y[]]-Nd[X[],Y[]]) , {phi} ];
+      Galerkin { [+q*(Na[]-Nd[]) , {phi} ];
         In PNjunction; Integration I1; Jacobian JVol;  }
     }
   }
@@ -244,7 +245,7 @@ Resolution {
     Operation {
 
       Generate[phi]; Solve[phi];
-
+      SaveSolution[phi];
       IterativeLoop[50,1e-4,0.5]{
       GenerateJac[pn]; SolveJac[pn];
       }
@@ -269,13 +270,13 @@ Resolution {
 PostProcessing {
   { Name PN_post; NameOfFormulation pn;
     Quantity {
-      { Name n; Value{ Local{ [ {n} ] ; In PNjunction; Jacobian JVol; } } }
-      { Name p; Value{ Local{ [ {p} ] ; In PNjunction; Jacobian JVol; } } }
+      //{ Name n; Value{ Local{ [ {n} ] ; In PNjunction; Jacobian JVol; } } }
+      //{ Name p; Value{ Local{ [ {p} ] ; In PNjunction; Jacobian JVol; } } }
       { Name phi; Value{ Local{ [{phi} ] ; In PNjunction; Jacobian JVol; } } }
-      { Name Na; Value{ Local{ [Na[X[],Y[]] ] ; In PNjunction; Jacobian JVol; } } }
-      { Name Nd; Value{ Local{ [Nd[X[],Y[]] ] ; In PNjunction; Jacobian JVol; } }}
-      { Name Naa; Value{ Local{ [Naa[X[],Y[]] ] ; In PNjunction; Jacobian JVol; } } }
-      { Name Ndd; Value{ Local{ [Ndd[X[],Y[]] ] ; In PNjunction; Jacobian JVol; } }}
+    /*  { Name Na; Value{ Local{ [Na[] ] ; In PNjunction; Jacobian JVol; } } }
+      { Name Nd; Value{ Local{ [Nd[] ] ; In PNjunction; Jacobian JVol; } }}
+      { Name Naa; Value{ Local{ [Naa[] ] ; In PNjunction; Jacobian JVol; } } }
+      { Name Ndd; Value{ Local{ [Ndd[ ] ] ; In PNjunction; Jacobian JVol; } }}*/
       //{ Name phi; Value { Term { [ {phi} ]; In PNjunction; Jacobian JVol; } }
     }
   }
@@ -284,19 +285,21 @@ PostProcessing {
 PostOperation {
   { Name map ; NameOfPostProcessing PN_post ;
     Operation {
-      Print[ n, OnElementsOf PNjunction , File "map.pos"];
-      Print[ p, OnElementsOf PNjunction , File "map.pos"];
+      //Print[ n, OnElementsOf PNjunction , File "map.pos"];
+      //Print[ p, OnElementsOf PNjunction , File "map.pos"];
       Print[ phi, OnElementsOf PNjunction , File "map.pos"];
-      Print[Na, OnElementsOf PNjunction , File "map.pos"];
+    /*  Print[Na, OnElementsOf PNjunction , File "map.pos"];
       Print[Nd, OnElementsOf PNjunction , File "map.pos"];
       Print[Naa, OnElementsOf PNjunction , File "map.pos"];
-      Print[Ndd, OnElementsOf PNjunction , File "map.pos"];
+      Print[Ndd, OnElementsOf PNjunction , File "map.pos"];*/
       //Print[ n, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "n_line.txt"];
       //Print[ p, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "p_line.txt"];
       //Print[ phi, OnLine { {0,-2.5e-6,0} {0,2.5e-6,0} } {50}, Dimension 2, Format Table, File "phi_line.txt"];
-      //Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
-      //Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
-      //Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
+
+
+    //  Print[ n, OnElementsOf PNjunction ,Format Table, File "n.txt"];
+      Print[ phi, OnElementsOf PNjunction ,Format Table, File "phi.txt"];
+    //  Print[ p, OnElementsOf PNjunction ,Format Table, File "p.txt"];
     }
   }
 
