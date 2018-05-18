@@ -8,13 +8,13 @@ SetFactory("OpenCASCADE");
  thickness_ZnO =  thickness_ZnO ; // [µm]
 
 //Mesh and Domain Variables
-dens_MeshPoint_NiO_Contact = 1e6*1.e-7;   // Density of the mesh : External domain
-dens_MeshPoint_ZnO_Contact = 1e6*1.e-7;  // Density of the mesh : Ground domain
-dens_MeshPoint_Interface = 1e6*1.e-7;  // Density of the mesh : cable domain
-dens_MeshPoint_Lateral = 100e6*1.e-7;  // Density of the mesh : cable domain
+dens_MeshPoint_NiO_Contact = 1e6*Lc;   // Density of the mesh : External domain
+dens_MeshPoint_ZnO_Contact = 1e6*Lc;  // Density of the mesh : Ground domain
+dens_MeshPoint_Interface = 1e6*Lc;  // Density of the mesh : cable domain
+dens_MeshPoint_Lateral = 100e6*Lc;  // Density of the mesh : cable domain
 
 
-Printf("L %g", L) ;
+
 //*************************************************************************************
 // Geometry
 Point(1) = {0, 0, 0}; // center interface
@@ -34,6 +34,8 @@ Point(13) = {-L, -x_p, 0}; // left bottom point
 Point(14) = {L, x_n, 0}; // right upper point
 Point(15) = {L, -x_p, 0}; // right bottom point
 
+
+// Lines
 Line(1) = {1,2};
 Line(2) = {1,3};
 Line(3) = {2,13};
@@ -52,8 +54,6 @@ Line(15) = {1,11};
 Line(16) = {11,5};
 Line(17) = {4,10};
 Line(18) = {10,4};
-
-
 Line(19) = {13,11};
 Line(20) = {11,15};
 Line(21) = {12,10};
@@ -130,9 +130,6 @@ Recombine Surface{p_type_materialsDepl_right};
 
 
 // Physical boundaries
-//Physical Line("Gamma", 100) = {n_type_boundaries_left,p_type_boundaries_left, n_type_boundaries_right, p_type_boundaries_right};
-//Physical Line("GammaN", 101) = {n_type_boundaries_left, n_type_boundaries_right};
-//Physical Line("GammaP", 102) = {p_type_boundaries_left, p_type_boundaries_right};
 Physical Line("V_n", 104) = {5,6};
 Physical Line("V_p", 103) = {11,12};
 Physical Line("middle", 105) = {-1,2};
@@ -143,7 +140,5 @@ Physical Line("X_p", 107) = {21,22};
 Physical Surface("Omega", 200) = {n_type_materialsDepl_left, p_type_materialsDepl_left,p_type_materialsDepl_right,n_type_materialsDepl_right,n_type_materialsNoDepl_left, p_type_materialsNoDepl_left,p_type_materialsNoDepl_right,n_type_materialsNoDepl_right};// stock_disk_surf[0] : stock_disk_surf[3*n-1], lowerPsurf};
 Physical Surface("Depl_N", 201) = {n_type_materialsDepl_left, n_type_materialsDepl_right};
 Physical Surface("Depl_P", 202) = {p_type_materialsDepl_left, p_type_materialsDepl_right};
-//Physical Line("NoDepl_N", 203) = {n_type_materialsNoDepl_left, n_type_materialsNoDepl_right};
-//Physical Line("NoDepl_P", 204) = {p_type_materialsNoDepl_left, p_type_materialsNoDepl_right};
 Physical Surface("NoDepl_N", 203) = {n_type_materialsNoDepl_left, n_type_materialsNoDepl_right};
 Physical Surface("NoDepl_P", 204) = {p_type_materialsNoDepl_left, p_type_materialsNoDepl_right};

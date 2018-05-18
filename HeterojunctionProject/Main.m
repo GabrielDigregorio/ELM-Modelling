@@ -1,31 +1,36 @@
 % Parameters
 %************************************************************************
-adim = 1; %adim or not adim
 % ALL IN S.I. (MKS)
 
+
+% For adimensionalisation all numbers, adim = 1, otherwise adim = 0
+adim = 1; %adim or not adim
+
+%% ALL IN S.I. (MKS)
+
 % General
-    q         = 1.6021766208e-19;       % [C] absolute value of the chanrge electrons
-    epsilon_0 = 8.85418782e-12;         % [m-3 kg-1 s4 A2] vacuum permitivity
-    T         = 300;                    % [K]
-    k_b       = 1.3806e-23;
-    m0        = 9.109e-31 ;             % [kg] mass electron
+    q         = 1.6021766208e-19;       % absolute value of the chanrge electrons
+    epsilon_0 = 8.85418782e-12;         % vacuum permitivity
+    T         = 300;                    % Temperature [K]
+    k_b       = 1.3806e-23;             % Boltzman constant
+    m0        = 9.109e-31 ;             % mass electron
 
 
 % NiO
-    thickness_NiO = 2.5e-6;             % [m]
+    thickness_NiO = 2.5e-6;            % [m]
     epsilon_r_NiO = 1;                 % [-]
-    m_star_e_NiO = 0.2*m0;              % [kg]
-    m_star_h_NiO = 0.9*m0;              % [kg]
-    N_a_NiO = 1e21;                 % [-/m^3]
-    N_d_NiO = 0;                        % []
-    p_NiO = 1e21;                   % [-/m^3]
-    %n_NiO = NaN;                      % []
-    %mu_e_NiO = NaN;                   % []
-    mu_h_NiO = 10*1e-4;                 % [m^2/s]
-    L_e_NiO = 500e-6;                   % [m]
-    L_h_NiO = 500e-6;                   % [m]
-    %D_e_NiO = V_t * mu_e_NiO ;        % []
-    D_h_NiO = k_b*T/q * mu_h_NiO ;          % []
+    m_star_e_NiO = 0.2*m0;             % [kg]
+    m_star_h_NiO = 0.9*m0;             % [kg]
+    N_a_NiO = 1e21;                    % [-/m^3]
+    N_d_NiO = 0;                       % [-/m^3]
+    p_NiO = 1e21;                      % [-/m^3]
+    %n_NiO = NaN;                      % [-/m^3]
+    %mu_e_NiO = NaN;                   % [m^2/V.s]
+    mu_h_NiO = 10*1e-4;                % [m^2/V.s]
+    L_e_NiO = 500e-6;                  % [m]
+    L_h_NiO = 500e-6;                  % [m]
+    %D_e_NiO = V_t * mu_e_NiO ;        % [m^2/s]
+    D_h_NiO = k_b*T/q * mu_h_NiO ;     % [m^2/s]
 
 
 
@@ -34,23 +39,23 @@ adim = 1; %adim or not adim
     epsilon_r_ZnO = 1;                  % [-]
     m_star_e_ZnO =  0.23*m0;            % [kg]
     m_star_h_ZnO =  0.8*m0;             % [kg]
-    N_a_ZnO = 0;                        % []
-    N_d_ZnO = 1e21;                 % [-/m^3]
-    %p_ZnO = NaN;                      % []
-    n_ZnO = 1e21;                   % [-/m^3]
-    mu_e_ZnO = 10*1e-4;                 % [m^2/s]
-    %mu_h_ZnO = NaN;                   % []
+    N_a_ZnO = 0;                        % [-/m^3]
+    N_d_ZnO = 1e21;                     % [-/m^3]
+    %p_ZnO = NaN;                       % [-/m^3]
+    n_ZnO = 1e21;                       % [-/m^3]
+    mu_e_ZnO = 10*1e-4;                 % [m^2/V.s]
+    %mu_h_ZnO = NaN;                    % [m^2/V.s]
     L_e_ZnO = 500e-6;                   % [m]
     L_h_ZnO = 500e-6;                   % [m]
-    D_e_ZnO = k_b*T/q * mu_e_ZnO;           % []
-    %D_h_ZnO = V_t * mu_h_ZnO;         % []
+    D_e_ZnO = k_b*T/q * mu_e_ZnO;       % [m^2/s]
+    %D_h_ZnO = V_t * mu_h_ZnO;          % [m^2/s]
 
 
 % Bias Applied
-    V_a = 0                            % [V] Applied Bias voltage across the junction
+    V_a = 0                             % [V] Applied Bias voltage across the junction
 
 % For numerical model
-    L = 5e-6;                   % [m] length of the heterojunction
+    L = 5e-6;                           % [m] width of the heterojunction
     nun = mu_e_ZnO ;
     nup =  mu_h_NiO ;
     Dn = D_e_ZnO ;
@@ -66,39 +71,40 @@ adim = 1; %adim or not adim
 
 % build in potential
     n_i = 1.25e16; %[1/cm^3] Intrinsic carrier concentration;
-%     n_in = 
-%     n_ip = 
-%     N_vn =
-%     N_cp =
-%     N_cn =
-%     N_vp =
-%     DeltaE_c = E_c_NiO - E_c_ZnO;
-%     DeltaE_v = E_v_NiO - E_v_ZnO;
-
+    %n_in = 
+    %n_ip = 
+    %N_vn =
+    %N_cp =
+    %N_cn =
+    %N_vp =
+    %DeltaE_v = E_v_NiO - E_v_ZnO;
+    
+    % Homojunction approximation
     phi_i = ((k_b*T)/q) * log((N_d_ZnO*N_a_NiO)/(n_i^2))
+    
+    % Heterojunction approximation
     %phi_i = ((1/q) * (DeltaE_c - DeltaE_v)/2)      +     ((k_b*T)/q) * Log[(N_d*N_a)/(n_in*n_ip)]   +  ((k_b*T)/(2*q)) * Log[(N_vn*N_cp)/(N_cn*N_vp)];
 
 
 % Depletion approx
-
     x_n = sqrt(((2*epsilon_r_NiO*epsilon_0)/q) * (N_a_NiO/N_d_ZnO) * (1/(N_d_ZnO+((epsilon_r_NiO/epsilon_r_ZnO)*N_a_NiO))) * (phi_i - V_a))
     x_p = sqrt(((2*epsilon_r_ZnO*epsilon_0)/q) * (N_d_ZnO/N_a_NiO) * (1/(N_a_NiO+((epsilon_r_NiO/epsilon_r_ZnO)*N_d_ZnO))) * (phi_i - V_a))
-    %Printf[ "string", x_n ];
 
+    
 % Approximation
     G = 0; % Generation
 
 
-% Adim 
-
-    Lc = sqrt(((epsilon_0*k_b*T))/(q^2*no/2))
-    phi_prime = (k_b*T)/q
-    n_prime = 1e21
+%% Adim 
+    Lc = sqrt(((epsilon_0*k_b*T))/(q^2*no/2));
+    phi_prime = (k_b*T)/q;
+    n_prime = 1e21;
     Tauc = 1.000000e-06;
     A = Tauc * nun * phi_prime / (Lc)^2;
     B = Tauc * Dn * phi_prime / (Lc)^2;
     C = Tauc * nup * phi_prime / (Lc)^2;
     D = Tauc * Dp * phi_prime / (Lc)^2;
+    Ac =(q*no*Lc^2)/(phi_prime*epsilon_0);
     
    if (adim == 1)
         thickness_NiO = thickness_NiO/Lc;   
@@ -123,8 +129,8 @@ adim = 1; %adim or not adim
             nup =  mu_h_NiO ;
             Dn = D_e_ZnO ;
             Dp = D_h_NiO ;
-        taun = 1e-6; 
-        taup = 1e-6;
+        taun = 1e-6/Tauc; 
+        taup = 1e-6/Tauc;
         no = 1e21/n_prime;
         po = 1e21/n_prime;
         p_no = 1e15/n_prime;
@@ -222,10 +228,14 @@ fprintf(fid,'%s%i%s\n','G=',G,';');
 fprintf(fid,'\n\n\n');
 
 fprintf(fid,'// Adimentionnalisation\n\n');
+fprintf(fid,'%s%i%s\n','Lc=',Lc,';');
+fprintf(fid,'%s%i%s\n','phi_prime=',phi_prime,';');
+fprintf(fid,'%s%i%s\n','n_prime=',n_prime,';');
 fprintf(fid,'%s%i%s\n','A=',A,';');
 fprintf(fid,'%s%i%s\n','B=',B,';');
 fprintf(fid,'%s%i%s\n','C=',C,';');
 fprintf(fid,'%s%i%s\n','D=',D,';');
+fprintf(fid,'%s%i%s\n','Ac=',Ac,';');
 fprintf(fid,'\n\n\n');
 
 fclose(fid);
