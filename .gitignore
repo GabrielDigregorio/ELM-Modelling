@@ -16,11 +16,10 @@ build/
 *.res
 *.pre
 *.db
-*.txt
+
 Makefile
 test.*
 Test.*
 .DS_Store
 .vscode/
 !CMakeLists.txt
-

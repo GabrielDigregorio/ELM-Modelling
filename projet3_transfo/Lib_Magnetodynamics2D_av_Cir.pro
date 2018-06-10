@@ -14,6 +14,7 @@ DefineConstant[
   Flag_FrequencyDomain = 1, // frequency-domain or time-domain simulation
   Flag_CircuitCoupling = 0, // consider coupling with external electric circuit
   Flag_NewtonRaphson = 1, // Newton-Raphson or Picard method for nonlinear iterations
+  //Flag_nonlinear_core=0,
   CoefPower = 0.5, // coefficient for power calculations
   Freq = 50, // frequency (for harmonic simulations)
   TimeInit = 0, // intial time (for time-domain simulations)
@@ -100,7 +101,9 @@ Group{
     Domain_Cir = Region[ {DomainZ_Cir, DomainSource_Cir} ];
   EndIf
 }
-
+Printf("Vol_linear :%g", NbrRegions[Vol_L_Mag]);
+Printf("Vol_non_linear :%g", NbrRegions[Vol_NL_Mag]);
+Printf("Vol_M_mag :%g", NbrRegions[Vol_M_Mag]);
 Jacobian {
   { Name Vol;
     Case {
@@ -264,6 +267,7 @@ Formulation {
           In Vol_NL_Mag; Jacobian Vol; Integration Gauss_v; }
         Integral { [ - dhdb[{d a}] * {d a} , {d a} ];
           In Vol_NL_Mag; Jacobian Vol; Integration Gauss_v; }
+
       Else
         Integral { [ nu[{d a}] * Dof{d a}, {d a} ];
           In Vol_NL_Mag; Jacobian Vol; Integration Gauss_v; }
@@ -319,6 +323,7 @@ Formulation {
       Else
         Integral { [ nu[{d a}] * Dof{d a}, {d a} ];
           In Vol_NL_Mag; Jacobian Vol; Integration Gauss_v; }
+
       EndIf
 
       Integral { [ - nu[] * br[] , {d a} ];
@@ -482,8 +487,8 @@ PostProcessing {
         }
       }
       { Name h; Value {
-          Term { [ nu[] * {d a} ]; In Vol_Mag; Jacobian Vol; }
-          Term { [ -nu[] * br[] ]; In Vol_M_Mag; Jacobian Vol; }
+          Term { [ nu[{d a}] * {d a} ]; In Vol_Mag; Jacobian Vol; }
+          Term { [ -nu[{d a}] * br[] ]; In Vol_M_Mag; Jacobian Vol; }
         }
       }
       { Name js; Value {
@@ -547,7 +552,7 @@ PostProcessing {
         }
       }
       { Name h; Value {
-          Term { [ nu[] * {d a} ]; In Vol_Mag; Jacobian Vol; }
+          Term { [ nu[{d a}] * {d a} ]; In Vol_Mag; Jacobian Vol; }
         }
       }
       { Name j; Value {

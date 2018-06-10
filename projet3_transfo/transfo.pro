@@ -27,6 +27,8 @@ DefineConstant[
     Name "Parameters/Frequency"}
 ];
 
+Flag_nonlinear_core=1;
+
 Group {
   // Physical regions:
   Air = Region[{AIR_WINDOW, AIR_EXT}];
@@ -43,6 +45,10 @@ Group {
   // Abstract regions that will be used in the "Lib_Magnetodynamics2D_av_Cir.pro"
   // template file included below;
   Vol_Mag = Region[{Air, Core, Coils}]; // full magnetic domain
+  If(Flag_nonlinear_core)
+    Vol_NL_Mag=Region[{Air, Core, Coils}];// je sais pas faire autrement
+  EndIf
+
   If (type_Conds == 1)
     Vol_C_Mag = Region[{Coils}]; // massive conductors
   ElseIf (type_Conds == 2)
@@ -50,15 +56,13 @@ Group {
   EndIf
 }
 
+
+
+If(Flag_nonlinear_core)
+
+
 Function {
-  mu0 = 4e-7*Pi;
 
-  mu[Air] = 1 * mu0;
-
-  mur_Core = 100;
-  mu[Core] = mur_Core * mu0;
-
-  mu[Coils] = 1 * mu0;
   sigma[Coils] = 1e7;
 
   // For a correct definition of the voltage
@@ -91,8 +95,93 @@ Function {
   CoefGeos[Coils] = SignBranch[] * CoefGeo;
 
   // The reluctivity will be used
+    mes_donneesair() = ListFromFile["mu_B_air.txt"] ;
+    mu[Air]= InterpolationLinear[$1]{mes_donneesair()} ;
+    //mu[Air] = 1 * mu0;
+
+    mes_donneescore() = ListFromFile["mu_B_core.txt"] ;
+    mu[Core]= InterpolationLinear[$1]{mes_donneescore()} ;
+
+
+    mes_donneescoils() = ListFromFile["mu_B_coils.txt"] ;
+    mu[Coils]= InterpolationLinear[$1]{mes_donneescoils()} ;
+
+
+    mes_donneesair() = ListFromFile["nu_B_air.txt"] ;
+    nu[Air]= InterpolationLinear[$1]{mes_donneesair()} ;
+
+
+    mes_donneescore() = ListFromFile["nu_B_core.txt"] ;
+    nu[Core]= InterpolationLinear[$1]{mes_donneescore()} ;
+
+
+    mes_donneescoils() = ListFromFile["dhdb_B_coils.txt"] ;
+    nu[Coils]= InterpolationLinear[$1]{mes_donneescoils()} ;
+
+    mes_donneesair() = ListFromFile["dhdb_B_air.txt"] ;
+    dhdb[Air]= InterpolationLinear[$1]{mes_donneesair()} ;
+
+
+    mes_donneescore() = ListFromFile["dhdb_B_core.txt"] ;
+    dhdb[Core]= InterpolationLinear[$1]{mes_donneescore()} ;
+
+
+    mes_donneescoils() = ListFromFile["dhdb_B_coils.txt"] ;
+    dhdb[Coils]= InterpolationLinear[$1]{mes_donneescoils()} ;
+
+
+
+  //dhdb[]=10000;
+}
+
+Else
+  Function {
+  sigma[Coils] = 1e7;
+
+// For a correct definition of the voltage
+  CoefGeo = thickness_Core;
+
+// To be defined separately for each coil portion
+  Sc[Coil_1_P] = SurfaceArea[];
+  SignBranch[Coil_1_P] = 1; // To fix the convention of positive current (1:
+                          // along Oz, -1: along -Oz)
+
+  Sc[Coil_1_M] = SurfaceArea[];
+  SignBranch[Coil_1_M] = -1;
+
+  Sc[Coil_2_P] = SurfaceArea[];
+  SignBranch[Coil_2_P] = 1;
+
+  Sc[Coil_2_M] = SurfaceArea[];
+  SignBranch[Coil_2_M] = -1;
+
+// Number of turns (same for PLUS and MINUS portions) (half values because
+// half coils are defined)
+  Ns[Coil_1] = 1;
+  Ns[Coil_2] = 1;
+
+// Global definitions (nothing to change):
+
+// Current density in each coil portion for a unit current (will be multiplied
+// by the actual total current in the coil)
+  js0[Coils] = Ns[]/Sc[] * Vector[0,0,SignBranch[]];
+  CoefGeos[Coils] = SignBranch[] * CoefGeo;
+
+  mu0=4*Pi*1-7;
+
+  mu[Air] = 1 * mu0;
+
+  mur_Core = 100;
+  mu[Core] = mur_Core * mu0;
+
+  mu[Coils] = 1 * mu0;
   nu[] = 1/mu[];
 }
+EndIf
+
+
+
+
 
 If(type_Analysis == 1)
   Flag_FrequencyDomain = 1;
