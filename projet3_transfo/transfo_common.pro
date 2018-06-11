@@ -5,10 +5,10 @@ width_Core = 1.;
 height_Core = 1.;
 
 // Thickness along Oz (to be considered for a correct definition of voltage)
-thickness_Core = 1.;
+thickness_Core = 1.; // perpendicular to the plane
 
-width_Window = 0.5;
-height_Window = 0.5;
+width_Window = 0.8;// control thciness of the core
+//height_Window = 0.6;
 
 width_Core_Leg = (width_Core-width_Window)/2.;
 

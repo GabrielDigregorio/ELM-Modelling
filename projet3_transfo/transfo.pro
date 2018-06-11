@@ -25,9 +25,19 @@ DefineConstant[
     Name "Parameters/03Analysis type"}
   Freq = {50, Min 0, Max 1e3, Step 1,
     Name "Parameters/Frequency"}
+    mur_corr={100, Min 1, Max 1e3, Step 1,
+      Name "Parameters/mu_r_core"}
+  Flag_nonlinear_core=    {0, Choices{0 = "Linear", 1= "nonlinear"}, Highlight "Blue",
+  Name "Parameters/01Non linear"}
+  sigma_c={1e7, Min 1, Max 1e9, Step 1,
+    Name "Parameters/conductivity coil"}
+    N1={1, Min 1, Max 200, Step 1,
+      Name "Parameters/number of turn coil1"}
+      load={1e6, Min 1e-5, Max 1e11, Step 1,
+        Name "Parameters/number of turn coil1"}
 ];
 
-Flag_nonlinear_core=1;
+//Flag_nonlinear_core=0;
 
 Group {
   // Physical regions:
@@ -63,7 +73,7 @@ If(Flag_nonlinear_core)
 
 Function {
 
-  sigma[Coils] = 1e7;
+  sigma[Coils] = sigma_c;
 
   // For a correct definition of the voltage
   CoefGeo = thickness_Core;
@@ -84,8 +94,8 @@ Function {
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[Coil_1] = 1;
-  Ns[Coil_2] = 1;
+  Ns[Coil_1] = N1;
+  Ns[Coil_2] = N1/10;
 
   // Global definitions (nothing to change):
 
@@ -136,7 +146,7 @@ Function {
 
 Else
   Function {
-  sigma[Coils] = 1e7;
+  sigma[Coils] = sigma_c;
 
 // For a correct definition of the voltage
   CoefGeo = thickness_Core;
@@ -155,10 +165,10 @@ Else
   Sc[Coil_2_M] = SurfaceArea[];
   SignBranch[Coil_2_M] = -1;
 
-// Number of turns (same for PLUS and MINUS portions) (half values because
-// half coils are defined)
-  Ns[Coil_1] = 1;
-  Ns[Coil_2] = 1;
+  // Number of turns (same for PLUS and MINUS portions) (half values because
+  // half coils are defined)
+  Ns[Coil_1] = N1;
+  Ns[Coil_2] = N1/10;
 
 // Global definitions (nothing to change):
 
@@ -171,7 +181,7 @@ Else
 
   mu[Air] = 1 * mu0;
 
-  mur_Core = 100;
+  mur_Core = mur_corr;
   mu[Core] = mur_Core * mu0;
 
   mu[Coils] = 1 * mu0;
@@ -221,11 +231,11 @@ ElseIf (type_Source == 2) // voltage
     deg = Pi/180;
     // Input RMS voltage (half of the voltage because of symmetry; half coils
     // are defined)
-    val_E_in = 1.;
-    phase_E_in = 90 *deg; // Phase in radian (from phase in degree)
+    val_E_in = 120.;
+    phase_E_in =0 *deg; // Phase in radian (from phase in degree)
     // High value for an open-circuit test; Low value for a short-circuit test;
     // any value in-between for any charge
-    Resistance[R_out] = 1e6;
+    Resistance[R_out] = load;
   }
 
   Constraint {
