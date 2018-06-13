@@ -3,6 +3,29 @@
 // Template library for 2D magnetostatic and magnetodynamic problems in terms
 // of the magnetic vector potential a (potentially coupled with the electric
 // scalar potential v), with optional circuit coupling.
+DefineConstant[
+  modelPath = "", // default path of the model
+  resPath = StrCat[modelPath, "Results/"], // path for post-operation files
+  Flag_Axi = 0, // axisymmetric model?
+  Flag_FrequencyDomain = 1, // frequency-domain or time-domain simulation
+  Flag_CircuitCoupling = 0, // consider coupling with external electric circuit
+  Flag_NewtonRaphson = 0, // Newton-Raphson or Picard method for nonlinear iterations
+  //Flag_nonlinear_core=0,
+  CoefPower = 0.5, // coefficient for power calculations
+  Freq = 50, // frequency (for harmonic simulations)
+  TimeInit = 0, // intial time (for time-domain simulations)
+  TimeFinal = 1/50, // final time (for time-domain simulations)
+  DeltaTime = 1/500, // time step (for time-domain simulations)
+  FE_Order = 1, // finite element order
+  Val_Rint = 0, // interior radius of annulus shell transformation region (Vol_Inf_Mag)
+  Val_Rext = 0 // exterior radius of annulus shell  transformation region (Vol_Inf_Mag)
+  Val_Cx = 0, // x-coordinate of center of Vol_Inf_Mag
+  Val_Cy = 0, // y-coordinate of center of Vol_Inf_Mag
+  Val_Cz = 0, // z-coordinate of center of Vol_Inf_Mag
+  NL_tol_abs = 1e-6, // absolute tolerance on residual for noninear iterations
+  NL_tol_rel = 1e-6, // relative tolerance on residual for noninear iterations
+  NL_iter_max = 20 // maximum number of noninear iterations
+];
 
 Group {
   DefineGroup[
