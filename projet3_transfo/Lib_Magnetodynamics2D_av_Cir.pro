@@ -3,9 +3,13 @@
 // Template library for 2D magnetostatic and magnetodynamic problems in terms
 // of the magnetic vector potential a (potentially coupled with the electric
 // scalar potential v), with optional circuit coupling.
+
+// Default definitions of constants, groups and functions that can/should be
+// redefined from outside the template:
+
 DefineConstant[
   modelPath = "", // default path of the model
-  resPath = StrCat[modelPath, "Results/"], // path for post-operation files
+  resPath = StrCat[modelPath, "res/"], // path for post-operation files
   Flag_Axi = 0, // axisymmetric model?
   Flag_FrequencyDomain = 1, // frequency-domain or time-domain simulation
   Flag_CircuitCoupling = 0, // consider coupling with external electric circuit
