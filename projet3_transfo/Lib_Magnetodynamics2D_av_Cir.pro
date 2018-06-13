@@ -9,7 +9,7 @@ DefineConstant[
   Flag_Axi = 0, // axisymmetric model?
   Flag_FrequencyDomain = 1, // frequency-domain or time-domain simulation
   Flag_CircuitCoupling = 0, // consider coupling with external electric circuit
-  Flag_NewtonRaphson = 0, // Newton-Raphson or Picard method for nonlinear iterations
+  Flag_NewtonRaphson = 1, // Newton-Raphson or Picard method for nonlinear iterations
   //Flag_nonlinear_core=0,
   CoefPower = 0.5, // coefficient for power calculations
   Freq = 50, // frequency (for harmonic simulations)

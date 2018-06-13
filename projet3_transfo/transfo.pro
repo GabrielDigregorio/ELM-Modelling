@@ -27,6 +27,7 @@ Group {
 }
 
 
+
 If(Flag_nonlinear_core)
 
 Function {
@@ -52,8 +53,8 @@ Function {
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[P] = N1;
-  Ns[S] = N1/10;
+  Ns[P] = 1;
+  Ns[S] = 1;
 
   // Global definitions (nothing to change):
 
@@ -125,8 +126,8 @@ Else
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[P] = N1;
-  Ns[S] = N1/10;
+  Ns[P] = 1;
+  Ns[S] = 1;
 
 // Global definitions (nothing to change):
 
@@ -135,11 +136,11 @@ Else
   js0[Coils] = Ns[]/Sc[] * Vector[0,0,SignBranch[]];
   CoefGeos[Coils] = SignBranch[] * CoefGeo;
 
-  mu0=4*Pi*1-7;
+  mu0=4*Pi*1e-7;
 
   mu[Air] = 1 * mu0;
 
-  mur_Core = mur_corr;
+  mur_Core = 100;
   mu[Core] = mur_Core * mu0;
 
   mu[Coils] = 1 * mu0;

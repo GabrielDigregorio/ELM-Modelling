@@ -8,18 +8,12 @@ DefineConstant[
     Name "Parameters/03Analysis type"}
   Freq = {50, Min 0, Max 1e3, Step 1,
     Name "Parameters/Frequency"}
-    mur_corr={100, Min 1, Max 1e3, Step 1,
-      Name "Parameters/mu_r_core"}
-  Flag_nonlinear_core=    {0, Choices{0 = "Linear", 1= "nonlinear"}, Highlight "Blue",
-  Name "Parameters/01Non linear"}
-  sigma_c={1e7, Min 1, Max 1e9, Step 1,
-    Name "Parameters/conductivity coil"}
-    N1={1, Min 1, Max 200, Step 1,
-      Name "Parameters/number of turn coil1"}
-      load={1e6, Min 1e-5, Max 1e11, Step 1,
-        Name "Parameters/number of turn coil1"}
+  
 ];
 
+sigma_c = 1e7;
+Flag_nonlinear_core = 0;
+load = 1e6;
 
 // Geometrical Dimensions
 thickness_Core = 1; // perpendicular to the plane

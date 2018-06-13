@@ -220,7 +220,7 @@ Physical Line("Domain_Boundaries", 1002) = {line_Air_Ext[]};
 Physical Surface("Air_InnerCore", 1003) = {surface_Air_InnerCore};
 Physical Surface("Core", 1004) = {surface_Core};
 Physical Surface("P_Right", 1005) = {surface_P_point};
-Physical Surface("P_Lrft", 1006) = {surface_P_Coil};
+Physical Surface("P_Left", 1006) = {surface_P_Coil};
 Physical Surface("S_Right", 1007) = {surface_S_point};
 Physical Surface("S_Left", 1008) = {surface_S_Coil};
 
