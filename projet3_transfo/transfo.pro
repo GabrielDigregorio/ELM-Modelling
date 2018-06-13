@@ -1,75 +1,33 @@
-/* -------------------------------------------------------------------
-   Tutorial 7b : magnetodyamic model of a single-phase transformer
-
-   Features:
-   - Use of a generic template formulation library
-   - Frequency- and time-domain dynamic solutions
-   - Circuit coupling used as a black-box (see Tutorial 8 for details)
-
-   To compute the solution in a terminal:
-       getdp transfo -solve Magnetodynamics2D_av -pos Map_a
-
-   To compute the solution interactively from the Gmsh GUI:
-       File > Open > transfo.pro
-       Run (button at the bottom of the left panel)
-   ------------------------------------------------------------------- */
-
-Include "transfo_common.pro";
-
-DefineConstant[
-  type_Conds = {2, Choices{1 = "Massive", 2 = "Coil"}, Highlight "Blue",
-    Name "Parameters/01Conductor type"}
-  type_Source = {2, Choices{1 = "Current", 2 = "Voltage"}, Highlight "Blue",
-    Name "Parameters/02Source type"}
-  type_Analysis = {1, Choices{1 = "Frequency-domain", 2 = "Time-domain"}, Highlight "Blue",
-    Name "Parameters/03Analysis type"}
-  Freq = {50, Min 0, Max 1e3, Step 1,
-    Name "Parameters/Frequency"}
-    mur_corr={100, Min 1, Max 1e3, Step 1,
-      Name "Parameters/mu_r_core"}
-  Flag_nonlinear_core=    {0, Choices{0 = "Linear", 1= "nonlinear"}, Highlight "Blue",
-  Name "Parameters/01Non linear"}
-  sigma_c={1e7, Min 1, Max 1e9, Step 1,
-    Name "Parameters/conductivity coil"}
-    N1={1, Min 1, Max 200, Step 1,
-      Name "Parameters/number of turn coil1"}
-      load={1e6, Min 1e-5, Max 1e11, Step 1,
-        Name "Parameters/number of turn coil1"}
-];
+Include "transfo_GUI.pro";
 
 //Flag_nonlinear_core=0;
 
 Group {
-  // Physical regions:
-  Air = Region[{AIR_WINDOW, AIR_EXT}];
-  Sur_Air_Ext = Region[SUR_AIR_EXT]; // exterior boundary
-  Core = Region[CORE]; // magnetic core of the transformer, assumed non-conducting
-  Coil_1_P = Region[COIL_1_PLUS]; // 1st coil, positive side
-  Coil_1_M = Region[COIL_1_MINUS]; // 1st coil, negative side
-  Coil_1 = Region[{Coil_1_P, Coil_1_M}];
-  Coil_2_P = Region[COIL_2_PLUS]; // 2nd coil, positive side
-  Coil_2_M = Region[COIL_2_MINUS]; // 2nd coil, negative side
-  Coil_2 = Region[{Coil_2_P, Coil_2_M}];
-  Coils = Region[{Coil_1, Coil_2}];
+  // Physical regions :
+  Air = Region[{1003, 1001}];
+  Sur_Air_Ext = Region[1002]; // exterior boundary
+  Core = Region[1004]; // magnetic core of the transformer, assumed non-conducting
+  P_Left = Region[1005]; P_Right = Region[1006];
+  P = Region[{P_Left, P_Right}]; // Primary coil
+  S_Left = Region[1007]; S_Right = Region[1008];
+  S = Region[{S_Left, S_Right}]; // Secondry coil
+  Coils = Region[{P, S}];
 
-  // Abstract regions that will be used in the "Lib_Magnetodynamics2D_av_Cir.pro"
-  // template file included below;
-  Vol_Mag = Region[{Air, Core, Coils}]; // full magnetic domain
+  // Used in the "Lib_Magnetodynamics2D_av_Cir.pro"
+  Vol_Mag = Region[{Air, Core, Coils}]; 
   If(Flag_nonlinear_core)
-    Vol_NL_Mag=Region[{Air, Core, Coils}];// je sais pas faire autrement
+    Vol_NL_Mag=Region[{Air, Core, Coils}];
   EndIf
 
   If (type_Conds == 1)
-    Vol_C_Mag = Region[{Coils}]; // massive conductors
+    Vol_C_Mag = Region[{Coils}];
   ElseIf (type_Conds == 2)
-    Vol_S_Mag = Region[{Coils}]; // stranded conductors (coils)
+    Vol_S_Mag = Region[{Coils}];
   EndIf
 }
 
 
-
 If(Flag_nonlinear_core)
-
 
 Function {
 
@@ -79,23 +37,23 @@ Function {
   CoefGeo = thickness_Core;
 
   // To be defined separately for each coil portion
-  Sc[Coil_1_P] = SurfaceArea[];
-  SignBranch[Coil_1_P] = 1; // To fix the convention of positive current (1:
+  Sc[P_Left] = SurfaceArea[];
+  SignBranch[P_Left] = 1; // To fix the convention of positive current (1:
                             // along Oz, -1: along -Oz)
 
-  Sc[Coil_1_M] = SurfaceArea[];
-  SignBranch[Coil_1_M] = -1;
+  Sc[P_Right] = SurfaceArea[];
+  SignBranch[P_Right] = -1;
 
-  Sc[Coil_2_P] = SurfaceArea[];
-  SignBranch[Coil_2_P] = 1;
+  Sc[S_Left] = SurfaceArea[];
+  SignBranch[S_Left] = 1;
 
-  Sc[Coil_2_M] = SurfaceArea[];
-  SignBranch[Coil_2_M] = -1;
+  Sc[S_mius] = SurfaceArea[];
+  SignBranch[S_Right] = -1;
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[Coil_1] = N1;
-  Ns[Coil_2] = N1/10;
+  Ns[P] = N1;
+  Ns[S] = N1/10;
 
   // Global definitions (nothing to change):
 
@@ -152,23 +110,23 @@ Else
   CoefGeo = thickness_Core;
 
 // To be defined separately for each coil portion
-  Sc[Coil_1_P] = SurfaceArea[];
-  SignBranch[Coil_1_P] = 1; // To fix the convention of positive current (1:
+  Sc[P_Left] = SurfaceArea[];
+  SignBranch[P_Left] = 1; // To fix the convention of positive current (1:
                           // along Oz, -1: along -Oz)
 
-  Sc[Coil_1_M] = SurfaceArea[];
-  SignBranch[Coil_1_M] = -1;
+  Sc[P_Right] = SurfaceArea[];
+  SignBranch[P_Right] = -1;
 
-  Sc[Coil_2_P] = SurfaceArea[];
-  SignBranch[Coil_2_P] = 1;
+  Sc[S_Left] = SurfaceArea[];
+  SignBranch[S_Left] = 1;
 
-  Sc[Coil_2_M] = SurfaceArea[];
-  SignBranch[Coil_2_M] = -1;
+  Sc[S_Right] = SurfaceArea[];
+  SignBranch[S_Right] = -1;
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[Coil_1] = N1;
-  Ns[Coil_2] = N1/10;
+  Ns[P] = N1;
+  Ns[S] = N1/10;
 
 // Global definitions (nothing to change):
 
@@ -255,20 +213,20 @@ ElseIf (type_Source == 2) // voltage
       Case Circuit_1 {
         // PLUS and MINUS coil portions to be connected in series, together with
         // E_in (an additional resistor should be defined to represent the
-        // Coil_1 end-winding (not considered in the 2D model))
+        // P end-winding (not considered in the 2D model))
         { Region E_in; Branch {1,2}; }
 
-        { Region Coil_1_P; Branch {2,3} ; }
-        { Region Coil_1_M; Branch {3,1} ; }
+        { Region P_Left; Branch {2,3} ; }
+        { Region P_Right; Branch {3,1} ; }
       }
       Case Circuit_2 {
         // PLUS and MINUS coil portions to be connected in series, together with
         // R_out (an additional resistor should be defined to represent the
-        // Coil_2 end-winding (not considered in the 2D model))
+        // S end-winding (not considered in the 2D model))
         { Region R_out; Branch {1,2}; }
 
-        { Region Coil_2_P; Branch {2,3} ; }
-        { Region Coil_2_M; Branch {3,1} ; }
+        { Region S_Left; Branch {2,3} ; }
+        { Region S_Right; Branch {3,1} ; }
       }
     }
 
@@ -286,8 +244,8 @@ Constraint {
     Case {
      If (type_Source == 1)
       // Current in each coil (same for PLUS and MINUS portions)
-       { Region Coil_1; Value 1; TimeFunction F_Sin_wt_p[]{2*Pi*Freq, 0};  }
-      { Region Coil_2; Value 0; }
+       { Region P; Value 1; TimeFunction F_Sin_wt_p[]{2*Pi*Freq, 0};  }
+      { Region S; Value 0; }
      EndIf
     }
   }
@@ -311,19 +269,19 @@ PostOperation {
         // that the voltage is not equally distributed in PLUS and MINUS
         // portions, which is the reason why we must apply the total voltage
         // through a circuit -> type_Source == 2)
-        Echo[ "Coil_1_P", Format Table, File "UI.txt" ];
-        Print[ U, OnRegion Coil_1_P, Format FrequencyTable, File > "UI.txt" ];
-        Print[ I, OnRegion Coil_1_P, Format FrequencyTable, File > "UI.txt"];
-        Echo[ "Coil_1_M", Format Table, File > "UI.txt" ];
-        Print[ U, OnRegion Coil_1_M, Format FrequencyTable, File > "UI.txt" ];
-        Print[ I, OnRegion Coil_1_M, Format FrequencyTable, File > "UI.txt"];
+        Echo[ "P_Left", Format Table, File "UI.txt" ];
+        Print[ U, OnRegion P_Left, Format FrequencyTable, File > "UI.txt" ];
+        Print[ I, OnRegion P_Left, Format FrequencyTable, File > "UI.txt"];
+        Echo[ "P_Right", Format Table, File > "UI.txt" ];
+        Print[ U, OnRegion P_Right, Format FrequencyTable, File > "UI.txt" ];
+        Print[ I, OnRegion P_Right, Format FrequencyTable, File > "UI.txt"];
 
-        Echo[ "Coil_2_P", Format Table, File > "UI.txt" ];
-        Print[ U, OnRegion Coil_2_P, Format FrequencyTable, File > "UI.txt" ];
-        Print[ I, OnRegion Coil_2_P, Format FrequencyTable, File > "UI.txt"];
-        Echo[ "Coil_2_M", Format Table, File > "UI.txt" ];
-        Print[ U, OnRegion Coil_2_M, Format FrequencyTable, File > "UI.txt" ];
-        Print[ I, OnRegion Coil_2_M, Format FrequencyTable, File > "UI.txt"];
+        Echo[ "S_Left", Format Table, File > "UI.txt" ];
+        Print[ U, OnRegion S_P, Format FrequencyTable, File > "UI.txt" ];
+        Print[ I, OnRegion S_P, Format FrequencyTable, File > "UI.txt"];
+        Echo[ "S_Right", Format Table, File > "UI.txt" ];
+        Print[ U, OnRegion S_M, Format FrequencyTable, File > "UI.txt" ];
+        Print[ I, OnRegion S_M, Format FrequencyTable, File > "UI.txt"];
 
       ElseIf (type_Source == 2)
         // In text file UI.txt: voltage and current of the primary coil (from E_in)
