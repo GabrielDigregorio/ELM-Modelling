@@ -1,9 +1,10 @@
+
+
 Include "transfo_GUI.pro";
 
-//Flag_nonlinear_core=0;
 
 Group {
-  // Physical regions :
+// Physical regions :
   Air = Region[{1003, 1001}];
   Sur_Air_Ext = Region[1002]; // exterior boundary
   Core = Region[1004]; // magnetic core of the transformer, assumed non-conducting
@@ -13,16 +14,22 @@ Group {
   S = Region[{S_Left, S_Right}]; // Secondry coil
   Coils = Region[{P, S}];
 
+<<<<<<< HEAD
   // Used in the "Lib_Magnetodynamics2D_av_Cir.pro"
   Vol_Mag = Region[{Air, Core, Coils}];
+=======
+  // Abstract regions that will be used in the "Lib_Magnetodynamics2D_av_Cir.pro"
+  // template file included below;
+  Vol_Mag = Region[{Air, Core, Coils}]; // full magnetic domain
+>>>>>>> 0a46616a3796c241b2c64da0c03d35e506ada642
   If(Flag_nonlinear_core)
-    Vol_NL_Mag=Region[{Air, Core, Coils}];
+    Vol_NL_Mag=Region[{Air, Core, Coils}];// je sais pas faire autrement
   EndIf
 
   If (type_Conds == 1)
-    Vol_C_Mag = Region[{Coils}];
+    Vol_C_Mag = Region[{Coils}]; // massive conductors
   ElseIf (type_Conds == 2)
-    Vol_S_Mag = Region[{Coils}];
+    Vol_S_Mag = Region[{Coils}]; // stranded conductors (coils)
   EndIf
 }
 
@@ -30,9 +37,10 @@ Group {
 
 If(Flag_nonlinear_core)
 
+
 Function {
 
-  sigma[Coils] = sigma_c;
+  sigma[Coils] = sigma_Coils;
 
   // For a correct definition of the voltage
   CoefGeo = thickness_Core;
@@ -48,13 +56,13 @@ Function {
   Sc[S_Left] = SurfaceArea[];
   SignBranch[S_Left] = 1;
 
-  Sc[S_mius] = SurfaceArea[];
+  Sc[S_Right] = SurfaceArea[];
   SignBranch[S_Right] = -1;
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[P] = 1;
-  Ns[S] = 1;
+  Ns[P] = N_Primary;
+  Ns[S] = N_Secondary;
 
   // Global definitions (nothing to change):
 
@@ -105,7 +113,7 @@ Function {
 
 Else
   Function {
-  sigma[Coils] = sigma_c;
+  sigma[Coils] = sigma_Coils;
 
 // For a correct definition of the voltage
   CoefGeo = thickness_Core;
@@ -124,10 +132,17 @@ Else
   Sc[S_Right] = SurfaceArea[];
   SignBranch[S_Right] = -1;
 
+<<<<<<< HEAD
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
   Ns[P] = 1;
   Ns[S] = 10;
+=======
+// Number of turns (same for PLUS and MINUS portions) (half values because
+// half coils are defined)
+  Ns[P] = N_Primary;
+  Ns[S] = N_Secondary;
+>>>>>>> 0a46616a3796c241b2c64da0c03d35e506ada642
 
 // Global definitions (nothing to change):
 
@@ -136,13 +151,8 @@ Else
   js0[Coils] = Ns[]/Sc[] * Vector[0,0,SignBranch[]];
   CoefGeos[Coils] = SignBranch[] * CoefGeo;
 
-  mu0=4*Pi*1e-7;
-
   mu[Air] = 1 * mu0;
-
-  mur_Core = 100;
   mu[Core] = mur_Core * mu0;
-
   mu[Coils] = 1 * mu0;
   nu[] = 1/mu[];
 }
@@ -190,11 +200,11 @@ ElseIf (type_Source == 2) // voltage
     deg = Pi/180;
     // Input RMS voltage (half of the voltage because of symmetry; half coils
     // are defined)
-    val_E_in = 120.;
-    phase_E_in =0 *deg; // Phase in radian (from phase in degree)
+    val_E_in = 1.;
+    phase_E_in = 90 *deg; // Phase in radian (from phase in degree)
     // High value for an open-circuit test; Low value for a short-circuit test;
     // any value in-between for any charge
-    Resistance[R_out] = load;
+    Resistance[R_out] = 1e6;
   }
 
   Constraint {
@@ -278,11 +288,11 @@ PostOperation {
         Print[ I, OnRegion P_Right, Format FrequencyTable, File > "UI.txt"];
 
         Echo[ "S_Left", Format Table, File > "UI.txt" ];
-        Print[ U, OnRegion S_P, Format FrequencyTable, File > "UI.txt" ];
-        Print[ I, OnRegion S_P, Format FrequencyTable, File > "UI.txt"];
+        Print[ U, OnRegion S_Left, Format FrequencyTable, File > "UI.txt" ];
+        Print[ I, OnRegion S_Left, Format FrequencyTable, File > "UI.txt"];
         Echo[ "S_Right", Format Table, File > "UI.txt" ];
-        Print[ U, OnRegion S_M, Format FrequencyTable, File > "UI.txt" ];
-        Print[ I, OnRegion S_M, Format FrequencyTable, File > "UI.txt"];
+        Print[ U, OnRegion S_Right, Format FrequencyTable, File > "UI.txt" ];
+        Print[ I, OnRegion S_Right, Format FrequencyTable, File > "UI.txt"];
 
       ElseIf (type_Source == 2)
         // In text file UI.txt: voltage and current of the primary coil (from E_in)
