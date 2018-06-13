@@ -25,7 +25,15 @@ DefineConstant[
     Name "Parameters/03Analysis type"}
   Freq = {50, Min 0, Max 1e3, Step 1,
     Name "Parameters/Frequency"}
-];
+    sigma_c={1e7, Min 1e-10, Max 1e15, Step 1,
+      Name "Parameters/conductivity coils"}
+       N1={10, Min 1, Max 1000, Step 1,
+         Name "Parameters/number turn coil 1"}
+
+         mur_Core={100, Min 1, Max 10000, Step 1,
+           Name "Parameters/realtive permeability core"}
+           ];
+
 
 Flag_nonlinear_core=0;
 
@@ -63,7 +71,7 @@ If(Flag_nonlinear_core)
 
 Function {
 
-  sigma[Coils] = 1e7;
+  sigma[Coils] = sigma_c;
 
   // For a correct definition of the voltage
   CoefGeo = thickness_Core;
@@ -84,8 +92,8 @@ Function {
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[Coil_1] = 1;
-  Ns[Coil_2] = 1;
+  Ns[Coil_1] = N1;
+  Ns[Coil_2] = N1/10;
 
   // Global definitions (nothing to change):
 
@@ -136,7 +144,7 @@ Function {
 
 Else
   Function {
-  sigma[Coils] = 1e7;
+  sigma[Coils] = sigma_c;
 
 // For a correct definition of the voltage
   CoefGeo = thickness_Core;
@@ -157,8 +165,8 @@ Else
 
 // Number of turns (same for PLUS and MINUS portions) (half values because
 // half coils are defined)
-  Ns[Coil_1] = 1;
-  Ns[Coil_2] = 1;
+Ns[Coil_1] = N1;
+Ns[Coil_2] = N1/10;
 
 // Global definitions (nothing to change):
 
@@ -171,7 +179,7 @@ Else
 
   mu[Air] = 1 * mu0;
 
-  mur_Core = 100;
+  //mur_Core = 100;
   mu[Core] = mur_Core * mu0;
 
   mu[Coils] = 1 * mu0;
@@ -221,11 +229,11 @@ ElseIf (type_Source == 2) // voltage
     deg = Pi/180;
     // Input RMS voltage (half of the voltage because of symmetry; half coils
     // are defined)
-    val_E_in = 1.;
+    val_E_in = 120.;
     phase_E_in = 90 *deg; // Phase in radian (from phase in degree)
     // High value for an open-circuit test; Low value for a short-circuit test;
     // any value in-between for any charge
-    Resistance[R_out] = 1e6;
+    Resistance[R_out] = 1e11;
   }
 
   Constraint {

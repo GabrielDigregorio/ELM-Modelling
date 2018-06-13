@@ -1,3 +1,17 @@
+DefineConstant[
+
+           height_Coil_1={0.25, Min 0.01, Max 10000, Step 1,
+             Name "Geometry/heigth coils 1"}
+             width_Window={0.5, Min 0.01, Max 10000, Step 1,
+               Name "Geometry/thickness core "}
+               height_Coil_2={0.25, Min 0.01, Max 10000, Step 1,
+                 Name "Geometry/heigth coils 2"}
+
+
+];
+
+
+
 
 // Dimensions
 
@@ -7,21 +21,21 @@ height_Core = 1.;
 // Thickness along Oz (to be considered for a correct definition of voltage)
 thickness_Core = 1.;
 
-width_Window = 0.5;
-height_Window = 0.5;
+//width_Window = 0.9;// control the width of the core
+//height_Window = 0.9;
 
 width_Core_Leg = (width_Core-width_Window)/2.;
 
 width_Coil_1 = 0.10;
-height_Coil_1 = 0.25;
+//height_Coil_1 = 0.25;
 gap_Core_Coil_1 = 0.05;
 
 width_Coil_2 = 0.10;
-height_Coil_2 = 0.25;
+//height_Coil_2 = 0.25;
 gap_Core_Coil_2 = 0.05;
 
 gap_Core_Box_X = 1.;
-gap_Core_Box_Y = 1.;
+gap_Core_Box_Y = 2.;// distance from 
 
 // Characteristic lenghts (for mesh sizes)
 

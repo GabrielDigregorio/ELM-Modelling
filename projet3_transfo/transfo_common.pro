@@ -12,7 +12,7 @@ width_Window = 0.8;// control thciness of the core
 
 width_Core_Leg = (width_Core-width_Window)/2.;
 
-width_Coil_1 = 0.10;
+width_Coil_1 = 0.20;
 height_Coil_1 = 0.25;
 gap_Core_Coil_1 = 0.05;
 

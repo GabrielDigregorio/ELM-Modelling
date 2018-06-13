@@ -14,7 +14,7 @@ Group {
   Coils = Region[{P, S}];
 
   // Used in the "Lib_Magnetodynamics2D_av_Cir.pro"
-  Vol_Mag = Region[{Air, Core, Coils}]; 
+  Vol_Mag = Region[{Air, Core, Coils}];
   If(Flag_nonlinear_core)
     Vol_NL_Mag=Region[{Air, Core, Coils}];
   EndIf
@@ -127,7 +127,7 @@ Else
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
   Ns[P] = 1;
-  Ns[S] = 1;
+  Ns[S] = 10;
 
 // Global definitions (nothing to change):
 
