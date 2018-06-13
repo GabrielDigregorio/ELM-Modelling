@@ -14,14 +14,8 @@ Group {
   S = Region[{S_Left, S_Right}]; // Secondry coil
   Coils = Region[{P, S}];
 
-<<<<<<< HEAD
   // Used in the "Lib_Magnetodynamics2D_av_Cir.pro"
   Vol_Mag = Region[{Air, Core, Coils}];
-=======
-  // Abstract regions that will be used in the "Lib_Magnetodynamics2D_av_Cir.pro"
-  // template file included below;
-  Vol_Mag = Region[{Air, Core, Coils}]; // full magnetic domain
->>>>>>> 0a46616a3796c241b2c64da0c03d35e506ada642
   If(Flag_nonlinear_core)
     Vol_NL_Mag=Region[{Air, Core, Coils}];// je sais pas faire autrement
   EndIf
@@ -132,17 +126,10 @@ Else
   Sc[S_Right] = SurfaceArea[];
   SignBranch[S_Right] = -1;
 
-<<<<<<< HEAD
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
   Ns[P] = 1;
   Ns[S] = 10;
-=======
-// Number of turns (same for PLUS and MINUS portions) (half values because
-// half coils are defined)
-  Ns[P] = N_Primary;
-  Ns[S] = N_Secondary;
->>>>>>> 0a46616a3796c241b2c64da0c03d35e506ada642
 
 // Global definitions (nothing to change):
 
