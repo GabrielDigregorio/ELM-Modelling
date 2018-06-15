@@ -24,7 +24,7 @@ DefineConstant[
 
            height_Coil_1={0.25, Min 0.01, Max 10000, Step 1,
              Name "Geometry/coil1/heigth coils"}
-             width_Window={0.2, Min 0.01, Max 10000, Step 1,
+             width_Core_Leg={0.2, Min 0.01, Max 10000, Step 1,
                Name "Geometry/core/Thickness horiz core"}
                height_Core_Leg={0.2, Min 0.01, Max 10000, Step 1,
                  Name "Geometry/core/Thickness verti core"}
@@ -63,7 +63,7 @@ DefineConstant[
 //width_Window = 0.9;// control the width of the core
 //height_Window = 0.9;
 
-width_Core_Leg = (width_Core-(1-width_Window*2))/2.;
+//width_Core_Leg = (width_Core-(1-width_Window*2))/2.;
 // Thickness along Oz (to be considered for a correct definition of voltage)
 thickness_Core = width_Core_Leg ;//1.;
 B_max=1.5;
@@ -88,16 +88,16 @@ N2=N1/10;
 
 If(Power == 1)
 	S_N = 50;
-  S_wire1=0.4167;
-  S_wire2=4.167;
+  S_wire1=0.4167/1e6;
+  S_wire2=4.167/1e6;
 ElseIf(Power == 2)
 	S_N = 500;
-  S_wire1=4.167;
-  S_wire2=41.67;
+  S_wire1=4.167/1e6;
+  S_wire2=41.67/1000;
 Else
 	S_N = 5000;
-  S_wire1=41.67;
-  S_wire2=416.7;
+  S_wire1=41.67/1e6;
+  S_wire2=416.7/1e6;
 EndIf
 
 Air_tot_1=S_wire1*N1;
