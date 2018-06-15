@@ -68,7 +68,7 @@ width_Core_Leg = (width_Core-(1-width_Window*2))/2.;
 thickness_Core = width_Core_Leg ;//1.;
 B_max=1.5;
   Printf("width_Core_Leg  %g", width_Core_Leg);
-N1=1/(2*Pi*Freq*width_Core_Leg*width_Core_Leg*B_max)*120;
+N1=(1/(2*Pi*Freq*width_Core_Leg*width_Core_Leg*B_max))*120;
   Printf("n_1  %g", N1);
 N2=N1/10;
 
@@ -88,16 +88,16 @@ N2=N1/10;
 
 If(Power == 1)
 	S_N = 50;
-  S_wire1=0.4167;
-  S_wire2=4.167;
+  S_wire1=0.4167/1e6;
+  S_wire2=4.167/1e6;
 ElseIf(Power == 2)
 	S_N = 500;
-  S_wire1=4.167;
-  S_wire2=41.67;
+  S_wire1=4.167/1e6;
+  S_wire2=41.67/1e6;
 Else
 	S_N = 5000;
-  S_wire1=41.67;
-  S_wire2=416.7;
+  S_wire1=41.67/1e6;
+  S_wire2=416.7/1e6;
 EndIf
 
 Air_tot_1=S_wire1*N1;
