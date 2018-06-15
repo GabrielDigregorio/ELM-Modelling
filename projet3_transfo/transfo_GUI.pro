@@ -58,7 +58,7 @@ Else
 	N_Primary = 80; 
 EndIf 
 
-thickness_Core = 1.;
+
 
 N_Secondary = N_Primary/RatioVoltage;
 
@@ -74,9 +74,9 @@ gap_Core_S = 0.00005;
 gap_Core1 = 1.;
 gap_Core2 = 1.;
 
-
+thickness_Core = width_Core_Leg ;
 // Characteristic lenghts (for mesh sizes)
-Factor_Mesh = 1;
+Factor_Mesh = 0.5;
 mesh_Core = width_Core_Leg/10. *Factor_Mesh;
 mesh_P = height_P/2/5 *Factor_Mesh;
 mesh_S = height_S/2/5 *Factor_Mesh;
