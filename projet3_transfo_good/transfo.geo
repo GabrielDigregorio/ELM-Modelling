@@ -9,13 +9,13 @@ p_Leg_1_L_0=newp; Point(newp) = {-width_Core/2., 0, 0, c_Core};
 p_Leg_1_R_0=newp; Point(newp) = {-width_Core/2.+width_Core_Leg, 0, 0, c_Core};
 
 p_Leg_1_L_1=newp; Point(newp) = {-width_Core/2., height_Core/2., 0, c_Core};
-p_Leg_1_R_1=newp; Point(newp) = {-width_Core/2.+width_Core_Leg, height_Core/2.-width_Core_Leg, 0, c_Core};
+p_Leg_1_R_1=newp; Point(newp) = {-width_Core/2.+width_Core_Leg, height_Core/2.-height_Core_Leg, 0, c_Core};
 
 
 p_Leg_2_L_0=newp; Point(newp) = {width_Core/2.-width_Core_Leg, 0, 0, c_Core};
 p_Leg_2_R_0=newp; Point(newp) = {width_Core/2., 0, 0, c_Core};
 
-p_Leg_2_L_1=newp; Point(newp) = {width_Core/2.-width_Core_Leg, height_Core/2.-width_Core_Leg, 0, c_Core};
+p_Leg_2_L_1=newp; Point(newp) = {width_Core/2.-width_Core_Leg, height_Core/2.-height_Core_Leg, 0, c_Core};
 p_Leg_2_R_1=newp; Point(newp) = {width_Core/2., height_Core/2., 0, c_Core};
 
 
