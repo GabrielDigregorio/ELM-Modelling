@@ -16,23 +16,7 @@
 
 Include "transfo_common.pro";
 
-DefineConstant[
-  type_Conds = {2, Choices{1 = "Massive", 2 = "Coil"}, Highlight "Blue",
-    Name "Parameters/01Conductor type"}
-  type_Source = {2, Choices{1 = "Current", 2 = "Voltage"}, Highlight "Blue",
-    Name "Parameters/02Source type"}
-  type_Analysis = {1, Choices{1 = "Frequency-domain", 2 = "Time-domain"}, Highlight "Blue",
-    Name "Parameters/03Analysis type"}
-  Freq = {50, Min 0, Max 1e3, Step 1,
-    Name "Parameters/Frequency"}
-    sigma_c={1e7, Min 1e-10, Max 1e15, Step 1,
-      Name "Parameters/conductivity coils"}
-       N1={10, Min 1, Max 1000, Step 1,
-         Name "Parameters/number turn coil 1"}
 
-         mur_Core={100, Min 1, Max 10000, Step 1,
-           Name "Parameters/realtive permeability core"}
-           ];
 
 
 Flag_nonlinear_core=0;
@@ -93,7 +77,7 @@ Function {
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
   Ns[Coil_1] = N1;
-  Ns[Coil_2] = N1/10;
+  Ns[Coil_2] = N2;
 
   // Global definitions (nothing to change):
 
@@ -165,6 +149,8 @@ Else
 
 // Number of turns (same for PLUS and MINUS portions) (half values because
 // half coils are defined)
+
+
 Ns[Coil_1] = N1;
 Ns[Coil_2] = N1/10;
 
@@ -233,7 +219,7 @@ ElseIf (type_Source == 2) // voltage
     phase_E_in = 90 *deg; // Phase in radian (from phase in degree)
     // High value for an open-circuit test; Low value for a short-circuit test;
     // any value in-between for any charge
-    Resistance[R_out] = 1e11;
+    Resistance[R_out] = 0.001;
   }
 
   Constraint {
