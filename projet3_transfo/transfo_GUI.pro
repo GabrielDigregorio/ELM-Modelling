@@ -22,12 +22,12 @@ DefineConstant[
     Name "Parameters/01Resolution"}
 ];
 
+height_Core_Factor = 1;
 
 If(Power == 1)
 	S_N = 50;
-	height_Core = 0.135; 
-	height_Window = 0.035;
-	width_Core = 0.13; 
+	height_Core = 0.14*height_Core_Factor; 
+	width_Core = 0.13*height_Core_Factor; 
 	width_Window = 0.02;
 	height_P = 0.032778; 
 	height_S = 0.034551; 
@@ -36,9 +36,8 @@ If(Power == 1)
 	N_Primary = 600; 
 ElseIf(Power == 2)
 	S_N = 500;
-	height_Core = 0.1755; 
-	height_Window = 0.055;
-	width_Core = 0.18; 
+	height_Core = 0.18*height_Core_Factor; 
+	width_Core = 0.18*height_Core_Factor; 
 	width_Window = 0.06;
 	height_P = 0.046068; 
 	height_S = 0.05009873; 
@@ -47,9 +46,8 @@ ElseIf(Power == 2)
 	N_Primary = 250; 
 Else
 	S_N = 5000;
-	height_Core = 0.27; 
-	height_Window = 0.12;
-	width_Core = 0.23; 
+	height_Core = 0.27*height_Core_Factor; 
+	width_Core = 0.23*height_Core_Factor; 
 	width_Window = 0.08;
 	height_P = 0.109258; 
 	height_S = 0.115169; 
