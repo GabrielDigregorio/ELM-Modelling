@@ -288,6 +288,7 @@ PostOperation {
     Operation {
       Print[ j, OnElementsOf Region[{Vol_C_Mag, Vol_S_Mag}], Format Gmsh, File "j.pos" ];
       Print[ b, OnElementsOf Vol_Mag, Format Gmsh, File "b.pos" ];
+      Print[ norm_of_b, OnElementsOf Vol_Mag, Format Gmsh, File "norm_of_b.pos" ];
       Print[ az, OnElementsOf Vol_Mag, Format Gmsh, File "az.pos" ];
 
       If (type_Source == 1) // current
@@ -320,6 +321,10 @@ PostOperation {
         Echo[ "R_out", Format Table, File > "UI.txt" ];
         Print[ U, OnRegion R_out, Format FrequencyTable, File > "UI.txt" ];
         Print[ I, OnRegion R_out, Format FrequencyTable, File > "UI.txt"];
+
+        //Print[ norm_of_b, OnRegion Core ,Format Table, File "norm_of_b.txt"];
+        Print[ norm_of_b, OnLine { {-width_Core/2,0,0} {-width_Core/2 + width_Core_Leg,0,0} } {200}, Format Table, File "norm_of_b_line.txt"];
+        
       EndIf
     }
   }
