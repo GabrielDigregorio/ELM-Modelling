@@ -93,7 +93,7 @@ If(Power == 1)
 ElseIf(Power == 2)
 	S_N = 500;
   S_wire1=4.167/1e6;
-  S_wire2=41.67/1000;
+  S_wire2=41.67/1e6;
 Else
 	S_N = 5000;
   S_wire1=41.67/1e6;
