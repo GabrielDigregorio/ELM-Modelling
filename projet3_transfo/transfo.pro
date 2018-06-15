@@ -128,8 +128,8 @@ Else
 
   // Number of turns (same for PLUS and MINUS portions) (half values because
   // half coils are defined)
-  Ns[P] = 1;
-  Ns[S] = 10;
+  Ns[P] = N_Primary;
+  Ns[S] = N_Secondary;
 
 // Global definitions (nothing to change):
 

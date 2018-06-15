@@ -7,7 +7,7 @@ DefineConstant[
     Name "Parameters/03Analysis type"}
   Freq = {50, Min 0, Max 1e3, Step 1,
     Name "Parameters/Frequency"}
-    sigma_c={1e7, Min 1e-10, Max 1e15, Step 1,
+    sigma_c={59.6*10^6, Min 1e-10, Max 1e15, Step 1,
       Name "Parameters/conductivity coils"}
       // N1={10, Min 1, Max 1000, Step 1,
       //   Name "Parameters/number turn coil 1"}
@@ -22,22 +22,22 @@ DefineConstant[
 
 DefineConstant[
 
-           height_Coil_1={0.25, Min 0.01, Max 10000, Step 1,
+           height_Coil_1={0.115, Min 0.01, Max 10000, Step 1,
              Name "Geometry/coil1/heigth coils"}
-             width_Core_Leg={0.2, Min 0.01, Max 10000, Step 1,
+             width_Core_Leg={0.04, Min 0.01, Max 10000, Step 1,
                Name "Geometry/core/Thickness horiz core"}
-               height_Core_Leg={0.2, Min 0.01, Max 10000, Step 1,
+               height_Core_Leg={0.04, Min 0.01, Max 10000, Step 1,
                  Name "Geometry/core/Thickness verti core"}
-          width_Core={1, Min 0.01, Max 10000, Step 1,
+          width_Core={0.2, Min 0.01, Max 10000, Step 1,
             Name "Geometry/core/width core"}
-          height_Core={1, Min 0.01, Max 10000, Step 1,
+          height_Core={0.2, Min 0.01, Max 10000, Step 1,
             Name "Geometry/core/heigth core"}
-               height_Coil_2={0.25, Min 0.01, Max 10000, Step 1,
+               height_Coil_2={0.115, Min 0.01, Max 10000, Step 1,
                  Name "Geometry/coil2/heigth coils"}
 
-           gap_Core_Coil_1={0.05, Min 0.01, Max 10000, Step 1,
+           gap_Core_Coil_1={0.001, Min 0.01, Max 10000, Step 1,
                    Name "Geometry/coil1/gap coils ferro"}
-         gap_Core_Coil_2={0.05, Min 0.01, Max 10000, Step 1,
+         gap_Core_Coil_2={0.001, Min 0.01, Max 10000, Step 1,
                      Name "Geometry/coil2/gap coils ferro"}
           //     width_Coil_1 ={0.1, Min 0.01, Max 10000, Step 1,
           //             Name "Geometry/coil1/width coil"}
@@ -68,7 +68,7 @@ DefineConstant[
 thickness_Core = width_Core_Leg ;//1.;
 B_max=1.5;
   Printf("width_Core_Leg  %g", width_Core_Leg);
-N1=1/(2*Pi*Freq*width_Core_Leg*width_Core_Leg*B_max)*120;
+N1=(1/(2*Pi*Freq*width_Core_Leg*width_Core_Leg*B_max))*120;
   Printf("n_1  %g", N1);
 N2=N1/10;
 
@@ -114,10 +114,10 @@ width_Coil_2 =Air_tot_2/height_Coil_2;
 
 //s = 1;
 
-c_Core = width_Core_Leg/10. *s;
+c_Core = width_Core_Leg/15. *s;
 
-c_Coil_1 = height_Coil_1/2/5 *s;
-c_Coil_2 = height_Coil_2/2/5 *s;
+c_Coil_1 = height_Coil_1/2/20 *s;
+c_Coil_2 = height_Coil_2/2/20 *s;
 
 c_Box = gap_Core_Box_X/6. *s;
 
