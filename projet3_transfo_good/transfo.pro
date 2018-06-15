@@ -152,7 +152,7 @@ Else
 
 
 Ns[Coil_1] = N1;
-Ns[Coil_2] = N1/10;
+Ns[Coil_2] = N2;
 
 // Global definitions (nothing to change):
 
