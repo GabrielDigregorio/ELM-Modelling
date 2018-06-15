@@ -59,7 +59,7 @@ DefineConstant[
 //width_Core = 0.8;
 //height_Core = 1.;
 
-
+//Pi=3.14;
 //width_Window = 0.9;// control the width of the core
 //height_Window = 0.9;
 
@@ -67,8 +67,9 @@ width_Core_Leg = (width_Core-(1-width_Window*2))/2.;
 // Thickness along Oz (to be considered for a correct definition of voltage)
 thickness_Core = width_Core_Leg ;//1.;
 B_max=1.5;
-
+  Printf("width_Core_Leg  %g", width_Core_Leg);
 N1=1/(2*Pi*Freq*width_Core_Leg*width_Core_Leg*B_max)*120;
+  Printf("n_1  %g", N1);
 N2=N1/10;
 
 //height_Core_Leg=0.1;
