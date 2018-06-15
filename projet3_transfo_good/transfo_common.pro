@@ -7,7 +7,7 @@ DefineConstant[
     Name "Parameters/03Analysis type"}
   Freq = {50, Min 0, Max 1e3, Step 1,
     Name "Parameters/Frequency"}
-    sigma_c={1e7, Min 1e-10, Max 1e15, Step 1,
+    sigma_c={59.6*10^6, Min 1e-10, Max 1e15, Step 1,
       Name "Parameters/conductivity coils"}
       // N1={10, Min 1, Max 1000, Step 1,
       //   Name "Parameters/number turn coil 1"}
