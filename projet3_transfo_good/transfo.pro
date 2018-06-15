@@ -322,8 +322,9 @@ PostOperation {
         Print[ U, OnRegion R_out, Format FrequencyTable, File > "UI.txt" ];
         Print[ I, OnRegion R_out, Format FrequencyTable, File > "UI.txt"];
 
-        //Print[ norm_of_b, OnRegion Core ,Format Table, File "norm_of_b.txt"];
+        
         Print[ norm_of_b, OnLine { {-width_Core/2,0,0} {-width_Core/2 + width_Core_Leg,0,0} } {200}, Format Table, File "norm_of_b_line.txt"];
+        Print[ norm_of_b, OnElementsOf Core ,Format Table, File "norm_of_b.txt"];
         
       EndIf
     }
