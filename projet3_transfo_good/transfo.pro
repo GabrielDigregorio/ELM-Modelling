@@ -219,7 +219,7 @@ ElseIf (type_Source == 2) // voltage
     phase_E_in = 90 *deg; // Phase in radian (from phase in degree)
     // High value for an open-circuit test; Low value for a short-circuit test;
     // any value in-between for any charge
-    Resistance[R_out] = 1e6;
+    Resistance[R_out] = 0.005;
   }
 
   Constraint {
