@@ -1,19 +1,3 @@
-/* -------------------------------------------------------------------
-   Tutorial 7b : magnetodyamic model of a single-phase transformer
-
-   Features:
-   - Use of a generic template formulation library
-   - Frequency- and time-domain dynamic solutions
-   - Circuit coupling used as a black-box (see Tutorial 8 for details)
-
-   To compute the solution in a terminal:
-       getdp transfo -solve Magnetodynamics2D_av -pos Map_a
-
-   To compute the solution interactively from the Gmsh GUI:
-       File > Open > transfo.pro
-       Run (button at the bottom of the left panel)
-   ------------------------------------------------------------------- */
-
 Include "transfo_common.pro";
 
 
@@ -216,10 +200,10 @@ ElseIf (type_Source == 2) // voltage
     // Input RMS voltage (half of the voltage because of symmetry; half coils
     // are defined)
     val_E_in = 120.;
-    phase_E_in = 90 *deg; // Phase in radian (from phase in degree)
+    phase_E_in = 0 *deg; // Phase in radian (from phase in degree)
     // High value for an open-circuit test; Low value for a short-circuit test;
     // any value in-between for any charge
-    Resistance[R_out] = 0.005;
+    Resistance[R_out] = 0.01;
   }
 
   Constraint {
